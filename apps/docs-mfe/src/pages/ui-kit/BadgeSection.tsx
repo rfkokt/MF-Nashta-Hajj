@@ -30,10 +30,12 @@ export function BadgeSection() {
 <Badge variant="success">Aktif</Badge>
 <Badge variant="error">Ditolak</Badge>`}</CodeBlock>
         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
-        <PropsTable rows={[
-          ['variant', 'default | success | warning | error | info | outline', 'default'],
-          ['className', 'string', '—'],
-        ]} />
+        <PropsTable
+          rows={[
+            ['variant', 'default | success | warning | error | info | outline', 'default'],
+            ['className', 'string', '—'],
+          ]}
+        />
       </CardContent>
     </Card>
   );

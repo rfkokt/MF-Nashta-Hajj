@@ -5,7 +5,14 @@ export type { ButtonProps } from './components/Button';
 export { Input } from './components/Input';
 export type { InputProps } from './components/Input';
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/Card';
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from './components/Card';
 export type { CardProps } from './components/Card';
 
 export { Skeleton } from './components/Skeleton';
@@ -32,6 +39,26 @@ export type { UseFormValidationOptions, UseFormValidationReturn } from './hooks/
 // Utils
 export { cn } from './utils/cn';
 
-export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue } from './components/select';
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from './components/select';
 
 export { Label } from './components/label';
+
+export { Breadcrumb } from './components/Breadcrumb';
+export type { BreadcrumbProps, BreadcrumbItem } from './components/Breadcrumb';
+
+export { Table } from './components/Table';
+export type { TableProps, Column } from './components/Table';
+
+export { Tabs, TabList, Tab, TabPanel } from './components/Tabs';
+export type { TabsProps, TabListProps, TabProps, TabPanelProps } from './components/Tabs';

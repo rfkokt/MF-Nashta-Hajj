@@ -4,13 +4,13 @@ import { useAuthStore } from '@nashta/shared-types';
 import { Layout } from './components/Layout';
 import { RemoteLoader } from './components/RemoteLoader';
 import { Dashboard } from './pages/Dashboard';
-import { UIKitPage } from './pages/UIKit';
 import { NotFound } from './pages/NotFound';
 
 // Lazy load remote MFE pages via Module Federation
 // The MF Vite plugin intercepts these imports at build time
 const RemoteLogin = lazy(() => import('authMfe/LoginPage'));
 const RemoteRegister = lazy(() => import('authMfe/RegisterPage'));
+const RemoteProfile = lazy(() => import('authMfe/ProfilePage'));
 
 const RemoteDocs = lazy(() => import('docsmfe/App'));
 
@@ -73,6 +73,16 @@ export function AppRouter() {
           </GuestRoute>
         }
       />
+      <Route
+        path="/auth/profile"
+        element={
+          <ProtectedRoute>
+            <RemoteLoader>
+              <RemoteProfile />
+            </RemoteLoader>
+          </ProtectedRoute>
+        }
+      />
 
       {/* Protected routes — wrapped in layout */}
       <Route
@@ -84,18 +94,15 @@ export function AppRouter() {
         }
       >
         <Route index element={<Dashboard />} />
-        
-        {/* UI Kit showcase */}
-        <Route path="ui-kit/*" element={<UIKitPage />} />
-        
-        {/* Remote Documentation MFE */}
-        <Route 
-          path="docs/*" 
+
+        {/* Remote Documentation MFE (includes UI Kit docs) */}
+        <Route
+          path="docs/*"
           element={
             <RemoteLoader>
               <RemoteDocs />
             </RemoteLoader>
-          } 
+          }
         />
       </Route>
 

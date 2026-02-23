@@ -10,6 +10,10 @@ declare module 'authMfe/RegisterPage' {
   export default RegisterPage;
 }
 
+declare module 'authMfe/ProfilePage' {
+  const ProfilePage: React.ComponentType;
+  export default ProfilePage;
+}
 declare module 'authMfe/routes' {
   import type { RouteObject } from 'react-router';
   export const authRoutes: RouteObject[];

@@ -23,6 +23,7 @@ export default defineConfig({
       exposes: {
         './LoginPage': './src/pages/Login.tsx',
         './RegisterPage': './src/pages/Register.tsx',
+        './ProfilePage': './src/pages/Profile.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: '^19.0.0' },
@@ -31,7 +32,12 @@ export default defineConfig({
         'react-dom/': { singleton: true },
       },
     }),
-    visualizer({ open: false, filename: 'dist/apps/auth-mfe/stats.html', gzipSize: true, brotliSize: true })
+    visualizer({
+      open: false,
+      filename: 'dist/apps/auth-mfe/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ] as any,
   build: {
     target: 'chrome89',

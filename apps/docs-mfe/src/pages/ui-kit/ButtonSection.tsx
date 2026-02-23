@@ -5,7 +5,10 @@ export function ButtonSection() {
   return (
     <Card>
       <CardContent className="pt-6 space-y-6">
-        <SectionHeader title="Button" description="Tombol interaktif dengan variant dan size berbeda." />
+        <SectionHeader
+          title="Button"
+          description="Tombol interaktif dengan variant dan size berbeda."
+        />
         <PreviewCard title="Variants">
           <div className="flex flex-wrap gap-3">
             <Button>Primary</Button>
@@ -35,12 +38,14 @@ export function ButtonSection() {
 <Button variant="danger">Hapus</Button>
 <Button isLoading>Menyimpan...</Button>`}</CodeBlock>
         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
-        <PropsTable rows={[
-          ['variant', 'primary | secondary | outline | ghost | danger', 'primary'],
-          ['size', 'sm | md | lg | icon', 'md'],
-          ['isLoading', 'boolean', 'false'],
-          ['disabled', 'boolean', 'false'],
-        ]} />
+        <PropsTable
+          rows={[
+            ['variant', 'primary | secondary | outline | ghost | danger', 'primary'],
+            ['size', 'sm | md | lg | icon', 'md'],
+            ['isLoading', 'boolean', 'false'],
+            ['disabled', 'boolean', 'false'],
+          ]}
+        />
       </CardContent>
     </Card>
   );

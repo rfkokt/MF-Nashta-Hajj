@@ -11,8 +11,14 @@ export function highlightCode(code: string): React.ReactNode[] {
     [/<\/?[A-Z][A-Za-z0-9.]*/g, 'text-[#7ee787]'],
     [/<\/?[a-z][a-z0-9-]*/g, 'text-[#7ee787]'],
     [/\/>/g, 'text-[#7ee787]'],
-    [/\b(import|export|from|const|let|var|function|return|if|else|new|typeof|type|interface|extends|implements|class|default|async|await|throw|try|catch|finally|for|while|do|switch|case|break|continue|void|null|undefined|true|false|as)\b/g, 'text-[#ff7b72]'],
-    [/\b(React|useState|useEffect|useRef|useMemo|useCallback|ReactNode|FC|JSX|Record|Partial|Pick|Omit|Promise)\b/g, 'text-[#d2a8ff]'],
+    [
+      /\b(import|export|from|const|let|var|function|return|if|else|new|typeof|type|interface|extends|implements|class|default|async|await|throw|try|catch|finally|for|while|do|switch|case|break|continue|void|null|undefined|true|false|as)\b/g,
+      'text-[#ff7b72]',
+    ],
+    [
+      /\b(React|useState|useEffect|useRef|useMemo|useCallback|ReactNode|FC|JSX|Record|Partial|Pick|Omit|Promise)\b/g,
+      'text-[#d2a8ff]',
+    ],
     [/\b([a-zA-Z-]+)(?==)/g, 'text-[#79c0ff]'],
     [/\b\d+\.?\d*\b/g, 'text-[#ffa657]'],
     [/=>/g, 'text-[#ff7b72]'],
@@ -27,7 +33,7 @@ export function highlightCode(code: string): React.ReactNode[] {
     while ((match = r.exec(code)) !== null) {
       const start = match.index;
       const end = start + match[0].length;
-      const overlaps = tokens.some(t => start < t.end && end > t.start);
+      const overlaps = tokens.some((t) => start < t.end && end > t.start);
       if (!overlaps) {
         tokens.push({ start, end, className });
       }
@@ -42,7 +48,11 @@ export function highlightCode(code: string): React.ReactNode[] {
     if (tok.start > cursor) {
       nodes.push(<span key={`t-${i}`}>{code.slice(cursor, tok.start)}</span>);
     }
-    nodes.push(<span key={`h-${i}`} className={tok.className}>{code.slice(tok.start, tok.end)}</span>);
+    nodes.push(
+      <span key={`h-${i}`} className={tok.className}>
+        {code.slice(tok.start, tok.end)}
+      </span>
+    );
     cursor = tok.end;
   });
   if (cursor < code.length) {
@@ -69,7 +79,10 @@ export function CodeBlock({ children }: { children: string }) {
           <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <button onClick={handleCopy} className="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded hover:bg-neutral-800">
+        <button
+          onClick={handleCopy}
+          className="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded hover:bg-neutral-800"
+        >
           {copied ? '✓ Copied' : 'Copy'}
         </button>
       </div>
@@ -105,7 +118,11 @@ export function SectionHeader({ title, description }: { title: string; descripti
 export function PreviewCard({ title, children }: { title?: string; children: React.ReactNode }) {
   return (
     <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 mb-4">
-      {title && <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-4">{title}</p>}
+      {title && (
+        <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-4">
+          {title}
+        </p>
+      )}
       {children}
     </div>
   );
@@ -125,7 +142,9 @@ export function PropsTable({ rows }: { rows: [string, string, string][] }) {
         <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
           {rows.map(([prop, type, def]) => (
             <tr key={prop}>
-              <td className="px-4 py-2"><code>{prop}</code></td>
+              <td className="px-4 py-2">
+                <code>{prop}</code>
+              </td>
               <td className="px-4 py-2 text-neutral-500">{type}</td>
               <td className="px-4 py-2 text-neutral-400">{def}</td>
             </tr>

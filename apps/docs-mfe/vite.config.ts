@@ -28,9 +28,16 @@ export default defineConfig({
         'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
         'react/': { singleton: true },
         'react-dom/': { singleton: true },
+        'react-router': { singleton: true, requiredVersion: '^7.0.0' },
+        'react-router-dom': { singleton: true, requiredVersion: '^7.0.0' },
       },
     }),
-    visualizer({ open: false, filename: 'dist/apps/docs-mfe/stats.html', gzipSize: true, brotliSize: true })
+    visualizer({
+      open: false,
+      filename: 'dist/apps/docs-mfe/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ] as any,
   build: {
     target: 'chrome89',

@@ -1,12 +1,21 @@
-import { Outlet, useNavigate, NavLink } from 'react-router';
-import { useAuthStore, useMenuStore, useThemeStore, useNotificationStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import { Outlet, useNavigate, useLocation, NavLink } from 'react-router';
+import {
+  useAuthStore,
+  useMenuStore,
+  useThemeStore,
+  useNotificationStore,
+  useIdleTimeout,
+  MFE_EVENTS,
+  dispatchMfeEvent,
+} from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
-import { LogOut, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { LogOut, Menu, X, Sun, Moon, ChevronDown, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
-import { ToastContainer } from '@nashta/ui-kit';
+import { ToastContainer, Modal, Button } from '@nashta/ui-kit';
 import { discoveredComponents } from '../utils/component-discovery';
+import { AutoBreadcrumb } from './AutoBreadcrumb';
 
 /* ─────────────────────────────────────────────
    Collapsible sidebar section (unchanged)
@@ -16,26 +25,42 @@ function CollapsibleSection({
   icon: Icon,
   children,
   defaultOpen = false,
+  childPaths = [],
 }: {
   label: string;
   icon: React.ElementType;
   children: React.ReactNode;
   defaultOpen?: boolean;
+  childPaths?: string[];
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  const location = useLocation();
+  // Check if any child path is currently active
+  const hasActiveChild = childPaths.some(
+    (p) => location.pathname === p || location.pathname.startsWith(p + '/')
+  );
+  // Keep open if any child is active; otherwise user can toggle
+  const [manualOpen, setManualOpen] = useState(defaultOpen);
+  const isOpen = hasActiveChild || manualOpen;
+
   return (
     <div>
       <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        onClick={() => setManualOpen(!isOpen)}
+        className={`flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+          hasActiveChild
+            ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+            : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+        }`}
       >
         <span className="flex items-center gap-3">
           <Icon className="h-4 w-4" />
           {label}
         </span>
-        <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
-      {open && (
+      {isOpen && (
         <div className="ml-7 mt-1 space-y-0.5 border-l border-neutral-200 dark:border-neutral-700 pl-3">
           {children}
         </div>
@@ -65,12 +90,17 @@ const subNavClass = ({ isActive }: { isActive: boolean }) =>
    Render a single MenuItem (top-level or nested)
    ───────────────────────────────────────────── */
 function SidebarItem({ item }: { item: MenuItem }) {
-  const IconComp = getIcon(item.icon);
+  const icon = getIcon(item.icon);
 
   // If item has children → render as collapsible group
   if (item.children && item.children.length > 0) {
     return (
-      <CollapsibleSection label={item.label} icon={IconComp} defaultOpen={item.defaultOpen}>
+      <CollapsibleSection
+        label={item.label}
+        icon={icon}
+        defaultOpen={item.defaultOpen}
+        childPaths={item.children.map((c) => c.path)}
+      >
         {item.children.map((child) => (
           <NavLink key={child.id} to={child.path} className={subNavClass}>
             {child.label}
@@ -83,7 +113,8 @@ function SidebarItem({ item }: { item: MenuItem }) {
   // Otherwise → simple NavLink
   return (
     <NavLink to={item.path} end={item.path === '/'} className={topNavClass}>
-      <IconComp className="h-4 w-4" />
+      {/* We use createElement to avoid violating the "components defined in render" hook rule */}
+      {React.createElement(icon, { className: 'h-4 w-4' })}
       {item.label}
       {item.badge && (
         <span className="ml-auto text-[10px] font-bold bg-orange-500 text-white px-1.5 py-0.5 rounded-full leading-none">
@@ -130,18 +161,23 @@ export function Layout() {
     // Always start with mock data so sidebar is never empty
     if (menuGroups.length === 0) {
       // Enrich UI Kit menu with auto-discovered components
-      const enriched = MOCK_MENUS.map(group => ({
+      const enriched = MOCK_MENUS.map((group) => ({
         ...group,
-        items: group.items.map(item => {
+        items: group.items.map((item) => {
           if (item.id === 'ui-kit') {
-            const autoChildren: MenuItem[] = discoveredComponents.map(c => ({
+            const autoChildren: MenuItem[] = discoveredComponents.map((c) => ({
               id: `uk-${c.slug}`,
               label: c.name,
               icon: 'FileText',
-              path: `/ui-kit/${c.slug}`,
+              path: `/docs/ui-kit/${c.slug}`,
             }));
             // Add Tutorial at the end
-            autoChildren.push({ id: 'uk-tutorial', label: 'Tutorial', icon: 'GraduationCap', path: '/ui-kit/tutorial' });
+            autoChildren.push({
+              id: 'uk-tutorial',
+              label: 'Tutorial',
+              icon: 'GraduationCap',
+              path: '/docs/ui-kit/tutorial',
+            });
             return { ...item, children: autoChildren };
           }
           return item;
@@ -151,15 +187,64 @@ export function Layout() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_OUT, {});
     useAuthStore.getState().clearAuth();
     navigate('/auth/login');
+  }, [navigate]);
+
+  // ── Session Idle Timeout (PRD §6.4) ──
+  const [showIdleWarning, setShowIdleWarning] = useState(false);
+
+  const { resetTimer } = useIdleTimeout({
+    idleTime: 30 * 60 * 1000, // 30 minutes
+    warningTime: 5 * 60 * 1000, // 5 minutes after warning
+    onWarning: () => setShowIdleWarning(true),
+    onTimeout: () => {
+      setShowIdleWarning(false);
+      handleLogout();
+    },
+    enabled: useAuthStore((s) => s.isAuthenticated),
+  });
+
+  const handleStayLoggedIn = () => {
+    setShowIdleWarning(false);
+    resetTimer();
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-      <ToastContainer toasts={useNotificationStore((s) => s.toasts)} onDismiss={useNotificationStore.getState().removeToast} />
+      <ToastContainer
+        toasts={useNotificationStore((s) => s.toasts)}
+        onDismiss={useNotificationStore.getState().removeToast}
+      />
+
+      {/* ── Idle Timeout Warning Modal ── */}
+      <Modal
+        open={showIdleWarning}
+        onClose={handleStayLoggedIn}
+        title="Sesi Akan Berakhir"
+        size="sm"
+      >
+        <div className="flex flex-col items-center text-center gap-4 py-2">
+          <div className="h-14 w-14 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+            <AlertTriangle className="h-7 w-7 text-amber-600" />
+          </div>
+          <p className="text-neutral-600 dark:text-neutral-300">
+            Anda tidak aktif selama 30 menit. Sesi akan otomatis berakhir dalam{' '}
+            <strong>5 menit</strong>.
+          </p>
+          <div className="flex gap-3 w-full">
+            <Button variant="secondary" className="flex-1" onClick={handleLogout}>
+              Logout
+            </Button>
+            <Button variant="primary" className="flex-1" onClick={handleStayLoggedIn}>
+              Tetap Login
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
       {/* ── Top Header Bar (full width, dark) ── */}
       <header className="h-16 bg-neutral-900 dark:bg-black flex items-center px-6 gap-4 sticky top-0 z-50 shrink-0">
         {/* Mobile hamburger */}
@@ -173,8 +258,12 @@ export function Layout() {
 
         {/* Brand */}
         <div className="flex items-center gap-2">
-          <div className="bg-orange-500 w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm">U</div>
-          <span className="text-white font-bold text-lg tracking-tight hidden sm:inline">Uhud Tour</span>
+          <div className="bg-orange-500 w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm">
+            U
+          </div>
+          <span className="text-white font-bold text-lg tracking-tight hidden sm:inline">
+            Uhud Tour
+          </span>
         </div>
 
         {/* Spacer */}
@@ -194,10 +283,18 @@ export function Layout() {
           </button>
 
           <div className="flex items-center gap-3 pl-4 border-l border-neutral-700">
-            <img src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ahmad" alt="Avatar" className="h-9 w-9 rounded-full bg-neutral-700" />
+            <img
+              src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ahmad"
+              alt="Avatar"
+              className="h-9 w-9 rounded-full bg-neutral-700"
+            />
             <div className="hidden md:flex flex-col text-right">
-              <span className="text-sm font-semibold text-white leading-tight">{user?.name || 'Ahmad Fahim Hakim'}</span>
-              <span className="text-[11px] text-neutral-400">{user?.email || 'ahmadfahim@gmail.com'}</span>
+              <span className="text-sm font-semibold text-white leading-tight">
+                {user?.name || 'Ahmad Fahim Hakim'}
+              </span>
+              <span className="text-[11px] text-neutral-400">
+                {user?.email || 'ahmadfahim@gmail.com'}
+              </span>
             </div>
           </div>
         </div>
@@ -223,7 +320,9 @@ export function Layout() {
           {/* Greeting */}
           <div className="px-6 pt-6 pb-4">
             <p className="text-sm text-neutral-500 dark:text-neutral-400">Selamat Datang,</p>
-            <p className="text-lg font-bold leading-tight">{user?.name || 'Ahmad Fahim Hakim'} 👋</p>
+            <p className="text-lg font-bold leading-tight">
+              {user?.name || 'Ahmad Fahim Hakim'} 👋
+            </p>
           </div>
 
           {/* ── Dynamic Navigation ── */}
@@ -232,7 +331,12 @@ export function Layout() {
               <SidebarSkeleton />
             ) : (
               menuGroups.map((group, idx) => (
-                <div key={group.title} className={idx > 0 ? 'border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-3' : ''}>
+                <div
+                  key={group.title}
+                  className={
+                    idx > 0 ? 'border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-3' : ''
+                  }
+                >
                   <div className="px-3 mb-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
                     {group.title}
                   </div>
@@ -269,6 +373,7 @@ export function Layout() {
 
         {/* Main content */}
         <main id="main-content" className="flex-1 p-6 lg:px-8 overflow-y-auto">
+          <AutoBreadcrumb />
           <Outlet />
         </main>
       </div>
