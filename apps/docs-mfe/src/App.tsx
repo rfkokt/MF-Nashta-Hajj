@@ -6,10 +6,10 @@ export function App() {
   return (
     <div className="p-8 mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
+        <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
           Buku Panduan Platform MFE
         </h1>
-        <p className="text-lg text-neutral-500">
+        <p className="text-lg text-neutral-500 dark:text-neutral-400">
           Dokumentasi dan Standar Arsitektur Micro-Frontend Nashta Hajj
         </p>
       </div>
@@ -18,27 +18,27 @@ export function App() {
         <Card >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-primary-100 rounded-lg text-primary-600">🏗️</span>
+              <span className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg text-primary-600 dark:text-primary-400">🏗️</span>
               Struktur Proyek
             </CardTitle>
             <CardDescription>Bagaimana monorepo ini diorganisir</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold text-neutral-900 mb-2">Aplikasi (Micro-Frontends)</h3>
-              <ul className="space-y-2 text-sm text-neutral-600 list-disc ml-4">
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shell</code> - Aplikasi Induk (Port 4000). Mengelola layout & routing utama.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">auth-mfe</code> - Domain Autentikasi (Port 4001). Pre-loaded remote module.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">business-mfe</code> - Modul contoh bisnis (Port 4002).</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">docs-mfe</code> - Modul dokumentasi ini (Port 4003).</li>
+              <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Aplikasi (Micro-Frontends)</h3>
+              <ul className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400 list-disc ml-4">
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">shell</code> - Aplikasi Induk (Port 4000). Mengelola layout & routing utama.</li>
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">auth-mfe</code> - Domain Autentikasi (Port 4001). Pre-loaded remote module.</li>
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">business-mfe</code> - Modul contoh bisnis (Port 4002).</li>
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">docs-mfe</code> - Modul dokumentasi ini (Port 4003).</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-neutral-900 mb-2">Pustaka Utama (Shared Libs)</h3>
-              <ul className="space-y-2 text-sm text-neutral-600 list-disc ml-4">
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">ui-kit</code> - Komponen standar UI (Tailwind v4 / Radix UI).</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-types</code> - Contract TypeScript dan state login (Zustand).</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-api</code> - Setup Axios dan Endpoint (dilindungi interceptor).</li>
+              <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Pustaka Utama (Shared Libs)</h3>
+              <ul className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400 list-disc ml-4">
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">ui-kit</code> - Komponen standar UI (Tailwind v4 / Radix UI).</li>
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">shared-types</code> - Contract TypeScript dan state login (Zustand).</li>
+                <li><code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">shared-api</code> - Setup Axios dan Endpoint (dilindungi interceptor).</li>
               </ul>
             </div>
           </CardContent>
@@ -47,7 +47,7 @@ export function App() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-blue-100 rounded-lg text-blue-600">⚡</span>
+              <span className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg text-blue-600 dark:text-blue-400">⚡</span>
               Development & Menjalankan Aplikasi
             </CardTitle>
             <CardDescription>Perintah CLI untuk pengembangan lokal</CardDescription>
@@ -73,15 +73,15 @@ pnpm nx run-many --target=serve --projects=shell,auth-mfe --parallel`}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="p-2 bg-emerald-100 rounded-lg text-emerald-600">🚀</span>
+            <span className="p-2 bg-emerald-100 dark:bg-emerald-900 rounded-lg text-emerald-600 dark:text-emerald-400">🚀</span>
             Cara Membuat & Mendaftarkan MFE Baru
           </CardTitle>
           <CardDescription>Otomatisasi MFE Setup tanpa copy-paste manual.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <h3 className="font-semibold text-neutral-900">1. Jalankan Generator Nx CLI</h3>
-            <p className="text-sm text-neutral-600">Perintah ini akan men-generate folder React+Vite, Module Federation, Tailwind v4, linting, dan mendaftarkannya otomatis ke <code className="text-primary-700 bg-primary-50 px-1 rounded">shell/public/remotes.json</code>.</p>
+            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">1. Jalankan Generator Nx CLI</h3>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">Perintah ini akan men-generate folder React+Vite, Module Federation, Tailwind v4, linting, dan mendaftarkannya otomatis ke <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">shell/public/remotes.json</code>.</p>
             <CodeBlock 
               language="bash" 
               codeString="pnpm nx g @nashta/tools:mfe <nama-mfe> --port=<port>"
@@ -91,8 +91,8 @@ pnpm nx run-many --target=serve --projects=shell,auth-mfe --parallel`}
           </div>
           
           <div className="space-y-2">
-            <h3 className="font-semibold text-neutral-900">2. Mendaftarkan Route di `router.tsx` Shell</h3>
-            <p className="text-sm text-neutral-600">Meski environment sudah teregister, Anda harus tetap memasang komponen Remote tersebut pada routing utama aplikasi Shell menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">React.lazy</code>.</p>
+            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">2. Mendaftarkan Route di `router.tsx` Shell</h3>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">Meski environment sudah teregister, Anda harus tetap memasang komponen Remote tersebut pada routing utama aplikasi Shell menggunakan <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">React.lazy</code>.</p>
             <CodeBlock 
               language="tsx" 
               codeString={`// Buka apps/shell/src/router.tsx
@@ -113,14 +113,14 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-amber-100 rounded-lg text-amber-600">🔑</span>
+              <span className="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg text-amber-600 dark:text-amber-400">🔑</span>
               Manajemen Token Login (Zustand)
             </CardTitle>
             <CardDescription>Handling Token & Status Autentikasi</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
-              Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 bg-primary-50 px-1 rounded">@nashta/shared-types</code>.
+              Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">@nashta/shared-types</code>.
             </p>
             <CodeBlock 
               language="typescript" 
@@ -130,8 +130,8 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
 const { accessToken, isAuthenticated, logout } = useAuthStore();`}
             />
             <ul className="list-disc ml-4 space-y-1 mt-2">
-              <li><strong>State Persistence:</strong> Token login saat ini dipertahankan menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">sessionStorage</code> (via Zustand Persist) agar tidak hilang saat pengguna me-<i>refresh</i> halaman.</li>
-              <li><strong>Best Practice Produksi:</strong> Pada arsitektur aslinya, sangat disarankan menggunakan skema <i>Refresh Token</i> (disimpan di <i>HttpOnly Cookie</i>) bersamaan dengan endpoint <code className="text-primary-700 bg-primary-50 px-1 rounded">/refresh</code> daripada <code className="text-primary-700 bg-primary-50 px-1 rounded">sessionStorage</code> murni demi pencegahan pencurian token.</li>
+              <li><strong>State Persistence:</strong> Token login saat ini dipertahankan menggunakan <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">sessionStorage</code> (via Zustand Persist) agar tidak hilang saat pengguna me-<i>refresh</i> halaman.</li>
+              <li><strong>Best Practice Produksi:</strong> Pada arsitektur aslinya, sangat disarankan menggunakan skema <i>Refresh Token</i> (disimpan di <i>HttpOnly Cookie</i>) bersamaan dengan endpoint <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">/refresh</code> daripada <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">sessionStorage</code> murni demi pencegahan pencurian token.</li>
             </ul>
           </CardContent>
         </Card>
@@ -139,14 +139,14 @@ const { accessToken, isAuthenticated, logout } = useAuthStore();`}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-teal-100 rounded-lg text-teal-600">🔗</span>
+              <span className="p-2 bg-teal-100 dark:bg-teal-900 rounded-lg text-teal-600 dark:text-teal-400">🔗</span>
               Axios Interceptors (API Call)
             </CardTitle>
             <CardDescription>Handling Error 401 & Auto-inject Token</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
-              Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">@nashta/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
+              Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">@nashta/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
             </p>
             <CodeBlock 
               language="typescript" 
@@ -167,15 +167,15 @@ const fetchProfile = async () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-purple-100 rounded-lg text-purple-600">🔄</span>
+              <span className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg text-purple-600 dark:text-purple-400">🔄</span>
               Dynamic Remotes
             </CardTitle>
             <CardDescription>Module federation berbasis Konfigurasi</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
               Alih-alih menuliskan URL (contoh localhost:4002) secara permanen di kode konfigurasi (<i>hardcoded</i>), 
-              Aplikasi Shell membaca daftar MFE dari file <code className="text-primary-700 bg-primary-50 px-1 rounded">remotes.json</code> pada saat <i>Runtime</i>.
+              Aplikasi Shell membaca daftar MFE dari file <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">remotes.json</code> pada saat <i>Runtime</i>.
             </p>
             <p>
               Cara kerja ini sangat menguntungkan di server Production karena tim infrastruktur bebas me-repoint URL (misal ke versi MFE lama saat ada error) tanpa pernah perlu melakukan Build / Deployment ulang terhadap Aplikasi Shell (Host).
@@ -186,12 +186,12 @@ const fetchProfile = async () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-rose-100 rounded-lg text-rose-600">⚖️</span>
+              <span className="p-2 bg-rose-100 dark:bg-rose-900 rounded-lg text-rose-600 dark:text-rose-400">⚖️</span>
               Performance Budget
             </CardTitle>
             <CardDescription>Ambang batas maksimum Ukuran Aplikasi</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
               Setiap kali Anda membuat Pull Request, Pipeline Otomatis akan memblokir perubahan apabila ukuran JS/CSS dari MFE baru melebihi batas performa (dihitung menggunakan standar rasio algoritma Brotli).
             </p>
@@ -200,8 +200,8 @@ const fetchProfile = async () => {
               <li><strong>Batas Maksimal CSS:</strong> 50 KB</li>
             </ul>
             <p>
-              Jalankan <code className="text-primary-700 bg-primary-50 px-1 rounded">pnpm budget:check</code> di lokal atau periksa ringkasan grafik bundel 
-              melalui <code className="text-primary-700 bg-primary-50 px-1 rounded">stats.html</code> yang selalu dihasilkan setiap men-<em>build</em> project (di `dist/apps/*/stats.html`).
+              Jalankan <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">pnpm budget:check</code> di lokal atau periksa ringkasan grafik bundel 
+              melalui <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">stats.html</code> yang selalu dihasilkan setiap men-<em>build</em> project (di `dist/apps/*/stats.html`).
             </p>
           </CardContent>
         </Card>
@@ -210,18 +210,18 @@ const fetchProfile = async () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600">🧭</span>
+            <span className="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg text-indigo-600 dark:text-indigo-400">🧭</span>
             Menambahkan Menu di Sidebar (Aplikasi Shell)
           </CardTitle>
           <CardDescription>Cara agar MFE baru Anda muncul di menu navigasi utama</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm text-neutral-600">
+        <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
           <p>
-            Setelah MFE terdaftar di <code className="text-primary-700 bg-primary-50 px-1 rounded">router.tsx</code>, langkah selanjutnya adalah menambahkan tombol navigasi di Sidebar. 
+            Setelah MFE terdaftar di <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">router.tsx</code>, langkah selanjutnya adalah menambahkan tombol navigasi di Sidebar. 
             Semua layout utama dan Sidebar diatur secara eksklusif oleh <strong>Aplikasi Shell</strong>. 
           </p>
           <p>
-            <strong>Aturan Penting:</strong> Gunakan komponen <code className="text-primary-700 bg-primary-50 px-1 rounded">&lt;NavLink&gt;</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">react-router</code>! Jangan pernah menggunakan tag <code className="text-primary-700 bg-primary-50 px-1 rounded">&lt;a href="..."&gt;</code> biasa, karena akan memicu <i>full page reload</i> dan menghilangkan state login pengguna di Zustand.
+            <strong>Aturan Penting:</strong> Gunakan komponen <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">&lt;NavLink&gt;</code> dari <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">react-router</code>! Jangan pernah menggunakan tag <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">&lt;a href="..."&gt;</code> biasa, karena akan memicu <i>full page reload</i> dan menghilangkan state login pengguna di Zustand.
           </p>
           <CodeBlock 
             language="tsx" 
@@ -246,12 +246,12 @@ import { NavLink } from 'react-router';
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-fuchsia-100 rounded-lg text-fuchsia-600">🎨</span>
+              <span className="p-2 bg-fuchsia-100 dark:bg-fuchsia-900 rounded-lg text-fuchsia-600 dark:text-fuchsia-400">🎨</span>
               Menggunakan Shared UI Kit
             </CardTitle>
             <CardDescription>Konsistensi Desain antar MFE</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
               Jangan membuat tombol atau input sendiri dari awal! Gunakan komponen yang sudah distandarisasi dan disediakan oleh <i>Design System</i> kita untuk memastikan konsistensi tampilan antar MFE.
             </p>
@@ -274,14 +274,14 @@ export function FormContoh() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-sky-100 rounded-lg text-sky-600">💨</span>
+              <span className="p-2 bg-sky-100 dark:bg-sky-900 rounded-lg text-sky-600 dark:text-sky-400">💨</span>
               Tailwind CSS v4
             </CardTitle>
             <CardDescription>Sistem Styling Bawaan</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-neutral-600">
+          <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
             <p>
-              Semua MFE telah diatur untuk menggunakan Tailwind v4. Sistem warna (seperti <i>primary</i>, <i>neutral</i>, dll) sudah diatur secara terpusat di dalam library <code className="text-primary-700 bg-primary-50 px-1 rounded">ui-kit</code>.
+              Semua MFE telah diatur untuk menggunakan Tailwind v4. Sistem warna (seperti <i>primary</i>, <i>neutral</i>, dll) sudah diatur secara terpusat di dalam library <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">ui-kit</code>.
             </p>
             <p>
               Anda bisa langsung menggunakan *class-class* Tailwind di dalam file komponen Anda tanpa perlu repot mengkonfigurasi file konfigurasi Tailwind secara manual di tiap MFE.
@@ -300,17 +300,17 @@ export function FormContoh() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="p-2 bg-pink-100 rounded-lg text-pink-600">🖌️</span>
+            <span className="p-2 bg-pink-100 dark:bg-pink-900 rounded-lg text-pink-600 dark:text-pink-400">🖌️</span>
             Mengubah Tema dan Warna (Theme Customization)
           </CardTitle>
           <CardDescription>Cara mengganti palet warna utama di seluruh MFE</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm text-neutral-600">
+        <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
           <p>
-            Platform ini menggunakan Tailwind CSS v4, di mana konfigurasi tema tidak lagi menggunakan file <code className="text-primary-700 bg-primary-50 px-1 rounded">tailwind.config.js</code> klasik, melainkan menggunakan variabel CSS <code className="text-primary-700 bg-primary-50 px-1 rounded">@theme</code> langsung di file utama CSS.
+            Platform ini menggunakan Tailwind CSS v4, di mana konfigurasi tema tidak lagi menggunakan file <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">tailwind.config.js</code> klasik, melainkan menggunakan variabel CSS <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">@theme</code> langsung di file utama CSS.
           </p>
           <p>
-            Untuk mengubah warna utama (Primary), teks, atau pengaturan Global lainnya, Anda hanya perlu mengubah satu file terpusat yang terletak di dalam <code className="text-primary-700 bg-primary-50 px-1 rounded">libs/ui-kit/src/index.css</code>. Perubahan di file ini otomatis akan teraplikasikan ke semua aplikasi Shell dan MFE.
+            Untuk mengubah warna utama (Primary), teks, atau pengaturan Global lainnya, Anda hanya perlu mengubah satu file terpusat yang terletak di dalam <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">libs/ui-kit/src/index.css</code>. Perubahan di file ini otomatis akan teraplikasikan ke semua aplikasi Shell dan MFE.
           </p>
           <CodeBlock 
             language="css" 
