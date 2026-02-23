@@ -206,6 +206,96 @@ const fetchProfile = async () => {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600">🧭</span>
+            Menambahkan Menu di Sidebar (Aplikasi Shell)
+          </CardTitle>
+          <CardDescription>Cara agar MFE baru Anda muncul di menu navigasi utama</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-neutral-600">
+          <p>
+            Setelah MFE terdaftar di <code className="text-primary-700 bg-primary-50 px-1 rounded">router.tsx</code>, langkah selanjutnya adalah menambahkan tombol navigasi di Sidebar. 
+            Semua layout utama dan Sidebar diatur secara eksklusif oleh <strong>Aplikasi Shell</strong>. 
+          </p>
+          <p>
+            <strong>Aturan Penting:</strong> Gunakan komponen <code className="text-primary-700 bg-primary-50 px-1 rounded">&lt;NavLink&gt;</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">react-router</code>! Jangan pernah menggunakan tag <code className="text-primary-700 bg-primary-50 px-1 rounded">&lt;a href="..."&gt;</code> biasa, karena akan memicu <i>full page reload</i> dan menghilangkan state login pengguna di Zustand.
+          </p>
+          <CodeBlock 
+            language="tsx" 
+            codeString={`// Buka apps/shell/src/components/Layout.tsx
+import { NavLink } from 'react-router';
+
+// ... di bagian render sidebar:
+<NavLink 
+  to="/nama-url" 
+  className={({ isActive }) => 
+    isActive ? "bg-primary-900 text-white" : "text-neutral-400 hover:text-white"
+  }
+>
+  <IconComponent className="w-5 h-5" />
+  <span>Nama Menu Baru</span>
+</NavLink>`}
+          />
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-fuchsia-100 rounded-lg text-fuchsia-600">🎨</span>
+              Menggunakan Shared UI Kit
+            </CardTitle>
+            <CardDescription>Konsistensi Desain antar MFE</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              Jangan membuat tombol atau input sendiri dari awal! Gunakan komponen yang sudah distandarisasi dan disediakan oleh <i>Design System</i> kita untuk memastikan konsistensi tampilan antar MFE.
+            </p>
+            <CodeBlock 
+              language="tsx" 
+              codeString={`import { Button, Input, Card } from '@my-saas/ui-kit';
+
+export function FormContoh() {
+  return (
+    <Card className="p-4">
+      <Input placeholder="Ketik sesuatu..." />
+      <Button variant="outline">Simpan</Button>
+    </Card>
+  );
+}`}
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-sky-100 rounded-lg text-sky-600">💨</span>
+              Tailwind CSS v4
+            </CardTitle>
+            <CardDescription>Sistem Styling Bawaan</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              Semua MFE telah diatur untuk menggunakan Tailwind v4. Sistem warna (seperti <i>primary</i>, <i>neutral</i>, dll) sudah diatur secara terpusat di dalam library <code className="text-primary-700 bg-primary-50 px-1 rounded">ui-kit</code>.
+            </p>
+            <p>
+              Anda bisa langsung menggunakan *class-class* Tailwind di dalam file komponen Anda tanpa perlu repot mengkonfigurasi file konfigurasi Tailwind secara manual di tiap MFE.
+            </p>
+            <CodeBlock 
+              language="tsx" 
+              codeString={`// Gunakan warna brand langsung
+<div className="text-primary-600 bg-primary-50">
+  Teks Brand!
+</div>`}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
