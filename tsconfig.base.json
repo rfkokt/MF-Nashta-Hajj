@@ -26,6 +26,7 @@
       "@nashta/shared-api/*": ["libs/shared-api/src/*"],
       "@nashta/ui-kit": ["libs/ui-kit/src/index.ts"],
       "@nashta/ui-kit/*": ["libs/ui-kit/src/*"],
+      "@/*": ["libs/ui-kit/src/*"],
       "@nashta/tools": ["tools/src/index.ts"],
       "@nashta/shared-monitoring": ["libs/shared-monitoring/src/index.ts"]
     }

@@ -446,16 +446,19 @@ function TutorialSection() {
         <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-5">
           <h3 className="text-base font-semibold text-emerald-800 dark:text-emerald-300 mb-1">🚀 Cara A: Shadcn CLI (Recommended)</h3>
           <p className="text-sm text-emerald-700 dark:text-emerald-400">
-            Cukup jalankan 1 command — komponen langsung ter-install dan muncul di sidebar!
+            Cukup jalankan 1 command — komponen ter-install, import di-fix, auto-export ke barrel, dan muncul di sidebar!
           </p>
         </div>
 
         <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">1. Jalankan command</h3>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Dari root project, jalankan:
+        </p>
         <CodeBlock>{`# Install satu komponen
-npx shadcn@latest add accordion
+pnpm add:ui accordion
 
 # Install beberapa sekaligus
-npx shadcn@latest add accordion tabs dialog dropdown-menu
+pnpm add:ui accordion tabs dialog dropdown-menu
 
 # Lihat daftar komponen yang tersedia
 npx shadcn@latest search shadcn`}</CodeBlock>
@@ -479,9 +482,11 @@ npx shadcn@latest search shadcn`}</CodeBlock>
           </div>
         </div>
 
-        <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">3. Export dari barrel</h3>
-        <CodeBlock>{`// libs/ui-kit/src/index.ts
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/Accordion';`}</CodeBlock>
+        <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">3. Selesai! Langsung pakai di MFE</h3>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Script otomatis export ke barrel — langsung bisa import:
+        </p>
+        <CodeBlock>{`import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@nashta/ui-kit';`}</CodeBlock>
 
         <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">4. (Opsional) Tambah dokumentasi</h3>
         <CodeBlock>{`// Di apps/shell/src/pages/UIKit.tsx

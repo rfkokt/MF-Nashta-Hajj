@@ -15,7 +15,8 @@
     "typecheck": "nx run-many --target=typecheck --all",
     "test": "nx run-many --target=test --all",
     "prepare": "husky",
-    "budget:check": "tsx tools/bundle-budget.ts"
+    "budget:check": "tsx tools/bundle-budget.ts",
+    "add:ui": "./scripts/add-ui.sh"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
