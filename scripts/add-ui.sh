@@ -32,10 +32,13 @@ fi
 echo "🚀 Installing shadcn components: $@"
 echo ""
 
+# Allow pnpm to install deps at workspace root
+export npm_config_ignore_workspace_root_check=true
+
 # Track existing files before install
 BEFORE=$(ls "$COMPONENTS_DIR"/*.tsx 2>/dev/null | sort)
 
-# 1. Run shadcn CLI
+# 1. Run shadcn CLI (use --pm pnpm to avoid npm fallback)
 npx shadcn@latest add "$@" --yes --overwrite
 
 # Track new files after install
@@ -84,19 +87,35 @@ for file in $NEW_FILES; do
     continue
   fi
 
-  # Extract named exports from the file
-  EXPORTS=$(grep -E '^export (function|const|class) ' "$file" | sed -E 's/export (function|const|class) ([A-Za-z0-9_]+).*/\2/' | tr '\n' ', ' | sed 's/,$//')
-  TYPES=$(grep -E '^export (type|interface) ' "$file" | sed -E 's/export (type|interface) ([A-Za-z0-9_]+).*/\2/' | tr '\n' ', ' | sed 's/,$//')
+  # Extract exports — handle both patterns:
+  #   Pattern A: export function Foo / export const Bar
+  #   Pattern B: export { Foo, Bar, Baz }
+  EXPORTS=""
+
+  # Pattern A: individual exports
+  INDIVIDUAL=$(grep -E '^export (function|const|class) ' "$file" 2>/dev/null | sed -E 's/export (function|const|class) ([A-Za-z0-9_]+).*/\2/' | tr '\n' ', ' | sed 's/,$//' || true)
+
+  # Pattern B: grouped exports (may span multiple lines)
+  GROUPED=$(sed -n '/^export {/,/}/p' "$file" 2>/dev/null | tr '\n' ' ' | sed -E 's/export \{([^}]*)\}/\1/' | sed 's/,*$//' | xargs || true)
+
+  # Combine
+  if [ -n "$INDIVIDUAL" ] && [ -n "$GROUPED" ]; then
+    EXPORTS="$INDIVIDUAL, $GROUPED"
+  elif [ -n "$INDIVIDUAL" ]; then
+    EXPORTS="$INDIVIDUAL"
+  elif [ -n "$GROUPED" ]; then
+    EXPORTS="$GROUPED"
+  fi
+
+  # Clean up trailing/leading commas and spaces
+  EXPORTS=$(echo "$EXPORTS" | sed 's/^[, ]*//' | sed 's/[, ]*$//')
 
   if [ -n "$EXPORTS" ]; then
     echo "" >> "$BARREL"
     echo "export { $EXPORTS } from './components/$filename';" >> "$BARREL"
     echo "✅ Exported { $EXPORTS } from $filename"
-  fi
-
-  if [ -n "$TYPES" ]; then
-    echo "export type { $TYPES } from './components/$filename';" >> "$BARREL"
-    echo "✅ Exported type { $TYPES } from $filename"
+  else
+    echo "⚠️  No exports found in $filename — please add manually to index.ts"
   fi
 done
 

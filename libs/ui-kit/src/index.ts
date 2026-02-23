@@ -31,3 +31,7 @@ export type { UseFormValidationOptions, UseFormValidationReturn } from './hooks/
 
 // Utils
 export { cn } from './utils/cn';
+
+export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue } from './components/select';
+
+export { Label } from './components/label';
