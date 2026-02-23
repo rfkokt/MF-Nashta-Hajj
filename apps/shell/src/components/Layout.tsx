@@ -115,7 +115,12 @@ export function Layout() {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark';
+    }
+    return false;
+  });
 
   // Menu store — initialize with mock data immediately, then try BE
   const menuGroups = useMenuStore((s) => s.groups) ?? [];
@@ -128,9 +133,10 @@ export function Layout() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Dark mode toggle
+  // Dark mode toggle — persist to localStorage
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   const handleLogout = () => {
