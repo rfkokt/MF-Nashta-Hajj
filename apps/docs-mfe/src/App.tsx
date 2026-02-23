@@ -2,13 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-s
 
 export function App() {
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-8 max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
-          Platform Architecture
+          Buku Panduan Platform MFE
         </h1>
         <p className="text-lg text-neutral-500">
-          Nashta Hajj Micro-Frontend Documentation & Guidelines
+          Dokumentasi dan Standar Arsitektur Micro-Frontend Nashta Hajj
         </p>
       </div>
 
@@ -17,26 +17,26 @@ export function App() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="p-2 bg-primary-100 rounded-lg text-primary-600">🏗️</span>
-              Project Structure
+              Struktur Proyek
             </CardTitle>
-            <CardDescription>How the monorepo is organized</CardDescription>
+            <CardDescription>Bagaimana monorepo ini diorganisir</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold text-neutral-900 mb-2">Apps (Micro-Frontends)</h3>
+              <h3 className="font-semibold text-neutral-900 mb-2">Aplikasi (Micro-Frontends)</h3>
               <ul className="space-y-2 text-sm text-neutral-600 list-disc ml-4">
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shell</code> - Host app (Port 4000). Manages layout & routing.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">auth-mfe</code> - Auth domain (Port 4001). Pre-loaded remote.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">business-mfe</code> - Example remote (Port 4002).</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">docs-mfe</code> - This documentation app (Port 4003).</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shell</code> - Aplikasi Induk (Port 4000). Mengelola layout & routing utama.</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">auth-mfe</code> - Domain Autentikasi (Port 4001). Pre-loaded remote module.</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">business-mfe</code> - Modul contoh bisnis (Port 4002).</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">docs-mfe</code> - Modul dokumentasi ini (Port 4003).</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-neutral-900 mb-2">Libs (Shared)</h3>
+              <h3 className="font-semibold text-neutral-900 mb-2">Pustaka Utama (Shared Libs)</h3>
               <ul className="space-y-2 text-sm text-neutral-600 list-disc ml-4">
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">ui-kit</code> - Shared React/Tailwind v4 components.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-types</code> - Global Zustand stores and TypeScript models.</li>
-                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-api</code> - Protected Axios instances.</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">ui-kit</code> - Komponen standar UI (Tailwind v4 / Radix UI).</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-types</code> - Contract TypeScript dan state login (Zustand).</li>
+                <li><code className="text-primary-700 bg-primary-50 px-1 rounded">shared-api</code> - Setup Axios dan Endpoint (dilindungi interceptor).</li>
               </ul>
             </div>
           </CardContent>
@@ -46,15 +46,15 @@ export function App() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="p-2 bg-blue-100 rounded-lg text-blue-600">⚡</span>
-              Local Development
+              Development & Menjalankan Aplikasi
             </CardTitle>
-            <CardDescription>Commands to run the platform</CardDescription>
+            <CardDescription>Perintah CLI untuk pengembangan lokal</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div className="bg-neutral-900 rounded-lg p-4 font-mono text-neutral-300">
-              <span className="text-neutral-500"># Run everything</span><br/>
+              <span className="text-neutral-500"># Jalankan semua modul secara otomatis sekaligus</span><br/>
               <span className="text-primary-400">pnpm</span> nx run-many --target=serve --all --parallel<br/><br/>
-              <span className="text-neutral-500"># Run specific apps</span><br/>
+              <span className="text-neutral-500"># Atau jalankan aplikasi secara spesifik</span><br/>
               <span className="text-primary-400">pnpm</span> nx run-many --target=serve --projects=shell,auth-mfe --parallel
             </div>
           </CardContent>
@@ -65,26 +65,32 @@ export function App() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <span className="p-2 bg-emerald-100 rounded-lg text-emerald-600">🚀</span>
-            Creating a new MFE
+            Cara Membuat & Mendaftarkan MFE Baru
           </CardTitle>
-          <CardDescription>We have automated MFE generation to save time.</CardDescription>
+          <CardDescription>Otomatisasi MFE Setup tanpa copy-paste manual.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <h3 className="font-semibold text-neutral-900">1. Run the Generator CLI</h3>
-            <p className="text-sm text-neutral-600">This instantly scaffolds the Vite configs, Module Federation plugins, Tailwind v4, and React setup.</p>
+            <h3 className="font-semibold text-neutral-900">1. Jalankan Generator Nx CLI</h3>
+            <p className="text-sm text-neutral-600">Perintah ini akan men-generate folder React+Vite, Module Federation, Tailwind v4, linting, dan mendaftarkannya otomatis ke <code className="text-primary-700 bg-primary-50 px-1 rounded">shell/public/remotes.json</code>.</p>
             <div className="bg-neutral-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
-              <span className="text-primary-400">pnpm</span> nx g @my-saas/tools:mfe &lt;name&gt; --port=&lt;port&gt;
+              <span className="text-primary-400">pnpm</span> nx g @my-saas/tools:mfe &lt;nama-mfe&gt; --port=&lt;port&gt;
             </div>
           </div>
           
           <div className="space-y-2">
-            <h3 className="font-semibold text-neutral-900">2. Register in the Shell router.tsx</h3>
-            <p className="text-sm text-neutral-600">The module registry is automated, but you still must add the lazy loaded route to the AppRouter.</p>
-            <div className="bg-neutral-900 rounded-lg p-4 font-mono text-sm text-neutral-300 whitespace-pre">
-              <span className="text-emerald-400">const</span> RemoteName = lazy(() {"=>"} import(<span className="text-amber-300">'namemfe/App'</span>));<br/>
-              <br/>
-              &lt;Route path=<span className="text-amber-300">"name/*"</span> element={"{"}&lt;RemoteLoader&gt;&lt;RemoteName /&gt;&lt;/RemoteLoader&gt;{"}"} /&gt;
+            <h3 className="font-semibold text-neutral-900">2. Mendaftarkan Route di `router.tsx` Shell</h3>
+            <p className="text-sm text-neutral-600">Meski environment sudah teregister, Anda harus tetap memasang komponen Remote tersebut pada routing utama aplikasi Shell menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">React.lazy</code>.</p>
+            <div className="bg-neutral-900 rounded-lg p-4 font-mono text-sm text-neutral-300 whitespace-pre overflow-x-auto">
+              {`// Buka apps/shell/src/router.tsx
+import { lazy } from 'react';
+import { RemoteLoader } from './components/RemoteLoader';
+
+// MFE Import ("<namaMfeTanpaDash>/App")
+const RemoteBaru = lazy(() => import('namamfe/App'));
+
+// ... Daftarkan di dalam daftar sub-routing <Layout />
+<Route path="nama-url/*" element={<RemoteLoader><RemoteBaru /></RemoteLoader>} />`}
             </div>
           </div>
         </CardContent>
@@ -94,19 +100,70 @@ export function App() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="p-2 bg-purple-100 rounded-lg text-purple-600">🔄</span>
-              Dynamic Remotes
+              <span className="p-2 bg-amber-100 rounded-lg text-amber-600">🔑</span>
+              Manajemen Token Login (Zustand)
             </CardTitle>
-            <CardDescription>Config-driven module federation</CardDescription>
+            <CardDescription>Handling Token & Status Autentikasi</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-neutral-600">
             <p>
-              Instead of hardcoding remote URLs in <code className="text-primary-700 bg-primary-50 px-1 rounded">vite.config.ts</code>, 
-              the Shell loads a <code className="text-primary-700 bg-primary-50 px-1 rounded">remotes.json</code> file at runtime.
+              Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-types</code>.
+            </p>
+            <div className="bg-neutral-900 rounded-lg p-3 font-mono text-xs text-neutral-300 whitespace-pre overflow-x-auto">
+{`import { useAuthStore } from '@my-saas/shared-types';
+
+// Untuk membaca token (di dalam React Component)
+const { accessToken, isAuthenticated, logout } = useAuthStore();`}
+            </div>
+            <ul className="list-disc ml-4 space-y-1 mt-2">
+              <li><strong>Access Token:</strong> Hanya disimpan di dalam Memori / Variable (BUKAN di Local Storage) agar tercegah dari pencurian via serangan XSS.</li>
+              <li><strong>Refresh Token:</strong> Disimpan dengan aman oleh Server via <i>HttpOnly Cookie</i>. Otomatis dipakai saat request token baru.</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-teal-100 rounded-lg text-teal-600">🔗</span>
+              Axios Interceptors (API Call)
+            </CardTitle>
+            <CardDescription>Handling Error 401 & Auto-inject Token</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
+            </p>
+            <div className="bg-neutral-900 rounded-lg p-3 font-mono text-xs text-neutral-300 whitespace-pre overflow-x-auto">
+{`import { apiClient } from '@my-saas/shared-api';
+
+const fetchProfile = async () => {
+  // Authorization header: Bearer <token>
+  // otomatis disisipkan oleh apiClient!
+  const res = await apiClient.get('/api/users/me');
+};`}
+            </div>
+            <p>
+              <strong>Bagaimana jika Token kedaluwarsa?</strong> Jika request ditolak Backend (Error 401), Interceptor akan secara <i>background</i> memanggil Endpoint Refresh Token, menyimpannya di Zustand, lalu me-replay ulang Request API yang gagal tersebut tanpa sepengetahuan <i>User</i>.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-purple-100 rounded-lg text-purple-600">🔄</span>
+              Dynamic Remotes
+            </CardTitle>
+            <CardDescription>Module federation berbasis Konfigurasi</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              Alih-alih menuliskan URL (contoh localhost:4002) secara permanen di kode konfigurasi (<i>hardcoded</i>), 
+              Aplikasi Shell membaca daftar MFE dari file <code className="text-primary-700 bg-primary-50 px-1 rounded">remotes.json</code> pada saat <i>Runtime</i>.
             </p>
             <p>
-              This allows us to dynamically swap the URLs of remotes based on the environment (Staging vs Production) 
-              without needing to rebuild the Shell host application.
+              Cara kerja ini sangat menguntungkan di server Production karena tim infrastruktur bebas me-repoint URL (misal ke versi MFE lama saat ada error) tanpa pernah perlu melakukan Build / Deployment ulang terhadap Aplikasi Shell (Host).
             </p>
           </CardContent>
         </Card>
@@ -117,20 +174,19 @@ export function App() {
               <span className="p-2 bg-rose-100 rounded-lg text-rose-600">⚖️</span>
               Performance Budget
             </CardTitle>
-            <CardDescription>Bundle size thresholds</CardDescription>
+            <CardDescription>Ambang batas maksimum Ukuran Aplikasi</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-neutral-600">
             <p>
-              To maintain high performance, we enforce strict bundle size budgets using Brotli compression:
+              Setiap kali Anda membuat Pull Request, Pipeline Otomatis akan memblokir perubahan apabila ukuran JS/CSS dari MFE baru melebihi batas performa (dihitung menggunakan standar rasio algoritma Brotli).
             </p>
             <ul className="list-disc ml-4 space-y-1">
-              <li><strong>JS Max Size:</strong> 250 KB</li>
-              <li><strong>CSS Max Size:</strong> 50 KB</li>
+              <li><strong>Batas Maksimal JS:</strong> 250 KB</li>
+              <li><strong>Batas Maksimal CSS:</strong> 50 KB</li>
             </ul>
             <p>
-              Run <code className="text-primary-700 bg-primary-50 px-1 rounded">pnpm budget:check</code> or check the 
-              <code className="text-primary-700 bg-primary-50 px-1 rounded">stats.html</code> visualizer map generated during build. 
-              CI will fail if these budgets are exceeded.
+              Jalankan <code className="text-primary-700 bg-primary-50 px-1 rounded">pnpm budget:check</code> di lokal atau periksa ringkasan grafik bundel 
+              melalui <code className="text-primary-700 bg-primary-50 px-1 rounded">stats.html</code> yang selalu dihasilkan setiap men-<em>build</em> project (di `dist/apps/*/stats.html`).
             </p>
           </CardContent>
         </Card>
