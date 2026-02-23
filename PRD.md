@@ -121,7 +121,13 @@ sequenceDiagram
 
 - **Resilience:** Setiap remote import wajib dibungkus `React.Suspense` dan `Error Boundary` di level Shell. Jika satu modul crash, aplikasi utama tidak boleh mati.
 
-### 4.1 Routing Strategy ✨ BARU
+### 4.1 Dynamic Remote Discovery ✨ BARU
+
+Meninggalkan *hardcoded* remote URLs di konfigurasi `vite.config.ts` untuk menggunakan registry map dinamis di runtime via `remotes.json`:
+- `remotes.json` di `shell/public/` menentukan URL manifest untuk masing-masing MFE (contoh: `http://localhost:4003/mf-manifest.json`).
+- Shell dapat me-load konfigurasi terbaru di environment staging/production tanpa perlu me-rebuild Shell itu sendiri, memudahkan tim untuk mengubah versi/deploy remote secara independen.
+
+### 4.2 Routing Strategy ✨ BARU
 
 > Tanpa strategi routing yang jelas, deep linking dan navigasi antar-MFE akan bermasalah.
 
@@ -400,6 +406,17 @@ libs/
 | Fixtures | JSON files di `fixtures/`, import langsung |
 | Toggle | Aktif via `VITE_ENABLE_MSW=true` di `.env.development` |
 
+### 7.5 Nx Generators (Self-Service MFE) ✨ BARU
+
+Proses penambahan MFE baru telah diotomatisasi sepenuhnya melalui **custom Nx Generator**:
+- **Perintah:** `pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port>`
+- **Output:**
+  1. Melakukan _scaffold_ struktur React + Vite lengkap (Tailwind, tsconfig, eslint).
+  2. Melakukan instalasi `@module-federation/vite` dengan konfigurasi port yang dimasukkan.
+  3. Integrasi MFE langsung ke _registry_ rute Shell (`remotes.json` dan `vite.config.ts`).
+- Hal ini secara drastis memangkas waktu _onboarding_ tim baru dan menghilangkan typo akibat *copy-paste boilerplate*.
+- Platform UI Checklist & Standard Code Rules disentralisasi ke dalam **`docs-mfe`**, sebuah MFE dokumentasi mandiri yang juga di-_scaffold_ dari generator ini.
+
 ---
 
 ## 8. Security & Vulnerability Control
@@ -594,8 +611,9 @@ jobs:
   bundle-analysis:
     needs: [affected-build]
     steps:
-      - Check remoteEntry.js < 5KB (gzipped)
-      - Post bundle size diff ke PR comment
+      - run: pnpm budget:check
+      - Memastikan bundle size limit per MFE lewat `tools/bundle-budget.ts`.
+      - Build otomatis gagal jika JS > 250KB atau CSS > 50KB (Brotli compression threshold).
 
   e2e:
     needs: [affected-build]

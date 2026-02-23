@@ -70,12 +70,12 @@ pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port-kosong>
 ```
 *Contoh:*
 ```bash
-pnpm nx g @my-saas/tools:mfe report-mfe --port=4003
+pnpm nx g @my-saas/tools:mfe docs-mfe --port=4003
 ```
 
 ### 2. Apa yang Terjadi di Latar Belakang?
 Generator akan secara otomatis:
-- Membuat aplikasi React berbasis Vite di folder `apps/report-mfe`.
+- Membuat aplikasi React berbasis Vite di folder `apps/docs-mfe` (berdasarkan contoh di atas).
 - Menginjeksi konfigurasi `@module-federation/vite` ke dalam `vite.config.ts`.
 - Mengonfigurasi referensi impor untuk `Tailwind CSS v4`.
 - Membuat `package.json` ber-tipe `module` agar sinkron dengan Vite build.
@@ -89,14 +89,14 @@ Buka `apps/shell/src/router.tsx`, lalu tambahkan referensi komponen Anda:
 
 ```tsx
 // 1. Tambahkan Impor Lazy untuk MFE baru dengan path '/App'
-const RemoteReport = lazy(() => import('reportmfe/App'));
+const RemoteDocs = lazy(() => import('docsmfe/App'));
 
 // 2. Tambahkan Route baru di dalam <Layout />
 <Route 
-  path="report/*" 
+  path="docs/*" 
   element={
     <RemoteLoader>
-      <RemoteReport />
+      <RemoteDocs />
     </RemoteLoader>
   } 
 />
@@ -105,7 +105,7 @@ const RemoteReport = lazy(() => import('reportmfe/App'));
 ### 4. Jalankan MFE Baru
 Setelah selesai, jalankan terminal MFE secara Standalone untuk mencoba:
 ```bash
-pnpm nx serve report-mfe
+pnpm nx serve docs-mfe
 ```
 Lalu pastikan komponen sudah dirender dengan baik tanpa *error*.
 
@@ -127,3 +127,25 @@ export function MyFeature() {
 ```
 
 **Catatan Tailwind:** Karena kita menggunakan Tailwind CSS v4, seluruh konfigurasi kelas utilitas UI sudah ditarik secara global *(hoisted)* melalui file CSS masing-masing MFE yang mengimpor `theme.css` bawaan `ui-kit`. Anda hanya tinggal menambahkan kelas nama utility standar di komponen MFE Anda, ia akan otomatis menyesuaikan desain sistem monorepo (seperti warna primer, radius, *shadow* dll).
+
+---
+
+## 📊 Performance Budget & Bundle Analysis
+
+Agar ukuran bundel setiap Micro-Frontend tetap ringan dan performanya tinggi, kami menerapkan mekanisme **Performance Budget** di *build pipeline*.
+
+### 1. Bundle Visualizer
+Saat menjalankan `pnpm build`, *plugin* `rollup-plugin-visualizer` secara otomatis membuat file laporan visual bernama `stats.html` di dalam folder `dist/apps/<nama-mfe>/`. Anda dapat membuka file HTML tersebut di *browser* untuk menganalisis ukuran setiap *library* atau berkas yang di-_bundle_.
+
+### 2. Automated Budget Checks
+Kami telah menyediakan skrip automasi `tools/bundle-budget.ts`. Skrip ini akan melakukan kalkulasi ukuran terkompresi (brotli) dari semua *file* Javascript dan CSS yang dihasilkan di dalam folder `dist`.
+
+Skrip memvalidasi bahwa setiap bundel MFE berada di bawah ambang batas (*threshold*) yang ditentukan, yakni:
+- **JS Maximum:** 250 KB
+- **CSS Maximum:** 50 KB
+
+Untuk memverifikasinya secara manual:
+```bash
+pnpm budget:check
+```
+*Script* ini juga diintegrasikan secara otomatis ke dalam **CI/CD Pipeline**. Jika bundel aplikasi MFE Anda melebihi batas performa, proses *build deployment* akan digagalkan hingga dilakukan optimasi kode/pemangkasan dependensi berlebihan.

@@ -89,6 +89,52 @@ export function App() {
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-purple-100 rounded-lg text-purple-600">🔄</span>
+              Dynamic Remotes
+            </CardTitle>
+            <CardDescription>Config-driven module federation</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              Instead of hardcoding remote URLs in <code className="text-primary-700 bg-primary-50 px-1 rounded">vite.config.ts</code>, 
+              the Shell loads a <code className="text-primary-700 bg-primary-50 px-1 rounded">remotes.json</code> file at runtime.
+            </p>
+            <p>
+              This allows us to dynamically swap the URLs of remotes based on the environment (Staging vs Production) 
+              without needing to rebuild the Shell host application.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="p-2 bg-rose-100 rounded-lg text-rose-600">⚖️</span>
+              Performance Budget
+            </CardTitle>
+            <CardDescription>Bundle size thresholds</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-neutral-600">
+            <p>
+              To maintain high performance, we enforce strict bundle size budgets using Brotli compression:
+            </p>
+            <ul className="list-disc ml-4 space-y-1">
+              <li><strong>JS Max Size:</strong> 250 KB</li>
+              <li><strong>CSS Max Size:</strong> 50 KB</li>
+            </ul>
+            <p>
+              Run <code className="text-primary-700 bg-primary-50 px-1 rounded">pnpm budget:check</code> or check the 
+              <code className="text-primary-700 bg-primary-50 px-1 rounded">stats.html</code> visualizer map generated during build. 
+              CI will fail if these budgets are exceeded.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
