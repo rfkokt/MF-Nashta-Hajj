@@ -100,6 +100,12 @@ body {
 .dark .border-neutral-100 { border-color: #1a1a1a !important; }
 .dark .border-neutral-300 { border-color: #333333 !important; }
 
+/* Active nav item — must NOT use bg-white/text-neutral-900 which get overridden */
+.dark .nav-item-active {
+  background-color: #e5e5e5 !important;
+  color: #171717 !important;
+}
+
 /* Focus visible ring for accessibility */
 :focus-visible {
   outline: 2px solid var(--color-primary-500);

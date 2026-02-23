@@ -48,7 +48,7 @@ function CollapsibleSection({
 const topNavClass = ({ isActive }: { isActive: boolean }) =>
   `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
     isActive
-      ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
+      ? 'nav-item-active bg-neutral-900 text-white'
       : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
   }`;
 
