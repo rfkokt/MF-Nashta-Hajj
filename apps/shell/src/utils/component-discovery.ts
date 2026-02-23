@@ -32,8 +32,10 @@ export const discoveredComponents: DiscoveredComponent[] = Object.keys(component
   .map((path) => {
     // "/libs/ui-kit/src/components/Button.tsx" → "Button"
     const filename = path.split('/').pop()?.replace('.tsx', '') ?? '';
+    // Ensure PascalCase: "select" → "Select", "ErrorFallback" stays same
+    const name = filename.charAt(0).toUpperCase() + filename.slice(1);
     return {
-      name: filename,
+      name,
       slug: filename.toLowerCase(),
     };
   })
