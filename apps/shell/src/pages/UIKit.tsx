@@ -7,9 +7,12 @@ import {
   Skeleton,
   Badge,
   Modal,
+  FormField,
+  useFormValidation,
 } from '@nashta/ui-kit';
 import { useNotificationStore } from '@nashta/shared-types';
 import { discoveredComponents } from '../utils/component-discovery';
+import * as yup from 'yup';
 
 /* ═══════════════════════════════════════════════
    UI Kit Showcase — route-based, no internal sidebar.
@@ -439,9 +442,9 @@ function TutorialSection() {
     <Card>
       <CardContent className="pt-6 space-y-6">
         <SectionHeader title="Tutorial: Membuat Komponen Baru" description="Langkah-langkah menambahkan komponen ke UI Kit." />
-      <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
-        Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code>
+        <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
+          Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code>
       </p>
       <CodeBlock>{`import type { ReactNode } from 'react';
 
@@ -581,6 +584,140 @@ function OverviewSection() {
   );
 }
 
+/* ─── Form Validation Section ─── */
+
+const demoSchema = yup.object({
+  nama: yup.string().required('Nama wajib diisi').min(3, 'Nama minimal 3 karakter'),
+  email: yup.string().required('Email wajib diisi').email('Format email tidak valid'),
+  umur: yup.string().required('Umur wajib diisi').test('is-number', 'Umur harus angka', (v) => !v || !isNaN(Number(v))).test('min-age', 'Minimal umur 17 tahun', (v) => !v || Number(v) >= 17),
+  telepon: yup.string().required('Nomor telepon wajib diisi').matches(/^[0-9]+$/, 'Hanya angka').min(10, 'Minimal 10 digit'),
+});
+
+function FormFieldSection() {
+  const { errors, touched, handleSubmit, isSubmitting, reset, getFieldProps } = useFormValidation({
+    schema: demoSchema,
+    initialValues: { nama: '', email: '', umur: '', telepon: '' },
+    onSubmit: async (data) => {
+      await new Promise(r => setTimeout(r, 1000));
+      useNotificationStore.getState().success(`Form terkirim! Nama: ${data.nama}, Email: ${data.email}`);
+      reset();
+    },
+  });
+
+  return (
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Form Validation" description="Validasi form menggunakan useFormValidation hook + Yup schema." />
+
+        <PreviewCard title="Live Demo — Coba isi dan submit">
+          <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+            <FormField name="nama" label="Nama Lengkap" required error={touched.nama ? errors.nama : undefined}>
+              <Input {...getFieldProps('nama')} placeholder="Masukkan nama..." error={touched.nama ? errors.nama : undefined} />
+            </FormField>
+
+            <FormField name="email" label="Email" required error={touched.email ? errors.email : undefined}>
+              <Input {...getFieldProps('email')} type="email" placeholder="email@example.com" error={touched.email ? errors.email : undefined} />
+            </FormField>
+
+            <FormField name="umur" label="Umur" required error={touched.umur ? errors.umur : undefined} hint="Minimal 17 tahun">
+              <Input {...getFieldProps('umur')} placeholder="25" error={touched.umur ? errors.umur : undefined} />
+            </FormField>
+
+            <FormField name="telepon" label="No. Telepon" required error={touched.telepon ? errors.telepon : undefined}>
+              <Input {...getFieldProps('telepon')} placeholder="08xxxxxxxxxx" error={touched.telepon ? errors.telepon : undefined} />
+            </FormField>
+
+            <div className="flex gap-3 pt-2">
+              <Button type="submit" isLoading={isSubmitting}>Kirim</Button>
+              <Button type="button" variant="outline" onClick={reset}>Reset</Button>
+            </div>
+          </form>
+        </PreviewCard>
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">1. Definisikan Schema</h3>
+        <CodeBlock>{`import * as yup from 'yup';
+
+const schema = yup.object({
+  nama: yup.string()
+    .required('Nama wajib diisi')
+    .min(3, 'Nama minimal 3 karakter'),
+  email: yup.string()
+    .required('Email wajib diisi')
+    .email('Format email tidak valid'),
+  umur: yup.string()
+    .required('Umur wajib diisi')
+    .test('min-age', 'Minimal 17', (v) => Number(v) >= 17),
+  telepon: yup.string()
+    .required('Telepon wajib diisi')
+    .matches(/^[0-9]+$/, 'Hanya angka')
+    .min(10, 'Minimal 10 digit'),
+});`}</CodeBlock>
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">2. Gunakan Hook</h3>
+        <CodeBlock>{`import { useFormValidation, FormField, Input, Button } from '@nashta/ui-kit';
+
+function MyForm() {
+  const { handleSubmit, getFieldProps, isSubmitting, reset, touched, errors } = useFormValidation({
+    schema,
+    initialValues: { nama: '', email: '', umur: '', telepon: '' },
+    onSubmit: async (data) => {
+      await api.post('/jamaah', data);
+    },
+  });
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <FormField name="nama" label="Nama" required error={touched.nama ? errors.nama : undefined}>
+        <Input {...getFieldProps('nama')} placeholder="Nama..." />
+      </FormField>
+
+      <FormField name="email" label="Email" required error={touched.email ? errors.email : undefined}>
+        <Input {...getFieldProps('email')} type="email" />
+      </FormField>
+
+      <Button type="submit" isLoading={isSubmitting}>Simpan</Button>
+      <Button type="button" variant="outline" onClick={reset}>Reset</Button>
+    </form>
+  );
+}`}</CodeBlock>
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">useFormValidation Props</h3>
+        <PropsTable rows={[
+          ['schema', 'yup.ObjectSchema<T>', '—'],
+          ['initialValues', 'T', '—'],
+          ['onSubmit', '(values: T) => void | Promise', '—'],
+          ['validateOnChange', 'boolean', 'false'],
+        ]} />
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-4">Return Values</h3>
+        <PropsTable rows={[
+          ['values', 'T', 'Current form values'],
+          ['errors', 'Partial<Record<keyof T, string>>', 'Validation errors'],
+          ['touched', 'Partial<Record<keyof T, boolean>>', 'Touched fields'],
+          ['isSubmitting', 'boolean', 'Submit in progress'],
+          ['isValid', 'boolean', 'No errors'],
+          ['handleChange', '(field) => onChange handler', '—'],
+          ['handleBlur', '(field) => onBlur handler', '—'],
+          ['handleSubmit', '(e?) => Promise<void>', '—'],
+          ['getFieldProps', '(field) => { value, onChange, onBlur, error }', '—'],
+          ['setValue', '(field, value) => void', '—'],
+          ['reset', '() => void', '—'],
+        ]} />
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-4">FormField Props</h3>
+        <PropsTable rows={[
+          ['name', 'string', '—'],
+          ['label', 'string', '—'],
+          ['error', 'string', '—'],
+          ['hint', 'string', '—'],
+          ['required', 'boolean', 'false'],
+          ['children', 'ReactNode', '—'],
+        ]} />
+      </CardContent>
+    </Card>
+  );
+}
+
 /* ─── Section Map (documented components) ─── */
 const SECTION_MAP: Record<string, React.FC> = {
   button: ButtonSection,
@@ -591,6 +728,7 @@ const SECTION_MAP: Record<string, React.FC> = {
   modal: ModalSection,
   toast: ToastSection,
   errorfallback: ErrorFallbackSection,
+  formfield: FormFieldSection,
   tutorial: TutorialSection,
 };
 
