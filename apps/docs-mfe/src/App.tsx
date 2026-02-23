@@ -15,7 +15,7 @@ export function App() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-primary-100 bg-primary-50/50">
+        <Card >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="p-2 bg-primary-100 rounded-lg text-primary-600">🏗️</span>
@@ -130,8 +130,8 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
 const { accessToken, isAuthenticated, logout } = useAuthStore();`}
             />
             <ul className="list-disc ml-4 space-y-1 mt-2">
-              <li><strong>Access Token:</strong> Hanya disimpan di dalam Memori / Variable (BUKAN di Local Storage) agar tercegah dari pencurian via serangan XSS.</li>
-              <li><strong>Refresh Token:</strong> Disimpan dengan aman oleh Server via <i>HttpOnly Cookie</i>. Otomatis dipakai saat request token baru.</li>
+              <li><strong>State Persistence:</strong> Token login saat ini dipertahankan menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">sessionStorage</code> (via Zustand Persist) agar tidak hilang saat pengguna me-<i>refresh</i> halaman.</li>
+              <li><strong>Best Practice Produksi:</strong> Pada arsitektur aslinya, sangat disarankan menggunakan skema <i>Refresh Token</i> (disimpan di <i>HttpOnly Cookie</i>) bersamaan dengan endpoint <code className="text-primary-700 bg-primary-50 px-1 rounded">/refresh</code> daripada <code className="text-primary-700 bg-primary-50 px-1 rounded">sessionStorage</code> murni demi pencegahan pencurian token.</li>
             </ul>
           </CardContent>
         </Card>
