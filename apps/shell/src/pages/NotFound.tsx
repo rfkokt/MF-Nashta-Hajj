@@ -1,4 +1,4 @@
-import { Button } from '@my-saas/ui-kit';
+import { Button } from '@nashta/ui-kit';
 import { useNavigate } from 'react-router';
 import { ArrowLeft } from 'lucide-react';
 

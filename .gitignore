@@ -28,3 +28,4 @@ npm-debug.log*
 pnpm-debug.log*
 
 vite.config.*.timestamp*
+vitest.config.*.timestamp*

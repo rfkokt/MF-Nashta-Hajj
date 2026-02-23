@@ -1,5 +1,5 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react';
-import { ErrorFallback } from '@my-saas/ui-kit';
+import { ErrorFallback } from '@nashta/ui-kit';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

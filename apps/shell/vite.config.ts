@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { federation } from '@module-federation/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import path from 'path';
 
 export default defineConfig({
   server: {
@@ -11,6 +12,14 @@ export default defineConfig({
   },
   preview: {
     port: 4100,
+  },
+  resolve: {
+    alias: {
+      '@nashta/shared-types': path.resolve(__dirname, '../../libs/shared-types/src/index.ts'),
+      '@nashta/shared-api': path.resolve(__dirname, '../../libs/shared-api/src/index.ts'),
+      '@nashta/ui-kit': path.resolve(__dirname, '../../libs/ui-kit/src/index.ts'),
+      '@nashta/shared-monitoring': path.resolve(__dirname, '../../libs/shared-monitoring/src/index.ts'),
+    },
   },
   plugins: [
     react(),
