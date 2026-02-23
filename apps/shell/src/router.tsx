@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router';
-import { useAuthStore } from '@my-saas/shared-types';
+import { useAuthStore } from '@nashta/shared-types';
 import { Layout } from './components/Layout';
 import { RemoteLoader } from './components/RemoteLoader';
 import { Dashboard } from './pages/Dashboard';

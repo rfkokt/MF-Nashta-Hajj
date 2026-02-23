@@ -1,5 +1,5 @@
 {
-  "name": "@my-saas/root",
+  "name": "@nashta/root",
   "private": true,
   "packageManager": "pnpm@10.4.1",
   "engines": {

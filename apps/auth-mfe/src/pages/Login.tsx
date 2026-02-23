@@ -1,7 +1,7 @@
 import { type FormEvent, type ChangeEvent, useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
-import { MFE_EVENTS, dispatchMfeEvent } from '@my-saas/shared-types';
-import type { AuthEventPayload } from '@my-saas/shared-types';
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
+import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import type { AuthEventPayload } from '@nashta/shared-types';
 import { LogIn, Eye, EyeOff, CheckCircle } from 'lucide-react';
 
 export default function Login() {
@@ -33,7 +33,7 @@ export default function Login() {
         dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_IN, payload);
 
         // Also update the shared store directly for immediate effect
-        const { useAuthStore } = await import('@my-saas/shared-types');
+        const { useAuthStore } = await import('@nashta/shared-types');
         useAuthStore.getState().setAuth(payload.accessToken, {
           id: payload.userId,
           email,

@@ -11,9 +11,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@my-saas/shared-api": "workspace:*",
-    "@my-saas/shared-types": "workspace:*",
-    "@my-saas/ui-kit": "workspace:*",
+    "@nashta/shared-api": "workspace:*",
+    "@nashta/shared-types": "workspace:*",
+    "@nashta/ui-kit": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.0.0",

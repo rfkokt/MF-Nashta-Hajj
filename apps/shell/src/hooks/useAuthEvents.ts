@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { MFE_EVENTS, onMfeEvent, useAuthStore } from '@my-saas/shared-types';
-import type { AuthEventPayload } from '@my-saas/shared-types';
+import { MFE_EVENTS, onMfeEvent, useAuthStore } from '@nashta/shared-types';
+import type { AuthEventPayload } from '@nashta/shared-types';
 
 /**
  * Hook that listens for MFE auth events and updates the global auth store.

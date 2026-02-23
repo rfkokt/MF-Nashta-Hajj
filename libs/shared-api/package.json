@@ -1,5 +1,5 @@
 {
-  "name": "@my-saas/shared-api",
+  "name": "@nashta/shared-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,7 +10,7 @@
     "axios": "^1.8.0"
   },
   "peerDependencies": {
-    "@my-saas/shared-types": "workspace:*",
+    "@nashta/shared-types": "workspace:*",
     "react": "^19.0.0"
   },
   "devDependencies": {

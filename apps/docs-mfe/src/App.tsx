@@ -1,5 +1,5 @@
 import './index.css';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
 import { CodeBlock } from './components/CodeBlock';
 
 export function App() {
@@ -84,9 +84,9 @@ pnpm nx run-many --target=serve --projects=shell,auth-mfe --parallel`}
             <p className="text-sm text-neutral-600">Perintah ini akan men-generate folder React+Vite, Module Federation, Tailwind v4, linting, dan mendaftarkannya otomatis ke <code className="text-primary-700 bg-primary-50 px-1 rounded">shell/public/remotes.json</code>.</p>
             <CodeBlock 
               language="bash" 
-              codeString="pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port>"
+              codeString="pnpm nx g @nashta/tools:mfe <nama-mfe> --port=<port>"
             >
-              <span className="text-primary-400">pnpm</span> nx g @my-saas/tools:mfe &lt;nama-mfe&gt; --port=&lt;port&gt;
+              <span className="text-primary-400">pnpm</span> nx g @nashta/tools:mfe &lt;nama-mfe&gt; --port=&lt;port&gt;
             </CodeBlock>
           </div>
           
@@ -120,11 +120,11 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-neutral-600">
             <p>
-              Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-types</code>.
+              Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 bg-primary-50 px-1 rounded">@nashta/shared-types</code>.
             </p>
             <CodeBlock 
               language="typescript" 
-              codeString={`import { useAuthStore } from '@my-saas/shared-types';
+              codeString={`import { useAuthStore } from '@nashta/shared-types';
 
 // Untuk membaca token (di dalam React Component)
 const { accessToken, isAuthenticated, logout } = useAuthStore();`}
@@ -146,11 +146,11 @@ const { accessToken, isAuthenticated, logout } = useAuthStore();`}
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-neutral-600">
             <p>
-              Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
+              Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">@nashta/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
             </p>
             <CodeBlock 
               language="typescript" 
-              codeString={`import { apiClient } from '@my-saas/shared-api';
+              codeString={`import { apiClient } from '@nashta/shared-api';
 
 const fetchProfile = async () => {
   // Authorization header: Bearer <token>
@@ -257,7 +257,7 @@ import { NavLink } from 'react-router';
             </p>
             <CodeBlock 
               language="tsx" 
-              codeString={`import { Button, Input, Card } from '@my-saas/ui-kit';
+              codeString={`import { Button, Input, Card } from '@nashta/ui-kit';
 
 export function FormContoh() {
   return (
@@ -296,6 +296,36 @@ export function FormContoh() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <span className="p-2 bg-pink-100 rounded-lg text-pink-600">🖌️</span>
+            Mengubah Tema dan Warna (Theme Customization)
+          </CardTitle>
+          <CardDescription>Cara mengganti palet warna utama di seluruh MFE</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-neutral-600">
+          <p>
+            Platform ini menggunakan Tailwind CSS v4, di mana konfigurasi tema tidak lagi menggunakan file <code className="text-primary-700 bg-primary-50 px-1 rounded">tailwind.config.js</code> klasik, melainkan menggunakan variabel CSS <code className="text-primary-700 bg-primary-50 px-1 rounded">@theme</code> langsung di file utama CSS.
+          </p>
+          <p>
+            Untuk mengubah warna utama (Primary), teks, atau pengaturan Global lainnya, Anda hanya perlu mengubah satu file terpusat yang terletak di dalam <code className="text-primary-700 bg-primary-50 px-1 rounded">libs/ui-kit/src/index.css</code>. Perubahan di file ini otomatis akan teraplikasikan ke semua aplikasi Shell dan MFE.
+          </p>
+          <CodeBlock 
+            language="css" 
+            codeString={`/* Buka libs/ui-kit/src/index.css */
+@theme {
+  /* Ganti kode HEX di bawah ini sesuai warna perusahaan / desain baru */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-900: #14532d;
+}`}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }

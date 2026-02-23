@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, NavLink } from 'react-router';
-import { useAuthStore } from '@my-saas/shared-types';
-import { MFE_EVENTS, dispatchMfeEvent } from '@my-saas/shared-types';
-import { Button } from '@my-saas/ui-kit';
+import { useAuthStore } from '@nashta/shared-types';
+import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import { Button } from '@nashta/ui-kit';
 import { LogOut, LayoutDashboard, Menu, X, Book } from 'lucide-react';
 import { useState } from 'react';
 

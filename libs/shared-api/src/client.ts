@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { useAuthStore } from '@my-saas/shared-types';
-import type { AppError } from '@my-saas/shared-types';
+import { useAuthStore } from '@nashta/shared-types';
+import type { AppError } from '@nashta/shared-types';
 
 /**
  * Shared Axios client instance.

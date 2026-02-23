@@ -66,11 +66,11 @@ Kami telah menyediakan **Nx Generator Kustom** agar proses pembuatan MFE baru be
 Gunakan perintah berikut dari *root* folder:
 
 ```bash
-pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port-kosong>
+pnpm nx g @nashta/tools:mfe <nama-mfe> --port=<port-kosong>
 ```
 *Contoh:*
 ```bash
-pnpm nx g @my-saas/tools:mfe docs-mfe --port=4003
+pnpm nx g @nashta/tools:mfe docs-mfe --port=4003
 ```
 
 ### 2. Apa yang Terjadi di Latar Belakang?
@@ -79,7 +79,7 @@ Generator akan secara otomatis:
 - Menginjeksi konfigurasi `@module-federation/vite` ke dalam `vite.config.ts`.
 - Mengonfigurasi referensi impor untuk `Tailwind CSS v4`.
 - Membuat `package.json` ber-tipe `module` agar sinkron dengan Vite build.
-- Menambahkan dependensi internal MFE beserta dependensi *React Router* dan dependensi `@my-saas/ui-kit` juga `@my-saas/shared-types`.
+- Menambahkan dependensi internal MFE beserta dependensi *React Router* dan dependensi `@nashta/ui-kit` juga `@nashta/shared-types`.
 - **Mendaftarkan Rute ke Shell:** Menambahkan konfigurasi remote MFE Anda ke `apps/shell/vite.config.ts` dan meregistrasikan deklarasi TypeScript ke file definisi `vite-env.d.ts` Shell *secara otomatis*.
 
 ### 3. Tambahkan Route di Shell (Manual Step)
@@ -119,7 +119,7 @@ Apabila Anda butuh membuat komponen baru yang bisa dipakai MFE lain (Misal: `Dat
 2. Ekspos (*export*) komponen tersebut melalui file utama UI Kit: `libs/ui-kit/src/index.ts`.
 3. Gunakan langsung di MFE manapun:
 ```tsx
-import { Datepicker } from '@my-saas/ui-kit';
+import { Datepicker } from '@nashta/ui-kit';
 
 export function MyFeature() {
   return <Datepicker />;

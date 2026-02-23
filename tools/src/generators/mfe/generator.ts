@@ -80,7 +80,7 @@ export default defineConfig({
   tree.delete(joinPathFragments(projectRoot, 'src/app'));
 
   // 4. Overwrite App.tsx
-  const appTsxContent = `import { Card, CardContent } from '@my-saas/ui-kit';
+  const appTsxContent = `import { Card, CardContent } from '@nashta/ui-kit';
 
 export function App() {
   return (
@@ -188,8 +188,8 @@ createRoot(rootElement).render(
       preview: `vite preview --port ${port + 100}`
     },
     dependencies: {
-      '@my-saas/ui-kit': 'workspace:*',
-      '@my-saas/shared-types': 'workspace:*',
+      '@nashta/ui-kit': 'workspace:*',
+      '@nashta/shared-types': 'workspace:*',
       'react': '^19.0.0',
       'react-dom': '^19.0.0',
       'react-router': '^7.0.0'

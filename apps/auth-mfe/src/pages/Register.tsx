@@ -1,5 +1,5 @@
 import { type FormEvent, type ChangeEvent, useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
 
 export default function Register() {

@@ -1,5 +1,5 @@
-import { useAuthStore } from '@my-saas/shared-types';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
+import { useAuthStore } from '@nashta/shared-types';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
 import { Activity, Users, ShoppingBag, TrendingUp } from 'lucide-react';
 
 const stats = [

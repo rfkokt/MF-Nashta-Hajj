@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router';
-import { queryClient } from '@my-saas/shared-api';
+import { queryClient } from '@nashta/shared-api';
 import { AppRouter } from './router';
 import { useAuthEvents } from './hooks/useAuthEvents';
 

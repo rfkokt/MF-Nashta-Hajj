@@ -409,7 +409,7 @@ libs/
 ### 7.5 Nx Generators (Self-Service MFE) ✨ BARU
 
 Proses penambahan MFE baru telah diotomatisasi sepenuhnya melalui **custom Nx Generator**:
-- **Perintah:** `pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port>`
+- **Perintah:** `pnpm nx g @nashta/tools:mfe <nama-mfe> --port=<port>`
 - **Output:**
   1. Melakukan _scaffold_ struktur React + Vite lengkap (Tailwind, tsconfig, eslint).
   2. Melakukan instalasi `@module-federation/vite` dengan konfigurasi port yang dimasukkan.
@@ -425,7 +425,7 @@ Proses penambahan MFE baru telah diotomatisasi sepenuhnya melalui **custom Nx Ge
 
 - **Zero-Vulnerability Policy:** Jalankan `pnpm audit` di setiap pipeline. Build gagal jika ditemukan celah `High` atau `Critical`.
 - **Content Security Policy (CSP) Level 3:** Batasi `script-src` hanya ke domain Shell dan domain Remote yang terdaftar di allowlist.
-- **Dependency Shielding:** Gunakan `@my-saas/` scope untuk internal packages guna mencegah Dependency Confusion Attack.
+- **Dependency Shielding:** Gunakan `@nashta/` scope untuk internal packages guna mencegah Dependency Confusion Attack.
 - **Subresource Integrity (SRI):** Aktifkan SRI pada build Vite agar browser memverifikasi hash file JS dari Remote.
 
 ### 8.2 CSP Nonce Strategy ✨ BARU
@@ -806,7 +806,7 @@ Setiap app meng-extend config ini:
 
 ```typescript
 // apps/shell/tailwind.config.ts
-import baseConfig from '@my-saas/ui-kit/tailwind.config';
+import baseConfig from '@nashta/ui-kit/tailwind.config';
 
 export default {
   ...baseConfig,
