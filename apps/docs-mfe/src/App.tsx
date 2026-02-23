@@ -1,9 +1,10 @@
+import './index.css';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
 import { CodeBlock } from './components/CodeBlock';
 
 export function App() {
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="p-8 mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
           Buku Panduan Platform MFE
