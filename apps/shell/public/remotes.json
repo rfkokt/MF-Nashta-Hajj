@@ -8,6 +8,22 @@
         "LoginPage": "./LoginPage",
         "RegisterPage": "./RegisterPage"
       }
+    },
+    "business-mfe": {
+      "name": "businessmfe",
+      "entry": "http://localhost:4002/mf-manifest.json",
+      "activeWhenPath": "/business-mfe",
+      "exposes": {
+        "./App": "./App"
+      }
+    },
+    "docs-mfe": {
+      "name": "docsmfe",
+      "entry": "http://localhost:4003/mf-manifest.json",
+      "activeWhenPath": "/docs-mfe",
+      "exposes": {
+        "./App": "./App"
+      }
     }
   }
 }

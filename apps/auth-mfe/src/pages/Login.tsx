@@ -81,7 +81,7 @@ export default function Login() {
         {/* Logo / Brand */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-            Antygraviti
+            Antigravity
           </h1>
           <p className="text-neutral-500 mt-2">Masuk ke akun Anda</p>
         </div>

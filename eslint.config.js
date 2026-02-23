@@ -46,6 +46,6 @@ export default [
     },
   },
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/.nx/**'],
+    ignores: ['**/dist/**', '**/node_modules/**', '**/.nx/**', '**/vite.config.*.timestamp*'],
   },
 ];

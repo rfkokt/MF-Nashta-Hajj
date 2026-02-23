@@ -10,11 +10,12 @@
     "dev": "nx run-many --target=serve --all --parallel=4",
     "dev:shell": "nx serve shell",
     "dev:auth": "nx serve auth-mfe",
-    "build": "nx run-many --target=build --all",
+    "build": "nx run-many --target=build --all --exclude=tools",
     "lint": "nx run-many --target=lint --all",
     "typecheck": "nx run-many --target=typecheck --all",
     "test": "nx run-many --target=test --all",
-    "prepare": "husky"
+    "prepare": "husky",
+    "budget:check": "tsx tools/bundle-budget.ts"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -31,25 +32,44 @@
     "@nx/jest": "22.5.2",
     "@nx/js": "22.5.2",
     "@nx/plugin": "^22.5.2",
+    "@nx/react": "^22.5.2",
     "@nx/vite": "^22.5.2",
+    "@nx/web": "22.5.2",
     "@swc-node/register": "~1.11.1",
     "@swc/cli": "~0.8.0",
     "@swc/core": "~1.15.5",
     "@swc/helpers": "~0.5.18",
     "@types/node": "20.19.9",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitest/ui": "^4.0.0",
+    "brotli-size": "^4.0.0",
     "eslint": "^10.0.1",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.10.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "husky": "^9.1.7",
+    "jiti": "2.4.2",
+    "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
     "lint-staged": "^16.2.7",
     "nx": "^22.5.2",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3"
+    "rollup-plugin-visualizer": "^7.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.0"
   },
   "dependencies": {
-    "@nx/devkit": "22.5.2"
+    "@nx/devkit": "22.5.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "6.30.3"
   }
 }

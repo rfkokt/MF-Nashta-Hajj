@@ -11,6 +11,8 @@ import { NotFound } from './pages/NotFound';
 const RemoteLogin = lazy(() => import('authMfe/LoginPage'));
 const RemoteRegister = lazy(() => import('authMfe/RegisterPage'));
 
+const RemoteDocs = lazy(() => import('docsmfe/App'));
+
 /**
  * Auth guard: redirects to /auth/login if not authenticated.
  */
@@ -81,6 +83,16 @@ export function AppRouter() {
         }
       >
         <Route index element={<Dashboard />} />
+        
+        {/* Remote Documentation MFE */}
+        <Route 
+          path="docs/*" 
+          element={
+            <RemoteLoader>
+              <RemoteDocs />
+            </RemoteLoader>
+          } 
+        />
       </Route>
 
       {/* Catch-all */}

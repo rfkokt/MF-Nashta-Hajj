@@ -6,30 +6,22 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   server: {
-    port: 4000,
-    origin: 'http://localhost:4000',
+    port: 4003,
+    origin: 'http://localhost:4003',
   },
   preview: {
-    port: 4100,
+    port: 4103,
   },
   plugins: [
     react(),
     tailwindcss(),
     federation({
-      name: 'shell',
+      name: 'docsmfe',
+      filename: 'remoteEntry.js',
+      manifest: true,
       dts: false,
-      remotes: {
-        docsmfe: {
-          type: 'module',
-          name: 'docsmfe',
-          entry: 'http://localhost:4003/mf-manifest.json',
-        },
-
-        authMfe: {
-          type: 'module',
-          name: 'authMfe',
-          entry: 'http://localhost:4001/mf-manifest.json',
-        },
+      exposes: {
+        './App': './src/App.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: '^19.0.0' },
@@ -38,7 +30,7 @@ export default defineConfig({
         'react-dom/': { singleton: true },
       },
     }),
-    visualizer({ open: false, filename: 'dist/apps/shell/stats.html', gzipSize: true, brotliSize: true })
+    visualizer({ open: false, filename: 'dist/apps/docs-mfe/stats.html', gzipSize: true, brotliSize: true })
   ] as any,
   build: {
     target: 'chrome89',

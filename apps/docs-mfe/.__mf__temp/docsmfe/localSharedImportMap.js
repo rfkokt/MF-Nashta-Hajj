@@ -5,22 +5,22 @@
     const importMap = {
       
         "react": async () => {
-          let pkg = await import("__mf__virtual/authMfe__prebuild__react__prebuild__.js");
+          let pkg = await import("__mf__virtual/docsmfe__prebuild__react__prebuild__.js");
             return pkg;
         }
       ,
         "react-dom": async () => {
-          let pkg = await import("__mf__virtual/authMfe__prebuild__react_mf_2_dom__prebuild__.js");
+          let pkg = await import("__mf__virtual/docsmfe__prebuild__react_mf_2_dom__prebuild__.js");
             return pkg;
         }
       ,
         "react-dom/client": async () => {
-          let pkg = await import("__mf__virtual/authMfe__prebuild__react_mf_2_dom_mf_1_client__prebuild__.js");
+          let pkg = await import("__mf__virtual/docsmfe__prebuild__react_mf_2_dom_mf_1_client__prebuild__.js");
             return pkg;
         }
       ,
         "react/jsx-runtime": async () => {
-          let pkg = await import("__mf__virtual/authMfe__prebuild__react_mf_1_jsx_mf_2_runtime__prebuild__.js");
+          let pkg = await import("__mf__virtual/docsmfe__prebuild__react_mf_1_jsx_mf_2_runtime__prebuild__.js");
             return pkg;
         }
       
@@ -32,7 +32,7 @@
             version: "19.2.4",
             scope: ["default"],
             loaded: false,
-            from: "authMfe",
+            from: "docsmfe",
             async get () {
               if (false) {
                 throw new Error(`Shared module '${"react"}' must be provided by host`);
@@ -62,7 +62,7 @@
             version: "19.2.4",
             scope: ["default"],
             loaded: false,
-            from: "authMfe",
+            from: "docsmfe",
             async get () {
               if (false) {
                 throw new Error(`Shared module '${"react-dom"}' must be provided by host`);
@@ -92,7 +92,7 @@
             version: "19.2.4",
             scope: ["default"],
             loaded: false,
-            from: "authMfe",
+            from: "docsmfe",
             async get () {
               if (false) {
                 throw new Error(`Shared module '${"react-dom/client"}' must be provided by host`);
@@ -122,7 +122,7 @@
             version: "19.2.4",
             scope: ["default"],
             loaded: false,
-            from: "authMfe",
+            from: "docsmfe",
             async get () {
               if (false) {
                 throw new Error(`Shared module '${"react/jsx-runtime"}' must be provided by host`);

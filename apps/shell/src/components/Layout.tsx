@@ -1,8 +1,8 @@
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useNavigate, NavLink } from 'react-router';
 import { useAuthStore } from '@my-saas/shared-types';
 import { MFE_EVENTS, dispatchMfeEvent } from '@my-saas/shared-types';
 import { Button } from '@my-saas/ui-kit';
-import { LogOut, LayoutDashboard, Menu, X } from 'lucide-react';
+import { LogOut, LayoutDashboard, Menu, X, Book } from 'lucide-react';
 import { useState } from 'react';
 
 export function Layout() {
@@ -46,13 +46,33 @@ export function Layout() {
         </div>
 
         <nav className="p-4 space-y-1" aria-label="Main navigation">
-          <a
-            href="/"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-primary-600/20 text-primary-400"
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => 
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive 
+                  ? 'bg-primary-600/10 text-primary-400' 
+                  : 'hover:bg-neutral-800 text-neutral-300 hover:text-white'
+              }`
+            }
           >
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
-          </a>
+          </NavLink>
+          <NavLink
+            to="/docs"
+            className={({ isActive }) => 
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive 
+                  ? 'bg-primary-600/10 text-primary-400' 
+                  : 'hover:bg-neutral-800 text-neutral-300 hover:text-white'
+              }`
+            }
+          >
+            <Book className="h-4 w-4" />
+            Documentation
+          </NavLink>
         </nav>
 
         {/* User info at bottom */}

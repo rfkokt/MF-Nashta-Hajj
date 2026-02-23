@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { federation } from '@module-federation/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   server: {
@@ -30,7 +31,8 @@ export default defineConfig({
         'react-dom/': { singleton: true },
       },
     }),
-  ],
+    visualizer({ open: false, filename: 'dist/apps/auth-mfe/stats.html', gzipSize: true, brotliSize: true })
+  ] as any,
   build: {
     target: 'chrome89',
     modulePreload: false,

@@ -14,3 +14,13 @@ declare module 'authMfe/routes' {
   import type { RouteObject } from 'react-router';
   export const authRoutes: RouteObject[];
 }
+
+declare module 'businessmfe/App' {
+  const App: React.ComponentType;
+  export default App;
+}
+
+declare module 'docsmfe/App' {
+  const App: React.ComponentType;
+  export default App;
+}

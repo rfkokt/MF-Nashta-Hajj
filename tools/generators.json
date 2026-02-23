@@ -1,9 +1,9 @@
 {
   "generators": {
-    "generator": {
+    "mfe": {
       "factory": "./src/generators/mfe/generator",
       "schema": "./src/generators/mfe/schema.json",
-      "description": "generator generator"
+      "description": "Scaffolds a Micro Frontend with Vite and Module Federation"
     }
   }
 }
