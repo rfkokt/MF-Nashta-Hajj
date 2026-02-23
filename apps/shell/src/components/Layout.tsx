@@ -188,8 +188,8 @@ export function Layout() {
       <div className="flex flex-1 min-h-0">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-16 left-0 z-40 w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-300 lg:translate-x-0 lg:sticky lg:top-16 lg:inset-auto lg:h-[calc(100vh-4rem)] flex flex-col overflow-y-auto ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`max-lg:fixed max-lg:inset-y-16 max-lg:left-0 max-lg:z-40 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-300 lg:translate-x-0 flex flex-col overflow-y-auto shrink-0 ${
+            sidebarOpen ? 'translate-x-0' : 'max-lg:-translate-x-full'
           }`}
         >
           {/* Close button (mobile) */}
