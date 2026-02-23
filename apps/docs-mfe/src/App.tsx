@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@my-saas/ui-kit';
+import { CodeBlock } from './components/CodeBlock';
 
 export function App() {
   return (
@@ -51,12 +52,19 @@ export function App() {
             <CardDescription>Perintah CLI untuk pengembangan lokal</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
-            <div className="bg-neutral-900 rounded-lg p-4 font-mono text-neutral-300">
+            <CodeBlock 
+              language="bash"
+              codeString={`# Jalankan semua modul secara otomatis sekaligus
+pnpm nx run-many --target=serve --all --parallel
+
+# Atau jalankan aplikasi secara spesifik
+pnpm nx run-many --target=serve --projects=shell,auth-mfe --parallel`}
+            >
               <span className="text-neutral-500"># Jalankan semua modul secara otomatis sekaligus</span><br/>
               <span className="text-primary-400">pnpm</span> nx run-many --target=serve --all --parallel<br/><br/>
               <span className="text-neutral-500"># Atau jalankan aplikasi secara spesifik</span><br/>
               <span className="text-primary-400">pnpm</span> nx run-many --target=serve --projects=shell,auth-mfe --parallel
-            </div>
+            </CodeBlock>
           </CardContent>
         </Card>
       </div>
@@ -73,16 +81,20 @@ export function App() {
           <div className="space-y-2">
             <h3 className="font-semibold text-neutral-900">1. Jalankan Generator Nx CLI</h3>
             <p className="text-sm text-neutral-600">Perintah ini akan men-generate folder React+Vite, Module Federation, Tailwind v4, linting, dan mendaftarkannya otomatis ke <code className="text-primary-700 bg-primary-50 px-1 rounded">shell/public/remotes.json</code>.</p>
-            <div className="bg-neutral-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+            <CodeBlock 
+              language="bash" 
+              codeString="pnpm nx g @my-saas/tools:mfe <nama-mfe> --port=<port>"
+            >
               <span className="text-primary-400">pnpm</span> nx g @my-saas/tools:mfe &lt;nama-mfe&gt; --port=&lt;port&gt;
-            </div>
+            </CodeBlock>
           </div>
           
           <div className="space-y-2">
             <h3 className="font-semibold text-neutral-900">2. Mendaftarkan Route di `router.tsx` Shell</h3>
             <p className="text-sm text-neutral-600">Meski environment sudah teregister, Anda harus tetap memasang komponen Remote tersebut pada routing utama aplikasi Shell menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">React.lazy</code>.</p>
-            <div className="bg-neutral-900 rounded-lg p-4 font-mono text-sm text-neutral-300 whitespace-pre overflow-x-auto">
-              {`// Buka apps/shell/src/router.tsx
+            <CodeBlock 
+              language="tsx" 
+              codeString={`// Buka apps/shell/src/router.tsx
 import { lazy } from 'react';
 import { RemoteLoader } from './components/RemoteLoader';
 
@@ -91,7 +103,7 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
 
 // ... Daftarkan di dalam daftar sub-routing <Layout />
 <Route path="nama-url/*" element={<RemoteLoader><RemoteBaru /></RemoteLoader>} />`}
-            </div>
+            />
           </div>
         </CardContent>
       </Card>
@@ -109,12 +121,13 @@ const RemoteBaru = lazy(() => import('namamfe/App'));
             <p>
               Status <strong>login</strong> dan <strong>access token</strong> dikelola tunggal (Singleton) menggunakan <i>Zustand Store</i> yang terletak di <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-types</code>.
             </p>
-            <div className="bg-neutral-900 rounded-lg p-3 font-mono text-xs text-neutral-300 whitespace-pre overflow-x-auto">
-{`import { useAuthStore } from '@my-saas/shared-types';
+            <CodeBlock 
+              language="typescript" 
+              codeString={`import { useAuthStore } from '@my-saas/shared-types';
 
 // Untuk membaca token (di dalam React Component)
 const { accessToken, isAuthenticated, logout } = useAuthStore();`}
-            </div>
+            />
             <ul className="list-disc ml-4 space-y-1 mt-2">
               <li><strong>Access Token:</strong> Hanya disimpan di dalam Memori / Variable (BUKAN di Local Storage) agar tercegah dari pencurian via serangan XSS.</li>
               <li><strong>Refresh Token:</strong> Disimpan dengan aman oleh Server via <i>HttpOnly Cookie</i>. Otomatis dipakai saat request token baru.</li>
@@ -134,15 +147,16 @@ const { accessToken, isAuthenticated, logout } = useAuthStore();`}
             <p>
               Setiap panggilan API ke backend wajib menggunakan <code className="text-primary-700 bg-primary-50 px-1 rounded">apiClient</code> dari <code className="text-primary-700 bg-primary-50 px-1 rounded">@my-saas/shared-api</code>. Jangan buat Axios murni tanpa interceptor.
             </p>
-            <div className="bg-neutral-900 rounded-lg p-3 font-mono text-xs text-neutral-300 whitespace-pre overflow-x-auto">
-{`import { apiClient } from '@my-saas/shared-api';
+            <CodeBlock 
+              language="typescript" 
+              codeString={`import { apiClient } from '@my-saas/shared-api';
 
 const fetchProfile = async () => {
   // Authorization header: Bearer <token>
   // otomatis disisipkan oleh apiClient!
   const res = await apiClient.get('/api/users/me');
 };`}
-            </div>
+            />
             <p>
               <strong>Bagaimana jika Token kedaluwarsa?</strong> Jika request ditolak Backend (Error 401), Interceptor akan secara <i>background</i> memanggil Endpoint Refresh Token, menyimpannya di Zustand, lalu me-replay ulang Request API yang gagal tersebut tanpa sepengetahuan <i>User</i>.
             </p>
