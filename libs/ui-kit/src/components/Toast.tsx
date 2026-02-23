@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useNotificationStore } from '@nashta/shared-types';
-import type { Toast as ToastType, ToastVariant } from '@nashta/shared-types';
 import { X, CheckCircle, AlertTriangle, AlertCircle, Info } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
-   Toast Component — renders from notificationStore
-   Drop <ToastContainer /> in Shell's root layout.
+   Toast Component — "dumb" UI, no store import.
+   The store connection lives in the consumer (Shell).
    ───────────────────────────────────────────── */
+
+export type ToastVariant = 'success' | 'error' | 'warning' | 'info';
+
+export interface ToastItemData {
+  id: string;
+  message: string;
+  variant: ToastVariant;
+}
+
+export interface ToastContainerProps {
+  toasts: ToastItemData[];
+  onDismiss: (id: string) => void;
+}
 
 const variantStyles: Record<ToastVariant, { bg: string; border: string; icon: React.ElementType }> = {
   success: { bg: 'bg-emerald-50 dark:bg-emerald-900/40', border: 'border-emerald-200 dark:border-emerald-800', icon: CheckCircle },
@@ -29,18 +40,16 @@ const variantIconColor: Record<ToastVariant, string> = {
   info:    'text-blue-500',
 };
 
-function ToastItem({ toast }: { toast: ToastType }) {
-  const removeToast = useNotificationStore((s) => s.removeToast);
+function ToastItem({ toast, onDismiss }: { toast: ToastItemData; onDismiss: (id: string) => void }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Animate in
     requestAnimationFrame(() => setVisible(true));
   }, []);
 
   const handleClose = () => {
     setVisible(false);
-    setTimeout(() => removeToast(toast.id), 200);
+    setTimeout(() => onDismiss(toast.id), 200);
   };
 
   const style = variantStyles[toast.variant];
@@ -71,16 +80,14 @@ function ToastItem({ toast }: { toast: ToastType }) {
   );
 }
 
-/** Place this in Shell's root layout */
-export function ToastContainer() {
-  const toasts = useNotificationStore((s) => s.toasts);
-
+/** Renders a stack of toasts. Connect to your store in the consumer. */
+export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
   if (toasts.length === 0) return null;
 
   return (
     <div className="fixed top-20 right-6 z-[9999] flex flex-col gap-2 w-96 max-w-[calc(100vw-2rem)]">
       {toasts.map((toast) => (
-        <ToastItem key={toast.id} toast={toast} />
+        <ToastItem key={toast.id} toast={toast} onDismiss={onDismiss} />
       ))}
     </div>
   );

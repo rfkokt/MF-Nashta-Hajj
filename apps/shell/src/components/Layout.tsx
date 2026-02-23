@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, NavLink } from 'react-router';
-import { useAuthStore, useMenuStore, useThemeStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import { useAuthStore, useMenuStore, useThemeStore, useNotificationStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
 import { LogOut, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -140,7 +140,7 @@ export function Layout() {
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-      <ToastContainer />
+      <ToastContainer toasts={useNotificationStore((s) => s.toasts)} onDismiss={useNotificationStore.getState().removeToast} />
       {/* ── Top Header Bar (full width, dark) ── */}
       <header className="h-16 bg-neutral-900 dark:bg-black flex items-center px-6 gap-4 sticky top-0 z-50 shrink-0">
         {/* Mobile hamburger */}
