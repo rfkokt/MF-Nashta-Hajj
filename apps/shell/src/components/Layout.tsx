@@ -118,7 +118,7 @@ export function Layout() {
   const [darkMode, setDarkMode] = useState(false);
 
   // Menu store
-  const menuGroups = useMenuStore((s) => s.groups);
+  const menuGroups = useMenuStore((s) => s.groups) ?? [];
   const menuLoading = useMenuStore((s) => s.isLoading);
 
   // Fetch menus on mount — falls back to mock data in dev
@@ -133,8 +133,8 @@ export function Layout() {
         useMenuStore.getState().setMenus(MOCK_MENUS);
       }
     };
-    if (menuGroups.length === 0) load();
-  }, [menuGroups.length]);
+    if (!menuGroups || menuGroups.length === 0) load();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Dark mode toggle
   useEffect(() => {
