@@ -15,10 +15,10 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-neutral-900">
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
           Selamat Datang, {user?.name || 'User'} 👋
         </h2>
-        <p className="text-neutral-500 mt-1">Berikut ringkasan aktivitas hari ini.</p>
+        <p className="text-neutral-500 dark:text-neutral-400 mt-1">Berikut ringkasan aktivitas hari ini.</p>
       </div>
 
       {/* Stats Grid */}
@@ -27,11 +27,11 @@ export function Dashboard() {
           <Card key={stat.label} className="hover:shadow-md transition-shadow">
             <CardContent className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-neutral-500">{stat.label}</p>
-                <p className="text-2xl font-bold text-neutral-900 mt-1">{stat.value}</p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">{stat.label}</p>
+                <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stat.value}</p>
                 <p className={`text-sm font-medium mt-1 ${stat.color}`}>{stat.change}</p>
               </div>
-              <div className={`p-2 rounded-lg bg-neutral-100 ${stat.color}`}>
+              <div className={`p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 ${stat.color}`}>
                 <stat.icon className="h-5 w-5" />
               </div>
             </CardContent>
@@ -50,18 +50,18 @@ export function Dashboard() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="flex items-center justify-between py-3 border-b border-neutral-100 last:border-0"
+                className="flex items-center justify-between py-3 border-b border-neutral-100 dark:border-neutral-800 last:border-0"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                    <ShoppingBag className="h-4 w-4 text-primary-600" />
+                  <div className="h-8 w-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                    <ShoppingBag className="h-4 w-4 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-neutral-900">Order #{1000 + i}</p>
-                    <p className="text-xs text-neutral-500">2 menit lalu</p>
+                    <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Order #{1000 + i}</p>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400">2 menit lalu</p>
                   </div>
                 </div>
-                <span className="text-sm font-semibold text-neutral-900">
+                <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                   Rp {(Math.random() * 500 + 100).toFixed(0)}K
                 </span>
               </div>

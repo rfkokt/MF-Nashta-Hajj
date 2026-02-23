@@ -8,14 +8,14 @@ export interface CardProps {
 }
 
 const variantStyles = {
-  default: 'bg-white border border-neutral-200 shadow-sm',
-  outlined: 'bg-transparent border-2 border-neutral-300',
-  elevated: 'bg-white shadow-lg',
+  default: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm',
+  outlined: 'bg-transparent border-2 border-neutral-300 dark:border-neutral-700',
+  elevated: 'bg-white dark:bg-neutral-900 shadow-lg',
 };
 
 export function Card({ children, className, variant = 'default' }: CardProps): JSX.Element {
   return (
-    <div className={cn('rounded-lg p-6', variantStyles[variant], className)}>
+    <div className={cn('rounded-lg p-6 transition-colors', variantStyles[variant], className)}>
       {children}
     </div>
   );
@@ -26,7 +26,7 @@ export function CardHeader({ children, className }: { children: ReactNode; class
 }
 
 export function CardTitle({ children, className }: { children: ReactNode; className?: string }): JSX.Element {
-  return <h3 className={cn('text-lg font-semibold text-neutral-900', className)}>{children}</h3>;
+  return <h3 className={cn('text-lg font-semibold text-neutral-900 dark:text-neutral-100', className)}>{children}</h3>;
 }
 
 export function CardDescription({
@@ -36,7 +36,7 @@ export function CardDescription({
   children: ReactNode;
   className?: string;
 }): JSX.Element {
-  return <p className={cn('text-sm text-neutral-500 mt-1', className)}>{children}</p>;
+  return <p className={cn('text-sm text-neutral-500 dark:text-neutral-400 mt-1', className)}>{children}</p>;
 }
 
 export function CardContent({ children, className }: { children: ReactNode; className?: string }): JSX.Element {

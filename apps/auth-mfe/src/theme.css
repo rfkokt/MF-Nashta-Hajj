@@ -1,3 +1,6 @@
+/* Enable class-based dark mode (toggle via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors — Primary Blue */
   --color-primary-50: oklch(0.97 0.01 240);
@@ -61,6 +64,14 @@ body {
   background-color: var(--color-neutral-50);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark mode base overrides */
+.dark body,
+.dark {
+  color: var(--color-neutral-100);
+  background-color: var(--color-neutral-950);
 }
 
 /* Focus visible ring for accessibility */
