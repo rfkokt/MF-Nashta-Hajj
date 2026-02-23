@@ -612,19 +612,19 @@ function FormFieldSection() {
         <PreviewCard title="Live Demo — Coba isi dan submit">
           <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
             <FormField name="nama" label="Nama Lengkap" required error={touched.nama ? errors.nama : undefined}>
-              <Input {...getFieldProps('nama')} placeholder="Masukkan nama..." error={touched.nama ? errors.nama : undefined} />
+              {(() => { const { error: _, ...p } = getFieldProps('nama'); return <Input {...p} placeholder="Masukkan nama..." />; })()}
             </FormField>
 
             <FormField name="email" label="Email" required error={touched.email ? errors.email : undefined}>
-              <Input {...getFieldProps('email')} type="email" placeholder="email@example.com" error={touched.email ? errors.email : undefined} />
+              {(() => { const { error: _, ...p } = getFieldProps('email'); return <Input {...p} type="email" placeholder="email@example.com" />; })()}
             </FormField>
 
             <FormField name="umur" label="Umur" required error={touched.umur ? errors.umur : undefined} hint="Minimal 17 tahun">
-              <Input {...getFieldProps('umur')} placeholder="25" error={touched.umur ? errors.umur : undefined} />
+              {(() => { const { error: _, ...p } = getFieldProps('umur'); return <Input {...p} placeholder="25" />; })()}
             </FormField>
 
             <FormField name="telepon" label="No. Telepon" required error={touched.telepon ? errors.telepon : undefined}>
-              <Input {...getFieldProps('telepon')} placeholder="08xxxxxxxxxx" error={touched.telepon ? errors.telepon : undefined} />
+              {(() => { const { error: _, ...p } = getFieldProps('telepon'); return <Input {...p} placeholder="08xxxxxxxxxx" />; })()}
             </FormField>
 
             <div className="flex gap-3 pt-2">
