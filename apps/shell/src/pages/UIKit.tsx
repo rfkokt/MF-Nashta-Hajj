@@ -89,95 +89,100 @@ function PropsTable({ rows }: { rows: [string, string, string][] }) {
 
 function ButtonSection() {
   return (
-    <>
-      <SectionHeader title="Button" description="Tombol interaktif dengan variant dan size berbeda." />
-      <PreviewCard title="Variants">
-        <div className="flex flex-wrap gap-3">
-          <Button>Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="danger">Danger</Button>
-        </div>
-      </PreviewCard>
-      <PreviewCard title="Sizes">
-        <div className="flex flex-wrap gap-3 items-center">
-          <Button size="sm">Small</Button>
-          <Button size="md">Medium</Button>
-          <Button size="lg">Large</Button>
-        </div>
-      </PreviewCard>
-      <PreviewCard title="States">
-        <div className="flex flex-wrap gap-3 items-center">
-          <Button disabled>Disabled</Button>
-          <Button isLoading>Loading</Button>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Button } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Button" description="Tombol interaktif dengan variant dan size berbeda." />
+        <PreviewCard title="Variants">
+          <div className="flex flex-wrap gap-3">
+            <Button>Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="danger">Danger</Button>
+          </div>
+        </PreviewCard>
+        <PreviewCard title="Sizes">
+          <div className="flex flex-wrap gap-3 items-center">
+            <Button size="sm">Small</Button>
+            <Button size="md">Medium</Button>
+            <Button size="lg">Large</Button>
+          </div>
+        </PreviewCard>
+        <PreviewCard title="States">
+          <div className="flex flex-wrap gap-3 items-center">
+            <Button disabled>Disabled</Button>
+            <Button isLoading>Loading</Button>
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Button } from '@nashta/ui-kit';
 
 <Button variant="primary" size="md">Click me</Button>
 <Button variant="danger">Hapus</Button>
 <Button isLoading>Menyimpan...</Button>`}</CodeBlock>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <PropsTable rows={[
-        ['variant', 'primary | secondary | outline | ghost | danger', 'primary'],
-        ['size', 'sm | md | lg | icon', 'md'],
-        ['isLoading', 'boolean', 'false'],
-        ['disabled', 'boolean', 'false'],
-      ]} />
-    </>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
+        <PropsTable rows={[
+          ['variant', 'primary | secondary | outline | ghost | danger', 'primary'],
+          ['size', 'sm | md | lg | icon', 'md'],
+          ['isLoading', 'boolean', 'false'],
+          ['disabled', 'boolean', 'false'],
+        ]} />
+      </CardContent>
+    </Card>
   );
 }
 
 function InputSection() {
   const [val, setVal] = useState('');
   return (
-    <>
-      <SectionHeader title="Input" description="Text input dengan label, error state, dan hint." />
-      <PreviewCard>
-        <div className="space-y-4 max-w-md">
-          <Input label="Nama Lengkap" placeholder="Masukkan nama..." value={val} onChange={(e) => setVal(e.target.value)} />
-          <Input label="Email" type="email" placeholder="email@example.com" hint="Kami tidak akan share email Anda." />
-          <Input label="Password" type="password" error="Password minimal 8 karakter" placeholder="••••••••" />
-          <Input label="Disabled" disabled value="Tidak bisa diedit" />
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Input } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Input" description="Text input dengan label, error state, dan hint." />
+        <PreviewCard>
+          <div className="space-y-4 max-w-md">
+            <Input label="Nama Lengkap" placeholder="Masukkan nama..." value={val} onChange={(e) => setVal(e.target.value)} />
+            <Input label="Email" type="email" placeholder="email@example.com" hint="Kami tidak akan share email Anda." />
+            <Input label="Password" type="password" error="Password minimal 8 karakter" placeholder="••••••••" />
+            <Input label="Disabled" disabled value="Tidak bisa diedit" />
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Input } from '@nashta/ui-kit';
 
 <Input label="Email" type="email" placeholder="email@example.com" />
 <Input label="Password" error="Minimal 8 karakter" />
 <Input label="Catatan" hint="Opsional" />`}</CodeBlock>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <PropsTable rows={[
-        ['label', 'string', '—'],
-        ['error', 'string', '—'],
-        ['hint', 'string', '—'],
-      ]} />
-    </>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
+        <PropsTable rows={[
+          ['label', 'string', '—'],
+          ['error', 'string', '—'],
+          ['hint', 'string', '—'],
+        ]} />
+      </CardContent>
+    </Card>
   );
 }
 
 function CardSection() {
   return (
-    <>
-      <SectionHeader title="Card" description="Kontainer konten dengan Header, Title, Description, Content, Footer." />
-      <PreviewCard>
-        <div className="grid md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader><CardTitle>Card Title</CardTitle><CardDescription>Deskripsi singkat</CardDescription></CardHeader>
-            <CardContent><p className="text-sm text-neutral-600 dark:text-neutral-400">Konten utama card.</p></CardContent>
-            <CardFooter className="flex gap-2"><Button size="sm">Simpan</Button><Button size="sm" variant="outline">Batal</Button></CardFooter>
-          </Card>
-          <Card>
-            <CardHeader><CardTitle>Statistik</CardTitle></CardHeader>
-            <CardContent><div className="text-3xl font-bold">1,234</div><p className="text-sm text-emerald-600">+12.5%</p></CardContent>
-          </Card>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Card" description="Kontainer konten dengan Header, Title, Description, Content, Footer." />
+        <PreviewCard>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader><CardTitle>Card Title</CardTitle><CardDescription>Deskripsi singkat</CardDescription></CardHeader>
+              <CardContent><p className="text-sm text-neutral-600 dark:text-neutral-400">Konten utama card.</p></CardContent>
+              <CardFooter className="flex gap-2"><Button size="sm">Simpan</Button><Button size="sm" variant="outline">Batal</Button></CardFooter>
+            </Card>
+            <Card>
+              <CardHeader><CardTitle>Statistik</CardTitle></CardHeader>
+              <CardContent><div className="text-3xl font-bold">1,234</div><p className="text-sm text-emerald-600">+12.5%</p></CardContent>
+            </Card>
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@nashta/ui-kit';
 
 <Card>
   <CardHeader>
@@ -186,68 +191,73 @@ function CardSection() {
   <CardContent>Isi konten</CardContent>
   <CardFooter><Button>Aksi</Button></CardFooter>
 </Card>`}</CodeBlock>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
 function BadgeSection() {
   return (
-    <>
-      <SectionHeader title="Badge" description="Label status dengan 6 variants." />
-      <PreviewCard title="Variants">
-        <div className="flex flex-wrap gap-3">
-          <Badge>Default</Badge>
-          <Badge variant="success">Success</Badge>
-          <Badge variant="warning">Warning</Badge>
-          <Badge variant="error">Error</Badge>
-          <Badge variant="info">Info</Badge>
-          <Badge variant="outline">Outline</Badge>
-        </div>
-      </PreviewCard>
-      <PreviewCard title="Use Cases">
-        <div className="flex flex-wrap gap-3">
-          <Badge variant="success">✓ Aktif</Badge>
-          <Badge variant="warning">⏳ Pending</Badge>
-          <Badge variant="error">✕ Ditolak</Badge>
-          <Badge variant="info">3 Baru</Badge>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Badge } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Badge" description="Label status dengan 6 variants." />
+        <PreviewCard title="Variants">
+          <div className="flex flex-wrap gap-3">
+            <Badge>Default</Badge>
+            <Badge variant="success">Success</Badge>
+            <Badge variant="warning">Warning</Badge>
+            <Badge variant="error">Error</Badge>
+            <Badge variant="info">Info</Badge>
+            <Badge variant="outline">Outline</Badge>
+          </div>
+        </PreviewCard>
+        <PreviewCard title="Use Cases">
+          <div className="flex flex-wrap gap-3">
+            <Badge variant="success">✓ Aktif</Badge>
+            <Badge variant="warning">⏳ Pending</Badge>
+            <Badge variant="error">✕ Ditolak</Badge>
+            <Badge variant="info">3 Baru</Badge>
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Badge } from '@nashta/ui-kit';
 
 <Badge variant="success">Aktif</Badge>
 <Badge variant="error">Ditolak</Badge>`}</CodeBlock>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <PropsTable rows={[
-        ['variant', 'default | success | warning | error | info | outline', 'default'],
-        ['className', 'string', '—'],
-      ]} />
-    </>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
+        <PropsTable rows={[
+          ['variant', 'default | success | warning | error | info | outline', 'default'],
+          ['className', 'string', '—'],
+        ]} />
+      </CardContent>
+    </Card>
   );
 }
 
 function SkeletonSection() {
   return (
-    <>
-      <SectionHeader title="Skeleton" description="Placeholder loading dengan animasi pulse." />
-      <PreviewCard>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
-            <div className="flex-1 space-y-2"><Skeleton className="h-4 w-3/4" /><Skeleton className="h-3 w-1/2" /></div>
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Skeleton" description="Placeholder loading dengan animasi pulse." />
+        <PreviewCard>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <div className="flex-1 space-y-2"><Skeleton className="h-4 w-3/4" /><Skeleton className="h-3 w-1/2" /></div>
+            </div>
+            <Skeleton className="h-32 w-full rounded-xl" />
+            <div className="grid grid-cols-3 gap-3">
+              <Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" />
+            </div>
           </div>
-          <Skeleton className="h-32 w-full rounded-xl" />
-          <div className="grid grid-cols-3 gap-3">
-            <Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" />
-          </div>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Skeleton } from '@nashta/ui-kit';
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Skeleton } from '@nashta/ui-kit';
 
 <Skeleton className="h-12 w-12 rounded-full" />
 <Skeleton className="h-4 w-3/4" />`}</CodeBlock>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -255,91 +265,98 @@ function ModalSection() {
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
   return (
-    <>
-      <SectionHeader title="Modal / Dialog" description="Native <dialog> element. 3 sizes." />
-      <PreviewCard title="Try it">
-        <div className="flex flex-wrap gap-3">
-          {(['sm', 'md', 'lg'] as const).map((s) => (
-            <Button key={s} variant="outline" onClick={() => { setSize(s); setOpen(true); }}>
-              Open {s.toUpperCase()}
-            </Button>
-          ))}
-        </div>
-      </PreviewCard>
-      <Modal open={open} onClose={() => setOpen(false)} title="Contoh Modal" description={`Size: ${size}`} size={size}>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Konten modal.</p>
-        <div className="flex gap-2 justify-end">
-          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
-          <Button onClick={() => setOpen(false)}>Simpan</Button>
-        </div>
-      </Modal>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Modal } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Modal / Dialog" description="Native <dialog> element. 3 sizes." />
+        <PreviewCard title="Try it">
+          <div className="flex flex-wrap gap-3">
+            {(['sm', 'md', 'lg'] as const).map((s) => (
+              <Button key={s} variant="outline" onClick={() => { setSize(s); setOpen(true); }}>
+                Open {s.toUpperCase()}
+              </Button>
+            ))}
+          </div>
+        </PreviewCard>
+        <Modal open={open} onClose={() => setOpen(false)} title="Contoh Modal" description={`Size: ${size}`} size={size}>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Konten modal.</p>
+          <div className="flex gap-2 justify-end">
+            <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
+            <Button onClick={() => setOpen(false)}>Simpan</Button>
+          </div>
+        </Modal>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { Modal } from '@nashta/ui-kit';
 
 const [open, setOpen] = useState(false);
 
 <Modal open={open} onClose={() => setOpen(false)} title="Judul" size="md">
   <p>Konten</p>
 </Modal>`}</CodeBlock>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <PropsTable rows={[
-        ['open', 'boolean', 'false'],
-        ['onClose', '() => void', '—'],
-        ['title', 'string', '—'],
-        ['size', 'sm | md | lg | fullscreen', 'md'],
-      ]} />
-    </>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Props</h3>
+        <PropsTable rows={[
+          ['open', 'boolean', 'false'],
+          ['onClose', '() => void', '—'],
+          ['title', 'string', '—'],
+          ['size', 'sm | md | lg | fullscreen', 'md'],
+        ]} />
+      </CardContent>
+    </Card>
   );
 }
 
 function ToastSection() {
   return (
-    <>
-      <SectionHeader title="Toast / Notification" description="Toast via useNotificationStore. 4 variant." />
-      <PreviewCard title="Try it">
-        <div className="flex flex-wrap gap-3">
-          <Button variant="outline" onClick={() => useNotificationStore.getState().success('Data berhasil disimpan!')}>✅ Success</Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().error('Gagal menyimpan data')}>❌ Error</Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().warning('Sesi hampir habis')}>⚠️ Warning</Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().info('Update tersedia')}>ℹ️ Info</Button>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { useNotificationStore } from '@nashta/shared-types';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Toast / Notification" description="Toast via useNotificationStore. 4 variant." />
+        <PreviewCard title="Try it">
+          <div className="flex flex-wrap gap-3">
+            <Button variant="outline" onClick={() => useNotificationStore.getState().success('Data berhasil disimpan!')}>✅ Success</Button>
+            <Button variant="outline" onClick={() => useNotificationStore.getState().error('Gagal menyimpan data')}>❌ Error</Button>
+            <Button variant="outline" onClick={() => useNotificationStore.getState().warning('Sesi hampir habis')}>⚠️ Warning</Button>
+            <Button variant="outline" onClick={() => useNotificationStore.getState().info('Update tersedia')}>ℹ️ Info</Button>
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { useNotificationStore } from '@nashta/shared-types';
 
 useNotificationStore.getState().success('Berhasil!');
 useNotificationStore.getState().error('Gagal!');`}</CodeBlock>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
 function ErrorFallbackSection() {
   return (
-    <>
-      <SectionHeader title="ErrorFallback" description="Fallback UI untuk React Error Boundary." />
-      <PreviewCard>
-        <div className="text-center p-8 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
-          <p className="text-4xl mb-3">⚠️</p>
-          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Terjadi Kesalahan</h3>
-          <p className="text-sm text-neutral-500 mt-1">Komponen ini ditangkap oleh ErrorBoundary</p>
-          <Button variant="outline" size="sm" className="mt-4">Coba Lagi</Button>
-        </div>
-      </PreviewCard>
-      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { ErrorFallback } from '@nashta/ui-kit';
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="ErrorFallback" description="Fallback UI untuk React Error Boundary." />
+        <PreviewCard>
+          <div className="text-center p-8 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+            <p className="text-4xl mb-3">⚠️</p>
+            <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Terjadi Kesalahan</h3>
+            <p className="text-sm text-neutral-500 mt-1">Komponen ini ditangkap oleh ErrorBoundary</p>
+            <Button variant="outline" size="sm" className="mt-4">Coba Lagi</Button>
+          </div>
+        </PreviewCard>
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Usage</h3>
+        <CodeBlock>{`import { ErrorFallback } from '@nashta/ui-kit';
 import { ErrorBoundary } from 'react-error-boundary';
 
 <ErrorBoundary FallbackComponent={ErrorFallback}>
   <SomeComponent />
 </ErrorBoundary>`}</CodeBlock>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
 function TutorialSection() {
   return (
-    <>
-      <SectionHeader title="Tutorial: Membuat Komponen Baru" description="Langkah-langkah menambahkan komponen ke UI Kit." />
+    <Card>
+      <CardContent className="pt-6 space-y-6">
+        <SectionHeader title="Tutorial: Membuat Komponen Baru" description="Langkah-langkah menambahkan komponen ke UI Kit." />
       <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
       <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
         Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code>
@@ -409,7 +426,8 @@ export type { ChipProps } from './components/Chip';`}</CodeBlock>
 │   │   └── cn.ts
 │   └── index.ts        ← WAJIB register di sini
 └── package.json`}</CodeBlock>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
