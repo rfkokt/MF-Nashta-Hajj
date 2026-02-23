@@ -16,6 +16,72 @@ import { discoveredComponents } from '../utils/component-discovery';
    Sub-menu lives in the main shell sidebar.
    ═══════════════════════════════════════════════ */
 
+/** Simple syntax highlighter — tokenizes TSX/JS code into colored spans */
+function highlightCode(code: string): React.ReactNode[] {
+  // Token patterns ordered by priority
+  const patterns: [RegExp, string][] = [
+    // Comments
+    [/\/\/.*$/gm, 'text-neutral-500 italic'],
+    // Template literals
+    [/`[^`]*`/g, 'text-[#a5d6ff]'],
+    // Strings (double & single)
+    [/"(?:[^"\\]|\\.)*"/g, 'text-[#a5d6ff]'],
+    [/'(?:[^'\\]|\\.)*'/g, 'text-[#a5d6ff]'],
+    // JSX self-closing & opening tags: <Component or </Component
+    [/<\/?[A-Z][A-Za-z0-9.]*/g, 'text-[#7ee787]'],
+    // HTML tags: <div, </div, <p, etc.
+    [/<\/?[a-z][a-z0-9-]*/g, 'text-[#7ee787]'],
+    // Closing bracket / or />
+    [/\/>/g, 'text-[#7ee787]'],
+    // Keywords
+    [/\b(import|export|from|const|let|var|function|return|if|else|new|typeof|type|interface|extends|implements|class|default|async|await|throw|try|catch|finally|for|while|do|switch|case|break|continue|void|null|undefined|true|false|as)\b/g, 'text-[#ff7b72]'],
+    // React/TS types & special
+    [/\b(React|useState|useEffect|useRef|useMemo|useCallback|ReactNode|FC|JSX|Record|Partial|Pick|Omit|Promise)\b/g, 'text-[#d2a8ff]'],
+    // JSX attribute names (word followed by =)
+    [/\b([a-zA-Z-]+)(?==)/g, 'text-[#79c0ff]'],
+    // Numbers
+    [/\b\d+\.?\d*\b/g, 'text-[#ffa657]'],
+    // Arrow & operators
+    [/=>/g, 'text-[#ff7b72]'],
+  ];
+
+  type Token = { start: number; end: number; className: string };
+  const tokens: Token[] = [];
+
+  // Collect all matches
+  for (const [regex, className] of patterns) {
+    const r = new RegExp(regex.source, regex.flags);
+    let match;
+    while ((match = r.exec(code)) !== null) {
+      const start = match.index;
+      const end = start + match[0].length;
+      // Check overlap with higher-priority tokens
+      const overlaps = tokens.some(t => start < t.end && end > t.start);
+      if (!overlaps) {
+        tokens.push({ start, end, className });
+      }
+    }
+  }
+
+  // Sort by position
+  tokens.sort((a, b) => a.start - b.start);
+
+  // Build React nodes
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+  tokens.forEach((tok, i) => {
+    if (tok.start > cursor) {
+      nodes.push(<span key={`t-${i}`}>{code.slice(cursor, tok.start)}</span>);
+    }
+    nodes.push(<span key={`h-${i}`} className={tok.className}>{code.slice(tok.start, tok.end)}</span>);
+    cursor = tok.end;
+  });
+  if (cursor < code.length) {
+    nodes.push(<span key="rest">{code.slice(cursor)}</span>);
+  }
+  return nodes;
+}
+
 function CodeBlock({ children }: { children: string }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
@@ -23,21 +89,37 @@ function CodeBlock({ children }: { children: string }) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const lines = children.split('\n');
+
   return (
     <div className="rounded-xl overflow-hidden bg-[#0d1117] border border-neutral-800 shadow-lg my-3">
-      <div className="flex items-center justify-between px-4 py-2 bg-neutral-900/50 border-b border-neutral-800">
+      <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-neutral-800">
         <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <button onClick={handleCopy} className="text-xs text-neutral-500 hover:text-white transition-colors">
+        <button onClick={handleCopy} className="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded hover:bg-neutral-800">
           {copied ? '✓ Copied' : 'Copy'}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto text-[13px] font-mono leading-relaxed text-neutral-300">
-        <code>{children}</code>
-      </pre>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <tbody>
+            {lines.map((line, i) => (
+              <tr key={i} className="hover:bg-[#161b22]">
+                <td className="select-none text-right pr-4 pl-4 py-0 text-[13px] font-mono text-neutral-600 w-[1%] whitespace-nowrap align-top leading-relaxed">
+                  {i + 1}
+                </td>
+                <td className="pr-4 py-0 text-[13px] font-mono text-[#c9d1d9] whitespace-pre leading-relaxed">
+                  {highlightCode(line)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
