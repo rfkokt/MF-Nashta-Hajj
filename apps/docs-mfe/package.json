@@ -9,17 +9,18 @@
     "preview": "vite preview --port 4103"
   },
   "dependencies": {
-    "@nashta/ui-kit": "workspace:*",
     "@nashta/shared-types": "workspace:*",
+    "@nashta/ui-kit": "workspace:*",
+    "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
     "@module-federation/vite": "^1.11.0",
     "@tailwindcss/vite": "^4.0.0",
-    "tailwindcss": "^4.0.0",
-    "@vitejs/plugin-react": "^4.5.0"
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "tailwindcss": "^4.0.0"
   }
 }

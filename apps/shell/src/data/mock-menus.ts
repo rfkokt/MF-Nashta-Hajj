@@ -54,7 +54,27 @@ export const MOCK_MENUS: MenuGroup[] = [
   {
     title: 'Developer',
     items: [
-      { id: 'docs', label: 'Dokumentasi', icon: 'Book', path: '/docs' },
+      {
+        id: 'docs',
+        label: 'Dokumentasi',
+        icon: 'Book',
+        path: '/docs',
+        defaultOpen: true,
+        children: [
+          { id: 'docs-struktur', label: '1. Struktur Proyek', icon: 'FolderTree', path: '/docs/struktur-proyek' },
+          { id: 'docs-menjalankan', label: '2. Menjalankan Aplikasi', icon: 'Terminal', path: '/docs/menjalankan-aplikasi' },
+          { id: 'docs-membuat-mfe', label: '3. Membuat MFE Baru', icon: 'PlusSquare', path: '/docs/membuat-mfe-baru' },
+          { id: 'docs-token', label: '4. Token & Auth', icon: 'Key', path: '/docs/token-auth' },
+          { id: 'docs-api', label: '5. API & Interceptors', icon: 'Globe', path: '/docs/api-interceptors' },
+          { id: 'docs-remotes', label: '6. Dynamic Remotes', icon: 'Link', path: '/docs/dynamic-remotes' },
+          { id: 'docs-ui', label: '7. Shared UI Kit', icon: 'Component', path: '/docs/shared-ui-kit' },
+          { id: 'docs-tailwind', label: '8. Tailwind & Theme', icon: 'Palette', path: '/docs/tailwind-theme' },
+          { id: 'docs-events', label: '9. Events & Error', icon: 'Radio', path: '/docs/events-error' },
+          { id: 'docs-env', label: '10. Env & Dark Mode', icon: 'Settings2', path: '/docs/env-dark-mode' },
+          { id: 'docs-git', label: '11. Git & Perf', icon: 'GitBranch', path: '/docs/git-perf' },
+          { id: 'docs-security', label: '12. Security', icon: 'ShieldCheck', path: '/docs/security' },
+        ],
+      },
       {
         id: 'ui-kit',
         label: 'UI Kit',

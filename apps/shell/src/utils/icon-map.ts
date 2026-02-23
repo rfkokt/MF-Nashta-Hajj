@@ -29,6 +29,17 @@ import {
   Maximize2,
   ShieldAlert,
   GraduationCap,
+  FolderTree,
+  Terminal,
+  PlusSquare,
+  Key,
+  Link,
+  Component,
+  Palette,
+  Radio,
+  Settings2,
+  GitBranch,
+  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -57,6 +68,17 @@ const iconMap: Record<string, LucideIcon> = {
   Maximize2,
   ShieldAlert,
   GraduationCap,
+  FolderTree,
+  Terminal,
+  PlusSquare,
+  Key,
+  Link,
+  Component,
+  Palette,
+  Radio,
+  Settings2,
+  GitBranch,
+  ShieldCheck,
 };
 
 /**
