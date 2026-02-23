@@ -14,9 +14,9 @@
  */
 
 // Vite scans at build time — keys are relative paths like
-// "../../../libs/ui-kit/src/components/Button.tsx"
+// "../../../../libs/ui-kit/src/components/Button.tsx"
 const componentModules = import.meta.glob(
-  '/libs/ui-kit/src/components/*.tsx',
+  '../../../../libs/ui-kit/src/components/*.tsx',
   { eager: false }
 );
 
