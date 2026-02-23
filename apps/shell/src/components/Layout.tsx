@@ -117,23 +117,15 @@ export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Menu store
+  // Menu store — initialize with mock data immediately, then try BE
   const menuGroups = useMenuStore((s) => s.groups) ?? [];
   const menuLoading = useMenuStore((s) => s.isLoading);
 
-  // Fetch menus on mount — falls back to mock data in dev
   useEffect(() => {
-    const load = async () => {
-      try {
-        const { apiClient } = await import('@nashta/shared-api');
-        const res = await apiClient.get<{ groups: typeof MOCK_MENUS }>('/api/v1/menus');
-        useMenuStore.getState().setMenus(res.data.groups);
-      } catch {
-        // API not available → use mock data for development
-        useMenuStore.getState().setMenus(MOCK_MENUS);
-      }
-    };
-    if (!menuGroups || menuGroups.length === 0) load();
+    // Always start with mock data so sidebar is never empty
+    if (menuGroups.length === 0) {
+      useMenuStore.getState().setMenus(MOCK_MENUS);
+    }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Dark mode toggle
