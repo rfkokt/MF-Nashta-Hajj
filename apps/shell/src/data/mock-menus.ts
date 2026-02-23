@@ -60,17 +60,9 @@ export const MOCK_MENUS: MenuGroup[] = [
         label: 'UI Kit',
         icon: 'Globe',
         path: '/ui-kit',
-        children: [
-          { id: 'uk-button', label: 'Button', icon: 'MousePointer', path: '/ui-kit/button' },
-          { id: 'uk-input', label: 'Input', icon: 'TextCursorInput', path: '/ui-kit/input' },
-          { id: 'uk-card', label: 'Card', icon: 'CreditCard', path: '/ui-kit/card' },
-          { id: 'uk-badge', label: 'Badge', icon: 'Tag', path: '/ui-kit/badge' },
-          { id: 'uk-skeleton', label: 'Skeleton', icon: 'Loader', path: '/ui-kit/skeleton' },
-          { id: 'uk-modal', label: 'Modal', icon: 'Maximize2', path: '/ui-kit/modal' },
-          { id: 'uk-toast', label: 'Toast', icon: 'Bell', path: '/ui-kit/toast' },
-          { id: 'uk-error', label: 'ErrorFallback', icon: 'ShieldAlert', path: '/ui-kit/errorfallback' },
-          { id: 'uk-tutorial', label: 'Tutorial', icon: 'GraduationCap', path: '/ui-kit/tutorial' },
-        ],
+        // Children are auto-injected from component-discovery.ts
+        // Do NOT hardcode them here — they are generated at runtime.
+        children: [],
       },
     ],
   },

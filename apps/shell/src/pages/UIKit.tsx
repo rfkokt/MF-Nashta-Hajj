@@ -9,6 +9,7 @@ import {
   Modal,
 } from '@nashta/ui-kit';
 import { useNotificationStore } from '@nashta/shared-types';
+import { discoveredComponents } from '../utils/component-discovery';
 
 /* ═══════════════════════════════════════════════
    UI Kit Showcase — route-based, no internal sidebar.
@@ -412,36 +413,75 @@ export type { ChipProps } from './components/Chip';`}</CodeBlock>
   );
 }
 
+/* ─── Undocumented Component Placeholder ─── */
+function UndocumentedSection({ name }: { name: string }) {
+  return (
+    <>
+      <SectionHeader title={name} description="Komponen ini belum memiliki dokumentasi." />
+      <div className="border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-xl p-8 text-center">
+        <p className="text-4xl mb-4">📝</p>
+        <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+          Dokumentasi Belum Tersedia
+        </h3>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md mx-auto mb-4">
+          Komponen <code className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-sm font-mono">{name}</code> sudah terdeteksi di <code className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-sm font-mono">libs/ui-kit/src/components/</code> tapi belum ada dokumentasinya.
+        </p>
+        <div className="bg-neutral-50 dark:bg-neutral-900 rounded-lg p-4 text-left max-w-lg mx-auto">
+          <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3">Cara menambahkan dokumentasi:</p>
+          <ol className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+            <li>
+              <span className="font-medium text-neutral-900 dark:text-neutral-100">1.</span> Buka <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">apps/shell/src/pages/UIKit.tsx</code>
+            </li>
+            <li>
+              <span className="font-medium text-neutral-900 dark:text-neutral-100">2.</span> Buat function <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">{name}Section()</code> dengan preview + code usage
+            </li>
+            <li>
+              <span className="font-medium text-neutral-900 dark:text-neutral-100">3.</span> Tambahkan ke <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">SECTION_MAP</code>:
+            </li>
+          </ol>
+          <CodeBlock>{`// Di SECTION_MAP, tambahkan:
+const SECTION_MAP: Record<string, React.FC> = {
+  ...
+  ${name.toLowerCase()}: ${name}Section,
+};`}</CodeBlock>
+        </div>
+      </div>
+    </>
+  );
+}
+
 /* ─── Overview / Landing ─── */
 function OverviewSection() {
   return (
     <>
       <SectionHeader title="🎨 Shared UI Kit" description="Galeri komponen @nashta/ui-kit — pilih komponen dari sidebar untuk melihat preview." />
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[
-          { name: 'Button', desc: '5 variants, 3 sizes, loading state', icon: '🔘' },
-          { name: 'Input', desc: 'Label, error, hint, disabled', icon: '📝' },
-          { name: 'Card', desc: 'Header, Title, Content, Footer', icon: '🃏' },
-          { name: 'Badge', desc: '6 variants untuk status labels', icon: '🏷️' },
-          { name: 'Skeleton', desc: 'Pulse loading placeholder', icon: '💀' },
-          { name: 'Modal', desc: 'Native dialog, 3 sizes', icon: '🪟' },
-          { name: 'Toast', desc: '4 variants, auto-dismiss', icon: '🔔' },
-          { name: 'ErrorFallback', desc: 'Error boundary UI', icon: '🛡️' },
-        ].map((c) => (
-          <Card key={c.name}>
-            <CardContent className="pt-4">
-              <div className="text-2xl mb-2">{c.icon}</div>
-              <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{c.name}</h3>
-              <p className="text-xs text-neutral-500 mt-1">{c.desc}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {discoveredComponents.map((c) => {
+          const hasDoc = c.slug in SECTION_MAP;
+          return (
+            <Card key={c.name}>
+              <CardContent className="pt-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{c.name}</h3>
+                  {hasDoc ? (
+                    <Badge variant="success">✓ Documented</Badge>
+                  ) : (
+                    <Badge variant="warning">📝 Undocumented</Badge>
+                  )}
+                </div>
+                <p className="text-xs text-neutral-500">
+                  {hasDoc ? 'Klik dari sidebar untuk melihat docs' : 'Belum ada dokumentasi'}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </>
   );
 }
 
-/* ─── Section Map ─── */
+/* ─── Section Map (documented components) ─── */
 const SECTION_MAP: Record<string, React.FC> = {
   button: ButtonSection,
   input: InputSection,
@@ -455,7 +495,7 @@ const SECTION_MAP: Record<string, React.FC> = {
 };
 
 /* ═══════════════════════════════════════════════
-   Main Page — no internal sidebar, uses URL path
+   Main Page — auto-discovers components from file system
    ═══════════════════════════════════════════════ */
 export function UIKitPage() {
   const location = useLocation();
@@ -463,13 +503,24 @@ export function UIKitPage() {
   const segments = location.pathname.split('/');
   const componentName = segments[segments.indexOf('ui-kit') + 1] || '';
 
-  const ActiveSection = SECTION_MAP[componentName] || OverviewSection;
+  // Check if documented → show docs, else show placeholder
+  if (componentName && componentName in SECTION_MAP) {
+    const Section = SECTION_MAP[componentName];
+    return <div className="w-full"><Section /></div>;
+  }
+
+  if (componentName && componentName !== '') {
+    // Component exists in sidebar (discovered) but no docs yet
+    const displayName = discoveredComponents.find(c => c.slug === componentName)?.name || componentName;
+    return <div className="w-full"><UndocumentedSection name={displayName} /></div>;
+  }
 
   return (
     <div className="w-full">
-      <ActiveSection />
+      <OverviewSection />
     </div>
   );
 }
 
 export default UIKitPage;
+

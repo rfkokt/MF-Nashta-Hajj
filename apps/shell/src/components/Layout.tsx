@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
 import { ToastContainer } from '@nashta/ui-kit';
+import { discoveredComponents } from '../utils/component-discovery';
 
 /* ─────────────────────────────────────────────
    Collapsible sidebar section (unchanged)
@@ -128,7 +129,25 @@ export function Layout() {
   useEffect(() => {
     // Always start with mock data so sidebar is never empty
     if (menuGroups.length === 0) {
-      useMenuStore.getState().setMenus(MOCK_MENUS);
+      // Enrich UI Kit menu with auto-discovered components
+      const enriched = MOCK_MENUS.map(group => ({
+        ...group,
+        items: group.items.map(item => {
+          if (item.id === 'ui-kit') {
+            const autoChildren: MenuItem[] = discoveredComponents.map(c => ({
+              id: `uk-${c.slug}`,
+              label: c.name,
+              icon: 'FileText',
+              path: `/ui-kit/${c.slug}`,
+            }));
+            // Add Tutorial at the end
+            autoChildren.push({ id: 'uk-tutorial', label: 'Tutorial', icon: 'GraduationCap', path: '/ui-kit/tutorial' });
+            return { ...item, children: autoChildren };
+          }
+          return item;
+        }),
+      }));
+      useMenuStore.getState().setMenus(enriched);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
