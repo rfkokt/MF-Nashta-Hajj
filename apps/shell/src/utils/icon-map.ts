@@ -22,6 +22,13 @@ import {
   Bell,
   Shield,
   Globe,
+  MousePointer,
+  TextCursorInput,
+  Tag,
+  Loader,
+  Maximize2,
+  ShieldAlert,
+  GraduationCap,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -43,6 +50,13 @@ const iconMap: Record<string, LucideIcon> = {
   Bell,
   Shield,
   Globe,
+  MousePointer,
+  TextCursorInput,
+  Tag,
+  Loader,
+  Maximize2,
+  ShieldAlert,
+  GraduationCap,
 };
 
 /**

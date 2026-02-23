@@ -86,7 +86,7 @@ export function AppRouter() {
         <Route index element={<Dashboard />} />
         
         {/* UI Kit showcase */}
-        <Route path="ui-kit" element={<UIKitPage />} />
+        <Route path="ui-kit/*" element={<UIKitPage />} />
         
         {/* Remote Documentation MFE */}
         <Route 

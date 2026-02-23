@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router';
 import {
   Button,
   Input,
@@ -10,22 +11,9 @@ import {
 import { useNotificationStore } from '@nashta/shared-types';
 
 /* ═══════════════════════════════════════════════
-   UI Kit Showcase — shadcn-style sidebar nav
+   UI Kit Showcase — route-based, no internal sidebar.
+   Sub-menu lives in the main shell sidebar.
    ═══════════════════════════════════════════════ */
-
-const COMPONENTS = [
-  { id: 'button', label: 'Button', icon: '🔘' },
-  { id: 'input', label: 'Input', icon: '📝' },
-  { id: 'card', label: 'Card', icon: '🃏' },
-  { id: 'badge', label: 'Badge', icon: '🏷️' },
-  { id: 'skeleton', label: 'Skeleton', icon: '💀' },
-  { id: 'modal', label: 'Modal', icon: '🪟' },
-  { id: 'toast', label: 'Toast', icon: '🔔' },
-  { id: 'errorfallback', label: 'ErrorFallback', icon: '🛡️' },
-  { id: 'tutorial', label: 'Tutorial', icon: '📖' },
-] as const;
-
-type ComponentId = typeof COMPONENTS[number]['id'];
 
 function CodeBlock({ children }: { children: string }) {
   const [copied, setCopied] = useState(false);
@@ -71,6 +59,31 @@ function PreviewCard({ title, children }: { title?: string; children: React.Reac
   );
 }
 
+function PropsTable({ rows }: { rows: [string, string, string][] }) {
+  return (
+    <div className="overflow-x-auto mt-2">
+      <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
+        <thead className="bg-neutral-50 dark:bg-neutral-900">
+          <tr>
+            <th className="text-left px-4 py-2 font-medium">Prop</th>
+            <th className="text-left px-4 py-2 font-medium">Type</th>
+            <th className="text-left px-4 py-2 font-medium">Default</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+          {rows.map(([prop, type, def]) => (
+            <tr key={prop}>
+              <td className="px-4 py-2"><code>{prop}</code></td>
+              <td className="px-4 py-2 text-neutral-500">{type}</td>
+              <td className="px-4 py-2 text-neutral-400">{def}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /* ─── Component Sections ─── */
 
 function ButtonSection() {
@@ -104,26 +117,14 @@ function ButtonSection() {
 
 <Button variant="primary" size="md">Click me</Button>
 <Button variant="danger">Hapus</Button>
-<Button variant="outline" size="sm">Batal</Button>
 <Button isLoading>Menyimpan...</Button>`}</CodeBlock>
       <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
-          <thead className="bg-neutral-50 dark:bg-neutral-900">
-            <tr>
-              <th className="text-left px-4 py-2 font-medium">Prop</th>
-              <th className="text-left px-4 py-2 font-medium">Type</th>
-              <th className="text-left px-4 py-2 font-medium">Default</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
-            <tr><td className="px-4 py-2"><code>variant</code></td><td className="px-4 py-2">primary | secondary | outline | ghost | danger</td><td className="px-4 py-2">primary</td></tr>
-            <tr><td className="px-4 py-2"><code>size</code></td><td className="px-4 py-2">sm | md | lg | icon</td><td className="px-4 py-2">md</td></tr>
-            <tr><td className="px-4 py-2"><code>isLoading</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
-            <tr><td className="px-4 py-2"><code>disabled</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <PropsTable rows={[
+        ['variant', 'primary | secondary | outline | ghost | danger', 'primary'],
+        ['size', 'sm | md | lg | icon', 'md'],
+        ['isLoading', 'boolean', 'false'],
+        ['disabled', 'boolean', 'false'],
+      ]} />
     </>
   );
 }
@@ -148,16 +149,11 @@ function InputSection() {
 <Input label="Password" error="Minimal 8 karakter" />
 <Input label="Catatan" hint="Opsional" />`}</CodeBlock>
       <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
-          <thead className="bg-neutral-50 dark:bg-neutral-900"><tr><th className="text-left px-4 py-2 font-medium">Prop</th><th className="text-left px-4 py-2 font-medium">Type</th><th className="text-left px-4 py-2 font-medium">Default</th></tr></thead>
-          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
-            <tr><td className="px-4 py-2"><code>label</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
-            <tr><td className="px-4 py-2"><code>error</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
-            <tr><td className="px-4 py-2"><code>hint</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <PropsTable rows={[
+        ['label', 'string', '—'],
+        ['error', 'string', '—'],
+        ['hint', 'string', '—'],
+      ]} />
     </>
   );
 }
@@ -180,12 +176,11 @@ function CardSection() {
         </div>
       </PreviewCard>
       <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
-      <CodeBlock>{`import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@nashta/ui-kit';
+      <CodeBlock>{`import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@nashta/ui-kit';
 
 <Card>
   <CardHeader>
     <CardTitle>Judul</CardTitle>
-    <CardDescription>Deskripsi</CardDescription>
   </CardHeader>
   <CardContent>Isi konten</CardContent>
   <CardFooter><Button>Aksi</Button></CardFooter>
@@ -220,8 +215,12 @@ function BadgeSection() {
       <CodeBlock>{`import { Badge } from '@nashta/ui-kit';
 
 <Badge variant="success">Aktif</Badge>
-<Badge variant="error">Ditolak</Badge>
-<Badge variant="outline">Draft</Badge>`}</CodeBlock>
+<Badge variant="error">Ditolak</Badge>`}</CodeBlock>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
+      <PropsTable rows={[
+        ['variant', 'default | success | warning | error | info | outline', 'default'],
+        ['className', 'string', '—'],
+      ]} />
     </>
   );
 }
@@ -246,8 +245,7 @@ function SkeletonSection() {
       <CodeBlock>{`import { Skeleton } from '@nashta/ui-kit';
 
 <Skeleton className="h-12 w-12 rounded-full" />
-<Skeleton className="h-4 w-3/4" />
-<Skeleton className="h-32 w-full rounded-xl" />`}</CodeBlock>
+<Skeleton className="h-4 w-3/4" />`}</CodeBlock>
     </>
   );
 }
@@ -257,7 +255,7 @@ function ModalSection() {
   const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
   return (
     <>
-      <SectionHeader title="Modal / Dialog" description="Dialog menggunakan native <dialog> element. 3 sizes." />
+      <SectionHeader title="Modal / Dialog" description="Native <dialog> element. 3 sizes." />
       <PreviewCard title="Try it">
         <div className="flex flex-wrap gap-3">
           {(['sm', 'md', 'lg'] as const).map((s) => (
@@ -268,7 +266,7 @@ function ModalSection() {
         </div>
       </PreviewCard>
       <Modal open={open} onClose={() => setOpen(false)} title="Contoh Modal" description={`Size: ${size}`} size={size}>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Ini konten modal. Bisa form, konfirmasi, dll.</p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Konten modal.</p>
         <div className="flex gap-2 justify-end">
           <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
           <Button onClick={() => setOpen(false)}>Simpan</Button>
@@ -280,21 +278,15 @@ function ModalSection() {
 const [open, setOpen] = useState(false);
 
 <Modal open={open} onClose={() => setOpen(false)} title="Judul" size="md">
-  <p>Konten modal</p>
-  <Button onClick={() => setOpen(false)}>Tutup</Button>
+  <p>Konten</p>
 </Modal>`}</CodeBlock>
       <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
-          <thead className="bg-neutral-50 dark:bg-neutral-900"><tr><th className="text-left px-4 py-2 font-medium">Prop</th><th className="text-left px-4 py-2 font-medium">Type</th><th className="text-left px-4 py-2 font-medium">Default</th></tr></thead>
-          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
-            <tr><td className="px-4 py-2"><code>open</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
-            <tr><td className="px-4 py-2"><code>onClose</code></td><td className="px-4 py-2">() =&gt; void</td><td className="px-4 py-2">—</td></tr>
-            <tr><td className="px-4 py-2"><code>title</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
-            <tr><td className="px-4 py-2"><code>size</code></td><td className="px-4 py-2">sm | md | lg | fullscreen</td><td className="px-4 py-2">md</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <PropsTable rows={[
+        ['open', 'boolean', 'false'],
+        ['onClose', '() => void', '—'],
+        ['title', 'string', '—'],
+        ['size', 'sm | md | lg | fullscreen', 'md'],
+      ]} />
     </>
   );
 }
@@ -302,7 +294,7 @@ const [open, setOpen] = useState(false);
 function ToastSection() {
   return (
     <>
-      <SectionHeader title="Toast / Notification" description="Toast notifikasi via useNotificationStore. 4 variant." />
+      <SectionHeader title="Toast / Notification" description="Toast via useNotificationStore. 4 variant." />
       <PreviewCard title="Try it">
         <div className="flex flex-wrap gap-3">
           <Button variant="outline" onClick={() => useNotificationStore.getState().success('Data berhasil disimpan!')}>✅ Success</Button>
@@ -314,11 +306,8 @@ function ToastSection() {
       <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { useNotificationStore } from '@nashta/shared-types';
 
-// Dari mana saja (tidak perlu hook):
 useNotificationStore.getState().success('Berhasil!');
-useNotificationStore.getState().error('Gagal!');
-useNotificationStore.getState().warning('Peringatan!');
-useNotificationStore.getState().info('Info baru');`}</CodeBlock>
+useNotificationStore.getState().error('Gagal!');`}</CodeBlock>
     </>
   );
 }
@@ -331,7 +320,7 @@ function ErrorFallbackSection() {
         <div className="text-center p-8 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
           <p className="text-4xl mb-3">⚠️</p>
           <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Terjadi Kesalahan</h3>
-          <p className="text-sm text-neutral-500 mt-1">Komponen ini mengalami error dan ditangkap oleh ErrorBoundary</p>
+          <p className="text-sm text-neutral-500 mt-1">Komponen ini ditangkap oleh ErrorBoundary</p>
           <Button variant="outline" size="sm" className="mt-4">Coba Lagi</Button>
         </div>
       </PreviewCard>
@@ -350,9 +339,10 @@ function TutorialSection() {
   return (
     <>
       <SectionHeader title="Tutorial: Membuat Komponen Baru" description="Langkah-langkah menambahkan komponen ke UI Kit." />
-
       <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code></p>
+      <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
+        Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code>
+      </p>
       <CodeBlock>{`import type { ReactNode } from 'react';
 
 export interface ChipProps {
@@ -363,9 +353,9 @@ export interface ChipProps {
 
 export function Chip({ children, color = 'primary', onRemove }: ChipProps) {
   const colors = {
-    primary: 'bg-primary-100 text-primary-800 dark:bg-primary-900/40 dark:text-primary-300',
-    secondary: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
-    neutral: 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
+    primary: 'bg-primary-100 text-primary-800 dark:bg-primary-900/40',
+    secondary: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40',
+    neutral: 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800',
   };
   return (
     <span className={\`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm \${colors[color]}\`}>
@@ -392,12 +382,11 @@ export type { ChipProps } from './components/Chip';`}</CodeBlock>
         <ul className="space-y-1.5 list-disc list-inside text-sm text-amber-700 dark:text-amber-400">
           <li>Wajib punya <strong>TypeScript interface</strong> (Props)</li>
           <li>Gunakan <strong>design tokens</strong> dari <code className="text-xs">tokens.css</code></li>
-          <li>Selalu support <strong>dark mode</strong> (<code className="text-xs">dark:</code> variant)</li>
+          <li>Selalu support <strong>dark mode</strong></li>
           <li>Export komponen <strong>dan</strong> type dari <code className="text-xs">index.ts</code></li>
           <li>Jangan import <code className="text-xs">@nashta/shared-types</code> di ui-kit (circular)</li>
           <li>Tambahkan <strong>aria attributes</strong></li>
           <li>Komponen harus <strong>stateless</strong> (via props)</li>
-          <li>Tambahkan <code className="text-xs">className</code> prop untuk extensibility</li>
         </ul>
       </div>
 
@@ -423,8 +412,37 @@ export type { ChipProps } from './components/Chip';`}</CodeBlock>
   );
 }
 
-/* ─── Component Map ─── */
-const SECTION_MAP: Record<ComponentId, () => JSX.Element> = {
+/* ─── Overview / Landing ─── */
+function OverviewSection() {
+  return (
+    <>
+      <SectionHeader title="🎨 Shared UI Kit" description="Galeri komponen @nashta/ui-kit — pilih komponen dari sidebar untuk melihat preview." />
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          { name: 'Button', desc: '5 variants, 3 sizes, loading state', icon: '🔘' },
+          { name: 'Input', desc: 'Label, error, hint, disabled', icon: '📝' },
+          { name: 'Card', desc: 'Header, Title, Content, Footer', icon: '🃏' },
+          { name: 'Badge', desc: '6 variants untuk status labels', icon: '🏷️' },
+          { name: 'Skeleton', desc: 'Pulse loading placeholder', icon: '💀' },
+          { name: 'Modal', desc: 'Native dialog, 3 sizes', icon: '🪟' },
+          { name: 'Toast', desc: '4 variants, auto-dismiss', icon: '🔔' },
+          { name: 'ErrorFallback', desc: 'Error boundary UI', icon: '🛡️' },
+        ].map((c) => (
+          <Card key={c.name}>
+            <CardContent className="pt-4">
+              <div className="text-2xl mb-2">{c.icon}</div>
+              <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{c.name}</h3>
+              <p className="text-xs text-neutral-500 mt-1">{c.desc}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ─── Section Map ─── */
+const SECTION_MAP: Record<string, React.FC> = {
   button: ButtonSection,
   input: InputSection,
   card: CardSection,
@@ -437,58 +455,19 @@ const SECTION_MAP: Record<ComponentId, () => JSX.Element> = {
 };
 
 /* ═══════════════════════════════════════════════
-   Main Page
+   Main Page — no internal sidebar, uses URL path
    ═══════════════════════════════════════════════ */
 export function UIKitPage() {
-  const [active, setActive] = useState<ComponentId>('button');
-  const ActiveSection = SECTION_MAP[active];
+  const location = useLocation();
+  // Extract component name from /ui-kit/button → "button"
+  const segments = location.pathname.split('/');
+  const componentName = segments[segments.indexOf('ui-kit') + 1] || '';
+
+  const ActiveSection = SECTION_MAP[componentName] || OverviewSection;
 
   return (
-    <div className="flex gap-0 -mx-6 lg:-mx-8 -mt-6 min-h-[calc(100vh-4rem)]">
-      {/* ── Sidebar ── */}
-      <aside className="w-56 shrink-0 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-6 px-3 overflow-y-auto">
-        <div className="px-3 mb-4">
-          <h2 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">Components</h2>
-          <p className="text-xs text-neutral-400 mt-0.5">@nashta/ui-kit</p>
-        </div>
-
-        <div className="space-y-0.5">
-          {COMPONENTS.filter(c => c.id !== 'tutorial').map((comp) => (
-            <button
-              key={comp.id}
-              onClick={() => setActive(comp.id)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                active === comp.id
-                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-medium nav-item-active'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-              }`}
-            >
-              <span className="mr-2 text-xs">{comp.icon}</span>
-              {comp.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="border-t border-neutral-200 dark:border-neutral-800 mt-4 pt-4 px-3">
-          <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-2">Guide</p>
-        </div>
-        <button
-          onClick={() => setActive('tutorial')}
-          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-            active === 'tutorial'
-              ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-medium nav-item-active'
-              : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-          }`}
-        >
-          <span className="mr-2 text-xs">📖</span>
-          Tutorial
-        </button>
-      </aside>
-
-      {/* ── Content ── */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <ActiveSection />
-      </main>
+    <div className="w-full">
+      <ActiveSection />
     </div>
   );
 }
