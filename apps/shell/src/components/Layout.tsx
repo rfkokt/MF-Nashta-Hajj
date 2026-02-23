@@ -1,10 +1,11 @@
 import { Outlet, useNavigate, NavLink } from 'react-router';
-import { useAuthStore, useMenuStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import { useAuthStore, useMenuStore, useThemeStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
 import { LogOut, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
+import { ToastContainer } from '@nashta/ui-kit';
 
 /* ─────────────────────────────────────────────
    Collapsible sidebar section (unchanged)
@@ -115,12 +116,10 @@ export function Layout() {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark';
-    }
-    return false;
-  });
+
+  // Theme store (persisted to localStorage, auto-applies .dark class)
+  const isDark = useThemeStore((s) => s.isDark);
+  const toggleTheme = useThemeStore((s) => s.toggle);
 
   // Menu store — initialize with mock data immediately, then try BE
   const menuGroups = useMenuStore((s) => s.groups) ?? [];
@@ -133,12 +132,6 @@ export function Layout() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Dark mode toggle — persist to localStorage
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
-
   const handleLogout = () => {
     dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_OUT, {});
     useAuthStore.getState().clearAuth();
@@ -147,6 +140,7 @@ export function Layout() {
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+      <ToastContainer />
       {/* ── Top Header Bar (full width, dark) ── */}
       <header className="h-16 bg-neutral-900 dark:bg-black flex items-center px-6 gap-4 sticky top-0 z-50 shrink-0">
         {/* Mobile hamburger */}
@@ -170,11 +164,11 @@ export function Layout() {
         {/* Header actions */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={toggleTheme}
             className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors"
             aria-label="Toggle dark mode"
           >
-            {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
           <button className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors">
             🔔

@@ -1,0 +1,89 @@
+import { useEffect, useState } from 'react';
+import { useNotificationStore } from '@nashta/shared-types';
+import type { Toast as ToastType, ToastVariant } from '@nashta/shared-types';
+import { X, CheckCircle, AlertTriangle, AlertCircle, Info } from 'lucide-react';
+
+/* ─────────────────────────────────────────────
+   Toast Component — renders from notificationStore
+   Drop <ToastContainer /> in Shell's root layout.
+   ───────────────────────────────────────────── */
+
+const variantStyles: Record<ToastVariant, { bg: string; border: string; icon: React.ElementType }> = {
+  success: { bg: 'bg-emerald-50 dark:bg-emerald-900/40', border: 'border-emerald-200 dark:border-emerald-800', icon: CheckCircle },
+  error:   { bg: 'bg-red-50 dark:bg-red-900/40',       border: 'border-red-200 dark:border-red-800',       icon: AlertCircle },
+  warning: { bg: 'bg-amber-50 dark:bg-amber-900/40',   border: 'border-amber-200 dark:border-amber-800',   icon: AlertTriangle },
+  info:    { bg: 'bg-blue-50 dark:bg-blue-900/40',     border: 'border-blue-200 dark:border-blue-800',     icon: Info },
+};
+
+const variantText: Record<ToastVariant, string> = {
+  success: 'text-emerald-800 dark:text-emerald-200',
+  error:   'text-red-800 dark:text-red-200',
+  warning: 'text-amber-800 dark:text-amber-200',
+  info:    'text-blue-800 dark:text-blue-200',
+};
+
+const variantIconColor: Record<ToastVariant, string> = {
+  success: 'text-emerald-500',
+  error:   'text-red-500',
+  warning: 'text-amber-500',
+  info:    'text-blue-500',
+};
+
+function ToastItem({ toast }: { toast: ToastType }) {
+  const removeToast = useNotificationStore((s) => s.removeToast);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // Animate in
+    requestAnimationFrame(() => setVisible(true));
+  }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(() => removeToast(toast.id), 200);
+  };
+
+  const style = variantStyles[toast.variant];
+  const Icon = style.icon;
+
+  return (
+    <div
+      className={`flex items-start gap-3 px-4 py-3 rounded-xl border shadow-lg backdrop-blur-sm transition-all duration-200 ${
+        style.bg
+      } ${style.border} ${
+        visible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
+      }`}
+      role="status"
+      aria-live="polite"
+    >
+      <Icon className={`h-5 w-5 mt-0.5 shrink-0 ${variantIconColor[toast.variant]}`} />
+      <p className={`text-sm font-medium flex-1 ${variantText[toast.variant]}`}>
+        {toast.message}
+      </p>
+      <button
+        onClick={handleClose}
+        className="shrink-0 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors"
+        aria-label="Dismiss"
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+/** Place this in Shell's root layout */
+export function ToastContainer() {
+  const toasts = useNotificationStore((s) => s.toasts);
+
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="fixed top-20 right-6 z-[9999] flex flex-col gap-2 w-96 max-w-[calc(100vw-2rem)]">
+      {toasts.map((toast) => (
+        <ToastItem key={toast.id} toast={toast} />
+      ))}
+    </div>
+  );
+}
+
+export default ToastContainer;

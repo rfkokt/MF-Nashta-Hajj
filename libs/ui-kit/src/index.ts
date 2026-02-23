@@ -14,5 +14,13 @@ export type { SkeletonProps } from './components/Skeleton';
 export { ErrorFallback } from './components/ErrorFallback';
 export type { ErrorFallbackProps } from './components/ErrorFallback';
 
+export { ToastContainer } from './components/Toast';
+
+export { Modal } from './components/Modal';
+export type { ModalProps } from './components/Modal';
+
+export { Badge } from './components/Badge';
+export type { BadgeProps, BadgeVariant } from './components/Badge';
+
 // Utils
 export { cn } from './utils/cn';
