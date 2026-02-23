@@ -1,10 +1,25 @@
 import { Outlet, useNavigate, NavLink } from 'react-router';
-import { useAuthStore } from '@nashta/shared-types';
-import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
-import { LogOut, LayoutDashboard, Menu, X, Sun, Moon, ChevronDown, Settings, HelpCircle, Package, ClipboardList, Users } from 'lucide-react';
+import { useAuthStore, useMenuStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+import type { MenuItem } from '@nashta/shared-types';
+import { LogOut, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { getIcon } from '../utils/icon-map';
+import { MOCK_MENUS } from '../data/mock-menus';
 
-function CollapsibleSection({ label, icon: Icon, children, defaultOpen = false }: { label: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean }) {
+/* ─────────────────────────────────────────────
+   Collapsible sidebar section (unchanged)
+   ───────────────────────────────────────────── */
+function CollapsibleSection({
+  label,
+  icon: Icon,
+  children,
+  defaultOpen = false,
+}: {
+  label: string;
+  icon: React.ElementType;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div>
@@ -27,12 +42,101 @@ function CollapsibleSection({ label, icon: Icon, children, defaultOpen = false }
   );
 }
 
+/* ─────────────────────────────────────────────
+   NavLink class helpers
+   ───────────────────────────────────────────── */
+const topNavClass = ({ isActive }: { isActive: boolean }) =>
+  `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+    isActive
+      ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
+      : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
+  }`;
+
+const subNavClass = ({ isActive }: { isActive: boolean }) =>
+  `block py-1.5 px-2 rounded-lg text-sm transition-colors ${
+    isActive
+      ? 'font-semibold text-neutral-900 dark:text-white'
+      : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+  }`;
+
+/* ─────────────────────────────────────────────
+   Render a single MenuItem (top-level or nested)
+   ───────────────────────────────────────────── */
+function SidebarItem({ item }: { item: MenuItem }) {
+  const IconComp = getIcon(item.icon);
+
+  // If item has children → render as collapsible group
+  if (item.children && item.children.length > 0) {
+    return (
+      <CollapsibleSection label={item.label} icon={IconComp} defaultOpen={item.defaultOpen}>
+        {item.children.map((child) => (
+          <NavLink key={child.id} to={child.path} className={subNavClass}>
+            {child.label}
+          </NavLink>
+        ))}
+      </CollapsibleSection>
+    );
+  }
+
+  // Otherwise → simple NavLink
+  return (
+    <NavLink to={item.path} end={item.path === '/'} className={topNavClass}>
+      <IconComp className="h-4 w-4" />
+      {item.label}
+      {item.badge && (
+        <span className="ml-auto text-[10px] font-bold bg-orange-500 text-white px-1.5 py-0.5 rounded-full leading-none">
+          {item.badge}
+        </span>
+      )}
+    </NavLink>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Skeleton loader for sidebar
+   ───────────────────────────────────────────── */
+function SidebarSkeleton() {
+  return (
+    <div className="px-4 pt-4 space-y-3 animate-pulse">
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="flex items-center gap-3 px-3 py-2">
+          <div className="h-4 w-4 bg-neutral-200 dark:bg-neutral-700 rounded" />
+          <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded flex-1" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   Main Layout Component
+   ═══════════════════════════════════════════════ */
 export function Layout() {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  // Menu store
+  const menuGroups = useMenuStore((s) => s.groups);
+  const menuLoading = useMenuStore((s) => s.isLoading);
+
+  // Fetch menus on mount — falls back to mock data in dev
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { apiClient } = await import('@nashta/shared-api');
+        const res = await apiClient.get<{ groups: typeof MOCK_MENUS }>('/api/v1/menus');
+        useMenuStore.getState().setMenus(res.data.groups);
+      } catch {
+        // API not available → use mock data for development
+        useMenuStore.getState().setMenus(MOCK_MENUS);
+      }
+    };
+    if (menuGroups.length === 0) load();
+  }, [menuGroups.length]);
+
+  // Dark mode toggle
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
   }, [darkMode]);
@@ -42,13 +146,6 @@ export function Layout() {
     useAuthStore.getState().clearAuth();
     navigate('/auth/login');
   };
-
-  const subNavClass = ({ isActive }: { isActive: boolean }) =>
-    `block py-1.5 px-2 rounded-lg text-sm transition-colors ${
-      isActive
-        ? 'font-semibold text-neutral-900 dark:text-white'
-        : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
-    }`;
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
@@ -118,74 +215,28 @@ export function Layout() {
             <p className="text-lg font-bold leading-tight">{user?.name || 'Ahmad Fahim Hakim'} 👋</p>
           </div>
 
-          {/* Navigation */}
-          <nav className="px-4 pb-4 space-y-5 flex-1" aria-label="Main navigation">
-            {/* Menu */}
-            <div>
-              <div className="px-3 mb-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">Menu</div>
-              <div className="space-y-1">
-                <NavLink
-                  to="/"
-                  end
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                        : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
-                    }`
-                  }
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Beranda
-                </NavLink>
-
-                <CollapsibleSection label="Customer Service" icon={Users} defaultOpen>
-                  <NavLink to="/docs" className={subNavClass}>Pendaftaran Jamaah</NavLink>
-                </CollapsibleSection>
-
-                <CollapsibleSection label="Manajemen Paket" icon={Package}>
-                  <NavLink to="/kelola-paket" className={subNavClass}>Kelola Paket</NavLink>
-                  <NavLink to="/aktifasi-paket" className={subNavClass}>Aktifasi Paket</NavLink>
-                </CollapsibleSection>
-
-                <CollapsibleSection label="Inventaris" icon={ClipboardList}>
-                  <NavLink to="/purchase-request" className={subNavClass}>Purchase Request</NavLink>
-                  <NavLink to="/purchase-order" className={subNavClass}>Purchase Order</NavLink>
-                  <NavLink to="/receipt-order" className={subNavClass}>Receipt Order</NavLink>
-                </CollapsibleSection>
-              </div>
-            </div>
+          {/* ── Dynamic Navigation ── */}
+          <nav className="px-4 pb-4 flex-1" aria-label="Main navigation">
+            {menuLoading ? (
+              <SidebarSkeleton />
+            ) : (
+              menuGroups.map((group, idx) => (
+                <div key={group.title} className={idx > 0 ? 'border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-3' : ''}>
+                  <div className="px-3 mb-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
+                    {group.title}
+                  </div>
+                  <div className="space-y-1">
+                    {group.items.map((item) => (
+                      <SidebarItem key={item.id} item={item} />
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
           </nav>
 
-          {/* Bottom — Lainnya */}
-          <div className="px-4 pb-4 border-t border-neutral-100 dark:border-neutral-800 pt-3 space-y-1">
-            <div className="px-3 mb-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">Lainnya</div>
-            <NavLink
-              to="/pengaturan"
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
-                }`
-              }
-            >
-              <Settings className="h-4 w-4" />
-              Pengaturan
-            </NavLink>
-            <NavLink
-              to="/bantuan"
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
-                }`
-              }
-            >
-              <HelpCircle className="h-4 w-4" />
-              Bantuan
-            </NavLink>
+          {/* Logout — always visible at bottom */}
+          <div className="px-4 pb-4 border-t border-neutral-100 dark:border-neutral-800 pt-3">
             <button
               className="flex items-center gap-3 px-3 py-2 w-full rounded-xl text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors text-left"
               onClick={handleLogout}
