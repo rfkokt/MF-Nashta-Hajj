@@ -1,3 +1,6 @@
+/* Enable class-based dark mode (toggle via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors — Primary (Monochrome / Black for minimalist theme) */
   --color-primary-50: oklch(0.98 0.005 260);
