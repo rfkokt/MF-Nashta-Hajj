@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": false,
+    "paths": {
+      "@my-saas/shared-types": ["libs/shared-types/src/index.ts"],
+      "@my-saas/shared-types/*": ["libs/shared-types/src/*"],
+      "@my-saas/shared-api": ["libs/shared-api/src/index.ts"],
+      "@my-saas/shared-api/*": ["libs/shared-api/src/*"],
+      "@my-saas/ui-kit": ["libs/ui-kit/src/index.ts"],
+      "@my-saas/ui-kit/*": ["libs/ui-kit/src/*"],
+      "@my-saas/tools": ["tools/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
