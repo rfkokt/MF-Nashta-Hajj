@@ -17,6 +17,14 @@ import { DocsEventsErrorSection } from './pages/DocsEventsErrorSection';
 import { DocsEnvDarkModeSection } from './pages/DocsEnvDarkModeSection';
 import { DocsGitPerfSection } from './pages/DocsGitPerfSection';
 import { DocsSecuritySection } from './pages/DocsSecuritySection';
+import { DocsWhyMfSection } from './pages/DocsWhyMfSection';
+
+// ── Reusable Components Section imports ──
+import { InfoBoxSection } from './pages/components/InfoBoxSection';
+import { ComparisonTableSection } from './pages/components/ComparisonTableSection';
+import { FeatureGridSection } from './pages/components/FeatureGridSection';
+import { UtilitiesSection } from './pages/components/UtilitiesSection';
+import { ComponentsOverviewSection } from './pages/components/ComponentsOverviewSection';
 
 // ── UI Kit Section imports ──
 import { ButtonSection } from './pages/ui-kit/ButtonSection';
@@ -45,6 +53,11 @@ type SectionData = {
 
 /* ─── Docs Section Map ─── */
 export const DOCS_SECTION_MAP: Record<string, SectionData> = {
+  'kenapa-module-federation': {
+    component: DocsWhyMfSection,
+    title: '0. Kenapa Module Federation?',
+    category: '🚀 Getting Started',
+  },
   'struktur-proyek': {
     component: DocsStrukturSection,
     title: '1. Struktur Proyek',
@@ -126,6 +139,14 @@ export const UIKIT_SECTION_MAP: Record<string, React.FC> = {
   tabs: TabsSection,
 };
 
+/* ─── Reusable Components Section Map ─── */
+export const COMPONENTS_SECTION_MAP: Record<string, React.FC> = {
+  infobox: InfoBoxSection,
+  comparisontable: ComparisonTableSection,
+  featuregrid: FeatureGridSection,
+  utilities: UtilitiesSection,
+};
+
 /* ═══════════════════════════════════════════════
    Main Page — Router for Docs + UI Kit
    ═══════════════════════════════════════════════ */
@@ -136,6 +157,35 @@ export function App() {
   const docsIndex = segments.indexOf('docs');
   const sectionSlug = docsIndex !== -1 ? segments[docsIndex + 1] : '';
   const subSlug = docsIndex !== -1 ? segments[docsIndex + 2] : '';
+
+  // ── Reusable Components Routes: /docs/components/* ──
+  if (sectionSlug === 'components') {
+    const componentName = subSlug || '';
+
+    if (componentName && componentName in COMPONENTS_SECTION_MAP) {
+      const Section = COMPONENTS_SECTION_MAP[componentName];
+      return (
+        <div className="p-8 mx-auto w-full space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+          <Section />
+          <div className="mt-12 pt-8 border-t border-neutral-100 dark:border-neutral-800 flex justify-start">
+            <Link
+              to="/docs/components"
+              className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+            >
+              ← Kembali ke Reusable Components
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
+    // Components overview
+    return (
+      <div className="p-8 mx-auto w-full">
+        <ComponentsOverviewSection sectionMap={COMPONENTS_SECTION_MAP} />
+      </div>
+    );
+  }
 
   // ── UI Kit Routes: /docs/ui-kit/* ──
   if (sectionSlug === 'ui-kit') {

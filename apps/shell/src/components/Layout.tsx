@@ -9,7 +9,7 @@ import {
   dispatchMfeEvent,
 } from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
-import { LogOut, Menu, X, Sun, Moon, ChevronDown, AlertTriangle } from 'lucide-react';
+import { LogOut, Menu, X, Sun, Moon, ChevronDown, AlertTriangle, PanelLeft } from 'lucide-react';
 import React, { useState, useEffect, useCallback } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
@@ -18,7 +18,7 @@ import { discoveredComponents } from '../utils/component-discovery';
 import { AutoBreadcrumb } from './AutoBreadcrumb';
 
 /* ─────────────────────────────────────────────
-   Collapsible sidebar section (unchanged)
+   Collapsible sidebar section
    ───────────────────────────────────────────── */
 function CollapsibleSection({
   label,
@@ -34,11 +34,9 @@ function CollapsibleSection({
   childPaths?: string[];
 }) {
   const location = useLocation();
-  // Check if any child path is currently active
   const hasActiveChild = childPaths.some(
     (p) => location.pathname === p || location.pathname.startsWith(p + '/')
   );
-  // Keep open if any child is active; otherwise user can toggle
   const [manualOpen, setManualOpen] = useState(defaultOpen);
   const isOpen = hasActiveChild || manualOpen;
 
@@ -92,7 +90,6 @@ const subNavClass = ({ isActive }: { isActive: boolean }) =>
 function SidebarItem({ item }: { item: MenuItem }) {
   const icon = getIcon(item.icon);
 
-  // If item has children → render as collapsible group
   if (item.children && item.children.length > 0) {
     return (
       <CollapsibleSection
@@ -110,10 +107,8 @@ function SidebarItem({ item }: { item: MenuItem }) {
     );
   }
 
-  // Otherwise → simple NavLink
   return (
     <NavLink to={item.path} end={item.path === '/'} className={topNavClass}>
-      {/* We use createElement to avoid violating the "components defined in render" hook rule */}
       {React.createElement(icon, { className: 'h-4 w-4' })}
       {item.label}
       {item.badge && (
@@ -148,19 +143,18 @@ export function Layout() {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // Theme store (persisted to localStorage, auto-applies .dark class)
+  // Theme store
   const isDark = useThemeStore((s) => s.isDark);
   const toggleTheme = useThemeStore((s) => s.toggle);
 
-  // Menu store — initialize with mock data immediately, then try BE
+  // Menu store
   const menuGroups = useMenuStore((s) => s.groups) ?? [];
   const menuLoading = useMenuStore((s) => s.isLoading);
 
   useEffect(() => {
-    // Always start with mock data so sidebar is never empty
     if (menuGroups.length === 0) {
-      // Enrich UI Kit menu with auto-discovered components
       const enriched = MOCK_MENUS.map((group) => ({
         ...group,
         items: group.items.map((item) => {
@@ -171,7 +165,6 @@ export function Layout() {
               icon: 'FileText',
               path: `/docs/ui-kit/${c.slug}`,
             }));
-            // Add Tutorial at the end
             autoChildren.push({
               id: 'uk-tutorial',
               label: 'Tutorial',
@@ -197,8 +190,8 @@ export function Layout() {
   const [showIdleWarning, setShowIdleWarning] = useState(false);
 
   const { resetTimer } = useIdleTimeout({
-    idleTime: 30 * 60 * 1000, // 30 minutes
-    warningTime: 5 * 60 * 1000, // 5 minutes after warning
+    idleTime: 30 * 60 * 1000,
+    warningTime: 5 * 60 * 1000,
     onWarning: () => setShowIdleWarning(true),
     onTimeout: () => {
       setShowIdleWarning(false);
@@ -213,7 +206,7 @@ export function Layout() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+    <div className="flex min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
       <ToastContainer
         toasts={useNotificationStore((s) => s.toasts)}
         onDismiss={useNotificationStore.getState().removeToast}
@@ -245,88 +238,53 @@ export function Layout() {
         </div>
       </Modal>
 
-      {/* ── Top Header Bar (full width, dark) ── */}
-      <header className="h-16 bg-neutral-900 dark:bg-black flex items-center px-6 gap-4 sticky top-0 z-50 shrink-0">
-        {/* Mobile hamburger */}
+      {/* ══════════════════════════════════════
+         SIDEBAR — unified with brand & greeting
+         ══════════════════════════════════════ */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 flex flex-col transition-all duration-300 ease-in-out overflow-hidden ${
+          sidebarCollapsed
+            ? 'max-lg:-translate-x-full lg:w-0 lg:border-r-0'
+            : sidebarOpen
+              ? 'w-72 translate-x-0'
+              : 'max-lg:-translate-x-full lg:translate-x-0 w-72'
+        }`}
+      >
+        {/* Close button (mobile) */}
         <button
-          className="lg:hidden text-neutral-300 hover:text-white mr-2"
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Open sidebar"
+          className="lg:hidden absolute top-4 right-3 text-neutral-400 hover:text-neutral-900 dark:hover:text-white z-10"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close sidebar"
         >
-          <Menu className="h-5 w-5" />
+          <X className="h-5 w-5" />
         </button>
 
-        {/* Brand */}
-        <div className="flex items-center gap-2">
-          <div className="bg-orange-500 w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm">
-            U
-          </div>
-          <span className="text-white font-bold text-lg tracking-tight hidden sm:inline">
-            Uhud Tour
-          </span>
-        </div>
-
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Header actions */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors"
-            aria-label="Toggle dark mode"
-          >
-            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
-          <button className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors">
-            🔔
-          </button>
-
-          <div className="flex items-center gap-3 pl-4 border-l border-neutral-700">
-            <img
-              src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ahmad"
-              alt="Avatar"
-              className="h-9 w-9 rounded-full bg-neutral-700"
-            />
-            <div className="hidden md:flex flex-col text-right">
-              <span className="text-sm font-semibold text-white leading-tight">
-                {user?.name || 'Ahmad Fahim Hakim'}
+        <div className="w-72 flex flex-col h-full">
+          {/* ── Brand ── */}
+          <div className="px-6 pt-5 pb-2 flex items-center gap-2.5">
+            <div className="bg-orange-500 w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0">
+              U
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-bold text-base leading-tight tracking-tight truncate">
+                Uhud Tour
               </span>
-              <span className="text-[11px] text-neutral-400">
-                {user?.email || 'ahmadfahim@gmail.com'}
+              <span className="text-[10px] text-neutral-400 leading-tight">
+                Al Haramain Mandiri
               </span>
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* ── Body: Sidebar + Content ── */}
-      <div className="flex flex-1 min-h-0">
-        {/* Sidebar */}
-        <aside
-          className={`max-lg:fixed max-lg:inset-y-16 max-lg:left-0 max-lg:z-40 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-300 lg:translate-x-0 flex flex-col overflow-y-auto shrink-0 ${
-            sidebarOpen ? 'translate-x-0' : 'max-lg:-translate-x-full'
-          }`}
-        >
-          {/* Close button (mobile) */}
-          <button
-            className="lg:hidden absolute top-3 right-3 text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
-            onClick={() => setSidebarOpen(false)}
-            aria-label="Close sidebar"
-          >
-            <X className="h-5 w-5" />
-          </button>
-
-          {/* Greeting */}
-          <div className="px-6 pt-6 pb-4">
+          {/* ── Greeting ── */}
+          <div className="px-6 pt-3 pb-4">
             <p className="text-sm text-neutral-500 dark:text-neutral-400">Selamat Datang,</p>
             <p className="text-lg font-bold leading-tight">
               {user?.name || 'Ahmad Fahim Hakim'} 👋
             </p>
           </div>
 
-          {/* ── Dynamic Navigation ── */}
-          <nav className="px-4 pb-4 flex-1" aria-label="Main navigation">
+          {/* ── Navigation ── */}
+          <nav className="px-4 pb-4 flex-1 overflow-y-auto" aria-label="Main navigation">
             {menuLoading ? (
               <SidebarSkeleton />
             ) : (
@@ -350,7 +308,7 @@ export function Layout() {
             )}
           </nav>
 
-          {/* Logout — always visible at bottom */}
+          {/* ── Logout ── */}
           <div className="px-4 pb-4 border-t border-neutral-100 dark:border-neutral-800 pt-3">
             <button
               className="flex items-center gap-3 px-3 py-2 w-full rounded-xl text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors text-left"
@@ -360,18 +318,81 @@ export function Layout() {
               Keluar
             </button>
           </div>
-        </aside>
+        </div>
+      </aside>
 
-        {/* Sidebar overlay (mobile) */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 z-30 bg-black/50 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-            aria-hidden="true"
-          />
-        )}
+      {/* Sidebar overlay (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-        {/* Main content */}
+      {/* ══════════════════════════════════════
+         MAIN AREA — header + content
+         ══════════════════════════════════════ */}
+      <div
+        className={`flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out ${
+          sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-72'
+        }`}
+      >
+        {/* ── Top Header Bar (light, content-area only) ── */}
+        <header className="h-14 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-4 lg:px-6 gap-3 sticky top-0 z-30 shrink-0">
+          {/* Mobile hamburger */}
+          <button
+            className="lg:hidden text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+
+          {/* Desktop sidebar toggle */}
+          <button
+            className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <PanelLeft className="h-[18px] w-[18px]" />
+          </button>
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Header actions */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
+            <button className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+              🔔
+            </button>
+
+            <div className="flex items-center gap-3 pl-3 ml-1 border-l border-neutral-200 dark:border-neutral-700">
+              <img
+                src="https://api.dicebear.com/7.x/open-peeps/svg?seed=Ahmad"
+                alt="Avatar"
+                className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-neutral-700"
+              />
+              <div className="hidden md:flex flex-col text-right">
+                <span className="text-sm font-semibold leading-tight">
+                  {user?.name || 'Ahmad Fahim Hakim'}
+                </span>
+                <span className="text-[11px] text-neutral-400">
+                  {user?.email || 'ahmadfahim@gmail.com'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* ── Main content ── */}
         <main id="main-content" className="flex-1 p-6 lg:px-8 overflow-y-auto">
           <AutoBreadcrumb />
           <Outlet />

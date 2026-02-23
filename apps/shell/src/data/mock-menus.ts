@@ -72,6 +72,12 @@ export const MOCK_MENUS: MenuGroup[] = [
         defaultOpen: true,
         children: [
           {
+            id: 'docs-why-mf',
+            label: '0. Kenapa Module Federation?',
+            icon: 'HelpCircle',
+            path: '/docs/kenapa-module-federation',
+          },
+          {
             id: 'docs-struktur',
             label: '1. Struktur Proyek',
             icon: 'FolderTree',
@@ -132,6 +138,44 @@ export const MOCK_MENUS: MenuGroup[] = [
             label: '12. Security',
             icon: 'ShieldCheck',
             path: '/docs/security',
+          },
+          {
+            id: 'docs-reusable',
+            label: 'Reusable Components',
+            icon: 'Puzzle',
+            path: '/docs/reusable-components',
+          },
+        ],
+      },
+      {
+        id: 'reusable-components',
+        label: 'Reusable Components',
+        icon: 'Puzzle',
+        path: '/docs/components',
+        children: [
+          {
+            id: 'rc-infobox',
+            label: 'InfoBox',
+            icon: 'MessageSquare',
+            path: '/docs/components/infobox',
+          },
+          {
+            id: 'rc-comparisontable',
+            label: 'ComparisonTable',
+            icon: 'BarChart3',
+            path: '/docs/components/comparisontable',
+          },
+          {
+            id: 'rc-featuregrid',
+            label: 'FeatureGrid',
+            icon: 'LayoutGrid',
+            path: '/docs/components/featuregrid',
+          },
+          {
+            id: 'rc-utilities',
+            label: 'Utilities',
+            icon: 'Wrench',
+            path: '/docs/components/utilities',
           },
         ],
       },
