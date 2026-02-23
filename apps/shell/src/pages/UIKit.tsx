@@ -35,7 +35,7 @@ export function UIKitPage() {
   const [inputValue, setInputValue] = useState('');
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="w-full">
       {/* Hero */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">🎨 Shared UI Kit</h1>
