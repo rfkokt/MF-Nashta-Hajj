@@ -25,7 +25,7 @@ export const MOCK_MENUS: MenuGroup[] = [
         path: '/cs',
         defaultOpen: true,
         children: [
-          { id: 'cs-pendaftaran', label: 'Pendaftaran Jamaah', icon: 'FileText', path: '/docs' },
+          { id: 'cs-pendaftaran', label: 'Pendaftaran Jamaah', icon: 'FileText', path: '/pendaftaran' },
         ],
       },
       {
@@ -49,6 +49,13 @@ export const MOCK_MENUS: MenuGroup[] = [
           { id: 'inv-ro', label: 'Receipt Order', icon: 'Truck', path: '/receipt-order' },
         ],
       },
+    ],
+  },
+  {
+    title: 'Developer',
+    items: [
+      { id: 'docs', label: 'Dokumentasi', icon: 'Book', path: '/docs' },
+      { id: 'ui-kit', label: 'UI Kit', icon: 'Globe', path: '/ui-kit' },
     ],
   },
   {

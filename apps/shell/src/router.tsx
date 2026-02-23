@@ -4,6 +4,7 @@ import { useAuthStore } from '@nashta/shared-types';
 import { Layout } from './components/Layout';
 import { RemoteLoader } from './components/RemoteLoader';
 import { Dashboard } from './pages/Dashboard';
+import { UIKitPage } from './pages/UIKit';
 import { NotFound } from './pages/NotFound';
 
 // Lazy load remote MFE pages via Module Federation
@@ -83,6 +84,9 @@ export function AppRouter() {
         }
       >
         <Route index element={<Dashboard />} />
+        
+        {/* UI Kit showcase */}
+        <Route path="ui-kit" element={<UIKitPage />} />
         
         {/* Remote Documentation MFE */}
         <Route 
