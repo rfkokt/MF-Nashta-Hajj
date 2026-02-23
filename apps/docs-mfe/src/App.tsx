@@ -612,6 +612,143 @@ try {
           </div>
         </CardContent>
       </Card>
+      {/* Dynamic Menu dari Backend */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <span className="p-2 bg-cyan-100 dark:bg-cyan-900 rounded-lg text-cyan-600 dark:text-cyan-400">📋</span>
+            Dynamic Menu dari Backend
+          </CardTitle>
+          <CardDescription>Cara fetch sidebar menu dari API</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
+          <div>
+            <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Endpoint</p>
+            <CodeBlock language="bash" codeString={`GET /api/v1/menus
+Authorization: Bearer <access_token>`} />
+          </div>
+          <div>
+            <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Response JSON</p>
+            <CodeBlock language="json" codeString={`{
+  "groups": [
+    {
+      "title": "Menu",
+      "items": [
+        {
+          "id": "beranda",
+          "label": "Beranda",
+          "icon": "LayoutDashboard",
+          "path": "/"
+        },
+        {
+          "id": "cs",
+          "label": "Customer Service",
+          "icon": "Users",
+          "path": "/cs",
+          "defaultOpen": true,
+          "children": [
+            { "id": "cs-reg", "label": "Pendaftaran", "icon": "FileText", "path": "/pendaftaran" }
+          ]
+        },
+        {
+          "id": "paket",
+          "label": "Manajemen Paket",
+          "icon": "Package",
+          "path": "/paket",
+          "children": [
+            { "id": "p1", "label": "Kelola Paket", "icon": "Package", "path": "/kelola-paket" },
+            { "id": "p2", "label": "Aktifasi Paket", "icon": "Package", "path": "/aktifasi-paket" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lainnya",
+      "items": [
+        { "id": "settings", "label": "Pengaturan", "icon": "Settings", "path": "/pengaturan" }
+      ]
+    }
+  ]
+}`} />
+          </div>
+          <div>
+            <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">TypeScript Types</p>
+            <CodeBlock language="tsx" codeString={`// libs/shared-types/src/menu-store.ts
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: string;        // Nama icon Lucide: "LayoutDashboard", "Package", dll
+  path: string;
+  children?: MenuItem[];
+  badge?: string;      // Optional: "NEW" atau "3"
+  defaultOpen?: boolean;
+}
+
+interface MenuGroup {
+  title: string;       // Section header: "MENU", "LAINNYA"
+  items: MenuItem[];
+}
+
+// Zustand store
+const useMenuStore = create<MenuState>((set) => ({
+  groups: [],
+  isLoading: true,
+  error: null,
+  setMenus: (groups) => set({ groups, isLoading: false }),
+  setError: (error) => set({ error, isLoading: false }),
+}));`} />
+          </div>
+          <div>
+            <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Icon Mapping</p>
+            <p className="mb-2">Backend mengirim nama icon sebagai string. Shell meng-resolve ke komponen Lucide:</p>
+            <CodeBlock language="tsx" codeString={`// apps/shell/src/utils/icon-map.ts
+import { LayoutDashboard, Package, Users, Settings, ... } from 'lucide-react';
+
+const iconMap: Record<string, LucideIcon> = {
+  LayoutDashboard, Package, Users, Settings, ...
+};
+
+export function getIcon(name: string): LucideIcon {
+  return iconMap[name] || Package; // fallback
+}`} />
+          </div>
+          <div>
+            <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Implementasi di Layout.tsx</p>
+            <CodeBlock language="tsx" codeString={`// apps/shell/src/components/Layout.tsx
+const menuGroups = useMenuStore((s) => s.groups) ?? [];
+
+useEffect(() => {
+  // Fetch dari BE, fallback ke mock data
+  if (menuGroups.length === 0) {
+    apiClient.get('/api/v1/menus')
+      .then(res => useMenuStore.getState().setMenus(res.data.groups))
+      .catch(() => useMenuStore.getState().setMenus(MOCK_MENUS));
+  }
+}, []);
+
+// Render sidebar:
+{menuGroups.map(group => (
+  <div key={group.title}>
+    <div className="section-title">{group.title}</div>
+    {group.items.map(item =>
+      item.children
+        ? <CollapsibleSection label={item.label} icon={getIcon(item.icon)}>
+            {item.children.map(child => <NavLink to={child.path}>{child.label}</NavLink>)}
+          </CollapsibleSection>
+        : <NavLink to={item.path}><DynamicIcon name={item.icon} />{item.label}</NavLink>
+    )}
+  </div>
+))}`} />
+          </div>
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+            <p className="font-semibold text-blue-800 dark:text-blue-300 mb-1">💡 Strategi Fallback</p>
+            <p className="text-blue-700 dark:text-blue-400">
+              Selalu sediakan <code className="text-xs bg-blue-100 dark:bg-blue-900/50 px-1 rounded">MOCK_MENUS</code> sebagai fallback.
+              Jika API gagal, user tetap bisa navigasi. Menu mock disimpan di <code className="text-xs bg-blue-100 dark:bg-blue-900/50 px-1 rounded">apps/shell/src/data/mock-menus.ts</code>.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

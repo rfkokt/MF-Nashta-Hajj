@@ -10,159 +10,176 @@ import {
 import { useNotificationStore } from '@nashta/shared-types';
 
 /* ═══════════════════════════════════════════════
-   UI Kit Showcase — Live component gallery + tutorial
+   UI Kit Showcase — shadcn-style sidebar nav
    ═══════════════════════════════════════════════ */
 
-function SectionTitle({ children, id }: { children: React.ReactNode; id: string }) {
-  return (
-    <h2 id={id} className="text-xl font-bold mt-10 mb-4 pb-2 border-b border-neutral-200 dark:border-neutral-800 scroll-mt-20">
-      {children}
-    </h2>
-  );
-}
+const COMPONENTS = [
+  { id: 'button', label: 'Button', icon: '🔘' },
+  { id: 'input', label: 'Input', icon: '📝' },
+  { id: 'card', label: 'Card', icon: '🃏' },
+  { id: 'badge', label: 'Badge', icon: '🏷️' },
+  { id: 'skeleton', label: 'Skeleton', icon: '💀' },
+  { id: 'modal', label: 'Modal', icon: '🪟' },
+  { id: 'toast', label: 'Toast', icon: '🔔' },
+  { id: 'errorfallback', label: 'ErrorFallback', icon: '🛡️' },
+  { id: 'tutorial', label: 'Tutorial', icon: '📖' },
+] as const;
+
+type ComponentId = typeof COMPONENTS[number]['id'];
 
 function CodeBlock({ children }: { children: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(children);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   return (
-    <pre className="bg-neutral-900 dark:bg-black text-neutral-100 text-sm p-4 rounded-xl overflow-x-auto mt-2 mb-4 leading-relaxed">
-      <code>{children}</code>
-    </pre>
+    <div className="rounded-xl overflow-hidden bg-[#0d1117] border border-neutral-800 shadow-lg my-3">
+      <div className="flex items-center justify-between px-4 py-2 bg-neutral-900/50 border-b border-neutral-800">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+        </div>
+        <button onClick={handleCopy} className="text-xs text-neutral-500 hover:text-white transition-colors">
+          {copied ? '✓ Copied' : 'Copy'}
+        </button>
+      </div>
+      <pre className="p-4 overflow-x-auto text-[13px] font-mono leading-relaxed text-neutral-300">
+        <code>{children}</code>
+      </pre>
+    </div>
   );
 }
 
-export function UIKitPage() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalSize, setModalSize] = useState<'sm' | 'md' | 'lg'>('md');
-  const [inputValue, setInputValue] = useState('');
-
+function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
-    <div className="w-full">
-      {/* Hero */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">🎨 Shared UI Kit</h1>
-        <p className="text-neutral-500 dark:text-neutral-400 mt-2">
-          Galeri komponen <code className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-sm">@nashta/ui-kit</code> —
-          Live preview untuk semua komponen yang tersedia.
-        </p>
-      </div>
+    <div className="mb-6 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+      <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{title}</h2>
+      <p className="text-neutral-500 dark:text-neutral-400 mt-1">{description}</p>
+    </div>
+  );
+}
 
-      {/* Quick Nav */}
-      <Card>
-        <CardContent className="pt-4">
-          <p className="text-sm font-semibold text-neutral-500 dark:text-neutral-400 mb-2">Quick Navigation</p>
-          <div className="flex flex-wrap gap-2">
-            {['Button', 'Input', 'Card', 'Badge', 'Skeleton', 'Modal', 'Toast', 'ErrorFallback', 'Tutorial'].map((name) => (
-              <a
-                key={name}
-                href={`#${name.toLowerCase()}`}
-                className="px-3 py-1.5 text-sm rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-              >
-                {name}
-              </a>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+function PreviewCard({ title, children }: { title?: string; children: React.ReactNode }) {
+  return (
+    <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 mb-4">
+      {title && <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-4">{title}</p>}
+      {children}
+    </div>
+  );
+}
 
-      {/* ─── BUTTON ─── */}
-      <SectionTitle id="button">Button</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Tombol dengan variants: <code>default</code>, <code>secondary</code>, <code>outline</code>, <code>ghost</code>, <code>destructive</code>.
-        Sizes: <code>sm</code>, <code>md</code>, <code>lg</code>.
-      </p>
-      <Card>
-        <CardContent className="pt-6 space-y-4">
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button>Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="danger">Danger</Button>
-          </div>
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button size="sm">Small</Button>
-            <Button size="md">Medium</Button>
-            <Button size="lg">Large</Button>
-          </div>
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button disabled>Disabled</Button>
-            <Button className="w-full">Full Width</Button>
-          </div>
-        </CardContent>
-      </Card>
+/* ─── Component Sections ─── */
+
+function ButtonSection() {
+  return (
+    <>
+      <SectionHeader title="Button" description="Tombol interaktif dengan variant dan size berbeda." />
+      <PreviewCard title="Variants">
+        <div className="flex flex-wrap gap-3">
+          <Button>Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="danger">Danger</Button>
+        </div>
+      </PreviewCard>
+      <PreviewCard title="Sizes">
+        <div className="flex flex-wrap gap-3 items-center">
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+        </div>
+      </PreviewCard>
+      <PreviewCard title="States">
+        <div className="flex flex-wrap gap-3 items-center">
+          <Button disabled>Disabled</Button>
+          <Button isLoading>Loading</Button>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Button } from '@nashta/ui-kit';
 
-<Button variant="default" size="md">Click me</Button>
+<Button variant="primary" size="md">Click me</Button>
 <Button variant="danger">Hapus</Button>
-<Button variant="outline" size="sm">Batal</Button>`}</CodeBlock>
+<Button variant="outline" size="sm">Batal</Button>
+<Button isLoading>Menyimpan...</Button>`}</CodeBlock>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
+          <thead className="bg-neutral-50 dark:bg-neutral-900">
+            <tr>
+              <th className="text-left px-4 py-2 font-medium">Prop</th>
+              <th className="text-left px-4 py-2 font-medium">Type</th>
+              <th className="text-left px-4 py-2 font-medium">Default</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+            <tr><td className="px-4 py-2"><code>variant</code></td><td className="px-4 py-2">primary | secondary | outline | ghost | danger</td><td className="px-4 py-2">primary</td></tr>
+            <tr><td className="px-4 py-2"><code>size</code></td><td className="px-4 py-2">sm | md | lg | icon</td><td className="px-4 py-2">md</td></tr>
+            <tr><td className="px-4 py-2"><code>isLoading</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
+            <tr><td className="px-4 py-2"><code>disabled</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
 
-      {/* ─── INPUT ─── */}
-      <SectionTitle id="input">Input</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Input field dengan label, error state, dan helper text.
-      </p>
-      <Card>
-        <CardContent className="pt-6 space-y-4 max-w-md">
-          <Input
-            label="Nama Lengkap"
-            placeholder="Masukkan nama..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <Input
-            label="Email"
-            type="email"
-            placeholder="email@example.com"
-            hint="Kami tidak akan membagikan email Anda."
-          />
-          <Input
-            label="Password"
-            type="password"
-            error="Password minimal 8 karakter"
-            placeholder="••••••••"
-          />
-          <Input
-            label="Disabled"
-            disabled
-            value="Tidak bisa diedit"
-          />
-        </CardContent>
-      </Card>
+function InputSection() {
+  const [val, setVal] = useState('');
+  return (
+    <>
+      <SectionHeader title="Input" description="Text input dengan label, error state, dan hint." />
+      <PreviewCard>
+        <div className="space-y-4 max-w-md">
+          <Input label="Nama Lengkap" placeholder="Masukkan nama..." value={val} onChange={(e) => setVal(e.target.value)} />
+          <Input label="Email" type="email" placeholder="email@example.com" hint="Kami tidak akan share email Anda." />
+          <Input label="Password" type="password" error="Password minimal 8 karakter" placeholder="••••••••" />
+          <Input label="Disabled" disabled value="Tidak bisa diedit" />
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Input } from '@nashta/ui-kit';
 
 <Input label="Email" type="email" placeholder="email@example.com" />
-<Input label="Password" error="Minimal 8 karakter" />`}</CodeBlock>
-
-      {/* ─── CARD ─── */}
-      <SectionTitle id="card">Card</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Kontainer konten dengan Header, Title, Description, Content, Footer.
-      </p>
-      <div className="grid md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Deskripsi singkat card ini</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Konten utama card berada di sini. Bisa berisi teks, form, atau komponen lain.
-            </p>
-          </CardContent>
-          <CardFooter className="flex gap-2">
-            <Button size="sm">Simpan</Button>
-            <Button size="sm" variant="outline">Batal</Button>
-          </CardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Statistik</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">1,234</div>
-            <p className="text-sm text-emerald-600 dark:text-emerald-400">+12.5% dari bulan lalu</p>
-          </CardContent>
-        </Card>
+<Input label="Password" error="Minimal 8 karakter" />
+<Input label="Catatan" hint="Opsional" />`}</CodeBlock>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
+          <thead className="bg-neutral-50 dark:bg-neutral-900"><tr><th className="text-left px-4 py-2 font-medium">Prop</th><th className="text-left px-4 py-2 font-medium">Type</th><th className="text-left px-4 py-2 font-medium">Default</th></tr></thead>
+          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+            <tr><td className="px-4 py-2"><code>label</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
+            <tr><td className="px-4 py-2"><code>error</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
+            <tr><td className="px-4 py-2"><code>hint</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
+          </tbody>
+        </table>
       </div>
+    </>
+  );
+}
+
+function CardSection() {
+  return (
+    <>
+      <SectionHeader title="Card" description="Kontainer konten dengan Header, Title, Description, Content, Footer." />
+      <PreviewCard>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Card>
+            <CardHeader><CardTitle>Card Title</CardTitle><CardDescription>Deskripsi singkat</CardDescription></CardHeader>
+            <CardContent><p className="text-sm text-neutral-600 dark:text-neutral-400">Konten utama card.</p></CardContent>
+            <CardFooter className="flex gap-2"><Button size="sm">Simpan</Button><Button size="sm" variant="outline">Batal</Button></CardFooter>
+          </Card>
+          <Card>
+            <CardHeader><CardTitle>Statistik</CardTitle></CardHeader>
+            <CardContent><div className="text-3xl font-bold">1,234</div><p className="text-sm text-emerald-600">+12.5%</p></CardContent>
+          </Card>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@nashta/ui-kit';
 
 <Card>
@@ -171,95 +188,93 @@ export function UIKitPage() {
     <CardDescription>Deskripsi</CardDescription>
   </CardHeader>
   <CardContent>Isi konten</CardContent>
-  <CardFooter>
-    <Button>Aksi</Button>
-  </CardFooter>
+  <CardFooter><Button>Aksi</Button></CardFooter>
 </Card>`}</CodeBlock>
+    </>
+  );
+}
 
-      {/* ─── BADGE ─── */}
-      <SectionTitle id="badge">Badge</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Label status dengan 6 variants: <code>default</code>, <code>success</code>, <code>warning</code>, <code>error</code>, <code>info</code>, <code>outline</code>.
-      </p>
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-wrap gap-3 items-center">
-            <Badge>Default</Badge>
-            <Badge variant="success">Success</Badge>
-            <Badge variant="warning">Warning</Badge>
-            <Badge variant="error">Error</Badge>
-            <Badge variant="info">Info</Badge>
-            <Badge variant="outline">Outline</Badge>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-3 items-center">
-            <Badge variant="success">✓ Aktif</Badge>
-            <Badge variant="warning">⏳ Pending</Badge>
-            <Badge variant="error">✕ Ditolak</Badge>
-            <Badge variant="info">3 Baru</Badge>
-          </div>
-        </CardContent>
-      </Card>
+function BadgeSection() {
+  return (
+    <>
+      <SectionHeader title="Badge" description="Label status dengan 6 variants." />
+      <PreviewCard title="Variants">
+        <div className="flex flex-wrap gap-3">
+          <Badge>Default</Badge>
+          <Badge variant="success">Success</Badge>
+          <Badge variant="warning">Warning</Badge>
+          <Badge variant="error">Error</Badge>
+          <Badge variant="info">Info</Badge>
+          <Badge variant="outline">Outline</Badge>
+        </div>
+      </PreviewCard>
+      <PreviewCard title="Use Cases">
+        <div className="flex flex-wrap gap-3">
+          <Badge variant="success">✓ Aktif</Badge>
+          <Badge variant="warning">⏳ Pending</Badge>
+          <Badge variant="error">✕ Ditolak</Badge>
+          <Badge variant="info">3 Baru</Badge>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Badge } from '@nashta/ui-kit';
 
 <Badge variant="success">Aktif</Badge>
 <Badge variant="error">Ditolak</Badge>
 <Badge variant="outline">Draft</Badge>`}</CodeBlock>
+    </>
+  );
+}
 
-      {/* ─── SKELETON ─── */}
-      <SectionTitle id="skeleton">Skeleton</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Placeholder loading dengan animasi pulse.
-      </p>
-      <Card>
-        <CardContent className="pt-6 space-y-4">
+function SkeletonSection() {
+  return (
+    <>
+      <SectionHeader title="Skeleton" description="Placeholder loading dengan animasi pulse." />
+      <PreviewCard>
+        <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Skeleton className="h-12 w-12 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-3 w-1/2" />
-            </div>
+            <div className="flex-1 space-y-2"><Skeleton className="h-4 w-3/4" /><Skeleton className="h-3 w-1/2" /></div>
           </div>
           <Skeleton className="h-32 w-full rounded-xl" />
           <div className="grid grid-cols-3 gap-3">
-            <Skeleton className="h-20 rounded-lg" />
-            <Skeleton className="h-20 rounded-lg" />
-            <Skeleton className="h-20 rounded-lg" />
+            <Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" /><Skeleton className="h-20 rounded-lg" />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Skeleton } from '@nashta/ui-kit';
 
 <Skeleton className="h-12 w-12 rounded-full" />
 <Skeleton className="h-4 w-3/4" />
 <Skeleton className="h-32 w-full rounded-xl" />`}</CodeBlock>
+    </>
+  );
+}
 
-      {/* ─── MODAL ─── */}
-      <SectionTitle id="modal">Modal / Dialog</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Dialog menggunakan native <code>&lt;dialog&gt;</code> element. Sizes: <code>sm</code>, <code>md</code>, <code>lg</code>, <code>fullscreen</code>.
-      </p>
-      <Card>
-        <CardContent className="pt-6 flex flex-wrap gap-3">
-          {(['sm', 'md', 'lg'] as const).map((size) => (
-            <Button
-              key={size}
-              variant="outline"
-              onClick={() => { setModalSize(size); setModalOpen(true); }}
-            >
-              Open {size.toUpperCase()}
+function ModalSection() {
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  return (
+    <>
+      <SectionHeader title="Modal / Dialog" description="Dialog menggunakan native <dialog> element. 3 sizes." />
+      <PreviewCard title="Try it">
+        <div className="flex flex-wrap gap-3">
+          {(['sm', 'md', 'lg'] as const).map((s) => (
+            <Button key={s} variant="outline" onClick={() => { setSize(s); setOpen(true); }}>
+              Open {s.toUpperCase()}
             </Button>
           ))}
-        </CardContent>
-      </Card>
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Contoh Modal" description={`Size: ${modalSize}`} size={modalSize}>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-          Ini adalah konten modal. Bisa berisi form, konfirmasi, atau informasi detail.
-        </p>
+        </div>
+      </PreviewCard>
+      <Modal open={open} onClose={() => setOpen(false)} title="Contoh Modal" description={`Size: ${size}`} size={size}>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Ini konten modal. Bisa form, konfirmasi, dll.</p>
         <div className="flex gap-2 justify-end">
-          <Button variant="outline" onClick={() => setModalOpen(false)}>Batal</Button>
-          <Button onClick={() => setModalOpen(false)}>Simpan</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
+          <Button onClick={() => setOpen(false)}>Simpan</Button>
         </div>
       </Modal>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { Modal } from '@nashta/ui-kit';
 
 const [open, setOpen] = useState(false);
@@ -268,28 +283,35 @@ const [open, setOpen] = useState(false);
   <p>Konten modal</p>
   <Button onClick={() => setOpen(false)}>Tutup</Button>
 </Modal>`}</CodeBlock>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Props</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden">
+          <thead className="bg-neutral-50 dark:bg-neutral-900"><tr><th className="text-left px-4 py-2 font-medium">Prop</th><th className="text-left px-4 py-2 font-medium">Type</th><th className="text-left px-4 py-2 font-medium">Default</th></tr></thead>
+          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
+            <tr><td className="px-4 py-2"><code>open</code></td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">false</td></tr>
+            <tr><td className="px-4 py-2"><code>onClose</code></td><td className="px-4 py-2">() =&gt; void</td><td className="px-4 py-2">—</td></tr>
+            <tr><td className="px-4 py-2"><code>title</code></td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td></tr>
+            <tr><td className="px-4 py-2"><code>size</code></td><td className="px-4 py-2">sm | md | lg | fullscreen</td><td className="px-4 py-2">md</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
 
-      {/* ─── TOAST ─── */}
-      <SectionTitle id="toast">Toast / Notification</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Toast notifikasi via <code>useNotificationStore</code>. 4 variant: <code>success</code>, <code>error</code>, <code>warning</code>, <code>info</code>.
-      </p>
-      <Card>
-        <CardContent className="pt-6 flex flex-wrap gap-3">
-          <Button variant="outline" onClick={() => useNotificationStore.getState().success('Data berhasil disimpan!')}>
-            ✅ Success
-          </Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().error('Gagal menyimpan data')}>
-            ❌ Error
-          </Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().warning('Sesi hampir habis')}>
-            ⚠️ Warning
-          </Button>
-          <Button variant="outline" onClick={() => useNotificationStore.getState().info('Update tersedia')}>
-            ℹ️ Info
-          </Button>
-        </CardContent>
-      </Card>
+function ToastSection() {
+  return (
+    <>
+      <SectionHeader title="Toast / Notification" description="Toast notifikasi via useNotificationStore. 4 variant." />
+      <PreviewCard title="Try it">
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" onClick={() => useNotificationStore.getState().success('Data berhasil disimpan!')}>✅ Success</Button>
+          <Button variant="outline" onClick={() => useNotificationStore.getState().error('Gagal menyimpan data')}>❌ Error</Button>
+          <Button variant="outline" onClick={() => useNotificationStore.getState().warning('Sesi hampir habis')}>⚠️ Warning</Button>
+          <Button variant="outline" onClick={() => useNotificationStore.getState().info('Update tersedia')}>ℹ️ Info</Button>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { useNotificationStore } from '@nashta/shared-types';
 
 // Dari mana saja (tidak perlu hook):
@@ -297,124 +319,176 @@ useNotificationStore.getState().success('Berhasil!');
 useNotificationStore.getState().error('Gagal!');
 useNotificationStore.getState().warning('Peringatan!');
 useNotificationStore.getState().info('Info baru');`}</CodeBlock>
+    </>
+  );
+}
 
-      {/* ─── ERROR FALLBACK ─── */}
-      <SectionTitle id="errorfallback">ErrorFallback</SectionTitle>
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-        Fallback UI untuk React Error Boundary.
-      </p>
+function ErrorFallbackSection() {
+  return (
+    <>
+      <SectionHeader title="ErrorFallback" description="Fallback UI untuk React Error Boundary." />
+      <PreviewCard>
+        <div className="text-center p-8 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+          <p className="text-4xl mb-3">⚠️</p>
+          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Terjadi Kesalahan</h3>
+          <p className="text-sm text-neutral-500 mt-1">Komponen ini mengalami error dan ditangkap oleh ErrorBoundary</p>
+          <Button variant="outline" size="sm" className="mt-4">Coba Lagi</Button>
+        </div>
+      </PreviewCard>
+      <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">Usage</h3>
       <CodeBlock>{`import { ErrorFallback } from '@nashta/ui-kit';
 import { ErrorBoundary } from 'react-error-boundary';
 
 <ErrorBoundary FallbackComponent={ErrorFallback}>
   <SomeComponent />
 </ErrorBoundary>`}</CodeBlock>
+    </>
+  );
+}
 
-      {/* ═══════════════════════════════════════════════
-         TUTORIAL: Cara Membuat Komponen Baru
-         ═══════════════════════════════════════════════ */}
-      <SectionTitle id="tutorial">📖 Tutorial: Membuat Komponen Baru</SectionTitle>
+function TutorialSection() {
+  return (
+    <>
+      <SectionHeader title="Tutorial: Membuat Komponen Baru" description="Langkah-langkah menambahkan komponen ke UI Kit." />
 
-      <Card>
-        <CardContent className="pt-6 space-y-6 text-sm text-neutral-600 dark:text-neutral-400">
-          {/* Step 1 */}
-          <div>
-            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
-            <p className="mb-2">Tambahkan file baru di <code className="px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-xs">libs/ui-kit/src/components/NamaKomponen.tsx</code></p>
-            <CodeBlock>{`// libs/ui-kit/src/components/Chip.tsx
-import type { ReactNode } from 'react';
+      <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">1. Buat file komponen</h3>
+      <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">Tambah file di <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded">libs/ui-kit/src/components/Chip.tsx</code></p>
+      <CodeBlock>{`import type { ReactNode } from 'react';
 
 export interface ChipProps {
   children: ReactNode;
   color?: 'primary' | 'secondary' | 'neutral';
   onRemove?: () => void;
-  className?: string;
 }
 
-export function Chip({
-  children,
-  color = 'primary',
-  onRemove,
-  className = '',
-}: ChipProps) {
+export function Chip({ children, color = 'primary', onRemove }: ChipProps) {
   const colors = {
     primary: 'bg-primary-100 text-primary-800 dark:bg-primary-900/40 dark:text-primary-300',
     secondary: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
     neutral: 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
   };
-
   return (
-    <span className={\`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium \${colors[color]} \${className}\`}>
+    <span className={\`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm \${colors[color]}\`}>
       {children}
-      {onRemove && (
-        <button onClick={onRemove} className="ml-1 hover:opacity-70" aria-label="Remove">
-          ×
-        </button>
-      )}
+      {onRemove && <button onClick={onRemove}>×</button>}
     </span>
   );
 }`}</CodeBlock>
-          </div>
 
-          {/* Step 2 */}
-          <div>
-            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">2. Export dari barrel file</h3>
-            <p className="mb-2">Tambahkan export di <code className="px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded text-xs">libs/ui-kit/src/index.ts</code></p>
-            <CodeBlock>{`// libs/ui-kit/src/index.ts
+      <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">2. Export dari barrel</h3>
+      <CodeBlock>{`// libs/ui-kit/src/index.ts
 export { Chip } from './components/Chip';
 export type { ChipProps } from './components/Chip';`}</CodeBlock>
-          </div>
 
-          {/* Step 3 */}
-          <div>
-            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">3. Gunakan di MFE manapun</h3>
-            <CodeBlock>{`// Di apps/shell/src/pages/... atau MFE lain
-import { Chip } from '@nashta/ui-kit';
+      <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">3. Gunakan di MFE</h3>
+      <CodeBlock>{`import { Chip } from '@nashta/ui-kit';
 
 <Chip color="primary" onRemove={() => console.log('remove')}>
   Haji 2026
 </Chip>`}</CodeBlock>
-          </div>
 
-          {/* Rules */}
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-            <h3 className="text-base font-semibold text-amber-800 dark:text-amber-300 mb-2">⚠️ Rules & Conventions</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-amber-700 dark:text-amber-400">
-              <li>Setiap komponen wajib punya <strong>TypeScript interface</strong> (Props)</li>
-              <li>Gunakan <strong>design tokens</strong> dari <code className="text-xs">tokens.css</code>, jangan hardcode warna</li>
-              <li>Selalu support <strong>dark mode</strong> — tambahkan <code className="text-xs">dark:</code> variant</li>
-              <li>Export komponen <strong>dan</strong> type dari <code className="text-xs">index.ts</code></li>
-              <li>Jangan import dari <code className="text-xs">@nashta/shared-types</code> di ui-kit (circular dep)</li>
-              <li>Tambahkan <strong>aria attributes</strong> untuk accessibility</li>
-              <li>Komponen harus <strong>stateless</strong> (terima data via props)</li>
-              <li>Tambahkan <code className="text-xs">className</code> prop untuk extensibility</li>
-            </ul>
-          </div>
+      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mt-6">
+        <h3 className="text-base font-semibold text-amber-800 dark:text-amber-300 mb-2">⚠️ Rules & Conventions</h3>
+        <ul className="space-y-1.5 list-disc list-inside text-sm text-amber-700 dark:text-amber-400">
+          <li>Wajib punya <strong>TypeScript interface</strong> (Props)</li>
+          <li>Gunakan <strong>design tokens</strong> dari <code className="text-xs">tokens.css</code></li>
+          <li>Selalu support <strong>dark mode</strong> (<code className="text-xs">dark:</code> variant)</li>
+          <li>Export komponen <strong>dan</strong> type dari <code className="text-xs">index.ts</code></li>
+          <li>Jangan import <code className="text-xs">@nashta/shared-types</code> di ui-kit (circular)</li>
+          <li>Tambahkan <strong>aria attributes</strong></li>
+          <li>Komponen harus <strong>stateless</strong> (via props)</li>
+          <li>Tambahkan <code className="text-xs">className</code> prop untuk extensibility</li>
+        </ul>
+      </div>
 
-          {/* File structure */}
-          <div>
-            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-2">📁 Struktur Folder</h3>
-            <CodeBlock>{`libs/ui-kit/
+      <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mt-6 mb-2">📁 Struktur Folder</h3>
+      <CodeBlock>{`libs/ui-kit/
 ├── src/
 │   ├── components/
-│   │   ├── Button.tsx      ← Komponen
+│   │   ├── Button.tsx
 │   │   ├── Input.tsx
 │   │   ├── Card.tsx
 │   │   ├── Badge.tsx
 │   │   ├── Modal.tsx
 │   │   ├── Toast.tsx
 │   │   ├── Skeleton.tsx
-│   │   ├── ErrorFallback.tsx
-│   │   └── Chip.tsx        ← Komponen baru Anda
+│   │   └── ErrorFallback.tsx
 │   ├── theme/
-│   │   └── tokens.css      ← Design tokens (warna, font, spacing)
+│   │   └── tokens.css
 │   ├── utils/
-│   │   └── cn.ts           ← Helper className merger
-│   └── index.ts            ← Barrel export (WAJIB register di sini)
+│   │   └── cn.ts
+│   └── index.ts        ← WAJIB register di sini
 └── package.json`}</CodeBlock>
-          </div>
-        </CardContent>
-      </Card>
+    </>
+  );
+}
+
+/* ─── Component Map ─── */
+const SECTION_MAP: Record<ComponentId, () => JSX.Element> = {
+  button: ButtonSection,
+  input: InputSection,
+  card: CardSection,
+  badge: BadgeSection,
+  skeleton: SkeletonSection,
+  modal: ModalSection,
+  toast: ToastSection,
+  errorfallback: ErrorFallbackSection,
+  tutorial: TutorialSection,
+};
+
+/* ═══════════════════════════════════════════════
+   Main Page
+   ═══════════════════════════════════════════════ */
+export function UIKitPage() {
+  const [active, setActive] = useState<ComponentId>('button');
+  const ActiveSection = SECTION_MAP[active];
+
+  return (
+    <div className="flex gap-0 -mx-6 lg:-mx-8 -mt-6 min-h-[calc(100vh-4rem)]">
+      {/* ── Sidebar ── */}
+      <aside className="w-56 shrink-0 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-6 px-3 overflow-y-auto">
+        <div className="px-3 mb-4">
+          <h2 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">Components</h2>
+          <p className="text-xs text-neutral-400 mt-0.5">@nashta/ui-kit</p>
+        </div>
+
+        <div className="space-y-0.5">
+          {COMPONENTS.filter(c => c.id !== 'tutorial').map((comp) => (
+            <button
+              key={comp.id}
+              onClick={() => setActive(comp.id)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                active === comp.id
+                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-medium nav-item-active'
+                  : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+              }`}
+            >
+              <span className="mr-2 text-xs">{comp.icon}</span>
+              {comp.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="border-t border-neutral-200 dark:border-neutral-800 mt-4 pt-4 px-3">
+          <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-2">Guide</p>
+        </div>
+        <button
+          onClick={() => setActive('tutorial')}
+          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+            active === 'tutorial'
+              ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-medium nav-item-active'
+              : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+          }`}
+        >
+          <span className="mr-2 text-xs">📖</span>
+          Tutorial
+        </button>
+      </aside>
+
+      {/* ── Content ── */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        <ActiveSection />
+      </main>
     </div>
   );
 }
