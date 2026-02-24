@@ -43,6 +43,14 @@ function GuestRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   if (isAuthenticated) {
+    // If there's a standalone redirect param, DO NOT force an internal React Router push.
+    // Let the Login component's async window.location.href physically navigate away.
+    if (typeof window !== 'undefined') {
+      const urlParams = new window.URLSearchParams(window.location.search);
+      if (urlParams.has('redirect')) {
+        return null;
+      }
+    }
     return <Navigate to="/" replace />;
   }
 
