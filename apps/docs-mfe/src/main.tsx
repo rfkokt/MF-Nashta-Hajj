@@ -10,6 +10,24 @@ function StandaloneAuthGuard({ children }: { children: React.ReactNode }) {
   const isHydrating = useAuthStore((s) => s.isHydrating);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new window.URLSearchParams(window.location.search);
+      const authData = urlParams.get('standaloneAuth');
+      if (authData) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(authData));
+          useAuthStore.getState().setAuth(parsed.token, parsed.user);
+
+          // Clean up URL to prevent leak and reload loop
+          const newUrl = window.location.pathname + window.location.hash;
+          window.history.replaceState({}, document.title, newUrl);
+          return;
+        } catch (e) {
+          console.error('Failed to parse standalone auth', e);
+        }
+      }
+    }
+
     if (!isHydrating && !isAuthenticated) {
       const currentUrl = encodeURIComponent(window.location.href);
       window.location.href = `http://localhost:4000/auth/login?redirect=${currentUrl}`;

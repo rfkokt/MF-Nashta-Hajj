@@ -52,14 +52,24 @@ export default function Login() {
         // Dispatch event — Shell will pick this up and redirect to dashboard
         dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_IN, payload);
 
-        // Also update the shared store directly for immediate effect
-        const { useAuthStore } = await import('@nashta/shared-types');
-        useAuthStore.getState().setAuth(payload.accessToken, {
+        const user = {
           id: payload.userId,
           email,
           name: email.split('@')[0],
           role: 'user',
-        });
+        };
+
+        // Also update the shared store directly for immediate effect
+        const { useAuthStore } = await import('@nashta/shared-types');
+        useAuthStore.getState().setAuth(payload.accessToken, user);
+
+        // Execute standalone redirection immediately if present, bypassing normal flow
+        if (redirectUrl) {
+          const authData = encodeURIComponent(JSON.stringify({ token: payload.accessToken, user }));
+          const separator = redirectUrl.includes('?') ? '&' : '?';
+          window.location.href = redirectUrl + separator + 'standaloneAuth=' + authData;
+          return; // stop execution
+        }
 
         // Show success state (Shell will auto-redirect via useAuthEvents)
         setSuccess(true);
@@ -70,10 +80,6 @@ export default function Login() {
       setError('Login gagal. Periksa kembali email dan password Anda.');
     } finally {
       setIsLoading(false);
-      // Execute standalone redirection if present
-      if (email && password && redirectUrl) {
-        window.location.href = redirectUrl;
-      }
     }
   };
 
