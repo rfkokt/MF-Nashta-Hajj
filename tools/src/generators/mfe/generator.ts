@@ -1,12 +1,7 @@
-import {
-  formatFiles,
-  Tree,
-  readJson,
-  writeJson,
-  joinPathFragments,
-} from '@nx/devkit';
+import { formatFiles, Tree, readJson, writeJson, joinPathFragments, logger } from '@nx/devkit';
 import { applicationGenerator } from '@nx/react';
 import { GeneratorGeneratorSchema } from './schema';
+import { execSync } from 'child_process';
 
 export async function generatorGenerator(tree: Tree, options: GeneratorGeneratorSchema) {
   const mfeName = options.name;
@@ -68,14 +63,94 @@ export default defineConfig({
 `;
   tree.write(joinPathFragments(projectRoot, 'vite.config.ts'), viteConfigContent);
 
-  // 3. Setup Tailwind v4 in index.css
+  // 3. Setup Tailwind v4 in styles.css
   const indexCssContent = `@import "tailwindcss";
-@import "../../../libs/ui-kit/src/styles/theme.css";
+@import "./theme.css";
 
 /* MFE-specific styles go here */
 `;
   tree.write(joinPathFragments(projectRoot, 'src/styles.css'), indexCssContent);
-  
+
+  // Scaffold the default theme variables
+  const themeCssContent = `/* Enable class-based dark mode (toggle via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Colors — Primary Blue */
+  --color-primary-50: oklch(0.97 0.01 240);
+  --color-primary-100: oklch(0.93 0.03 240);
+  --color-primary-200: oklch(0.86 0.06 240);
+  --color-primary-300: oklch(0.76 0.10 240);
+  --color-primary-400: oklch(0.66 0.15 240);
+  --color-primary-500: oklch(0.55 0.20 240);
+  --color-primary-600: oklch(0.48 0.20 240);
+  --color-primary-700: oklch(0.40 0.18 240);
+  --color-primary-800: oklch(0.33 0.15 240);
+  --color-primary-900: oklch(0.27 0.12 240);
+
+  /* Colors — Neutral */
+  --color-neutral-50: oklch(0.98 0.005 260);
+  --color-neutral-100: oklch(0.96 0.005 260);
+  --color-neutral-200: oklch(0.90 0.005 260);
+  --color-neutral-300: oklch(0.82 0.008 260);
+  --color-neutral-400: oklch(0.65 0.010 260);
+  --color-neutral-500: oklch(0.55 0.010 260);
+  --color-neutral-600: oklch(0.45 0.010 260);
+  --color-neutral-700: oklch(0.35 0.010 260);
+  --color-neutral-800: oklch(0.25 0.010 260);
+  --color-neutral-900: oklch(0.15 0.010 260);
+  --color-neutral-950: oklch(0.10 0.010 260);
+
+  /* Semantic Colors */
+  --color-success: oklch(0.55 0.18 145);
+  --color-warning: oklch(0.75 0.18 75);
+  --color-error: oklch(0.55 0.22 25);
+  --color-info: oklch(0.60 0.18 240);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.07), 0 2px 4px -2px oklch(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.08), 0 4px 6px -4px oklch(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.1), 0 8px 10px -6px oklch(0 0 0 / 0.05);
+}
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-neutral-900);
+  background-color: var(--color-neutral-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode Overrides */
+.dark body,
+.dark {
+  color-scheme: dark;
+  color: #e5e5e5;
+  background-color: #0a0a0a;
+}
+`;
+  tree.write(joinPathFragments(projectRoot, 'src/theme.css'), themeCssContent);
+
   // Clean up default Nx generated components
   tree.delete(joinPathFragments(projectRoot, 'src/app'));
 
@@ -148,8 +223,8 @@ createRoot(rootElement).render(
       entry: `http://localhost:${port}/mf-manifest.json`,
       activeWhenPath: `/${mfeName}`,
       exposes: {
-        "./App": "./App"
-      }
+        './App': './App',
+      },
     };
     writeJson(tree, remotesJsonPath, registry);
   }
@@ -165,7 +240,7 @@ createRoot(rootElement).render(
           name: '${mfeName.replace(/-/g, '')}',
           entry: 'http://localhost:${port}/mf-manifest.json',
         },`;
-      
+
       // Simple string injection right after "remotes: {"
       shellViteContent = shellViteContent.replace(
         /remotes:\s*\{/,
@@ -185,30 +260,43 @@ createRoot(rootElement).render(
     scripts: {
       serve: `vite --port ${port}`,
       build: 'tsc -b && vite build',
-      preview: `vite preview --port ${port + 100}`
+      preview: `vite preview --port ${port + 100}`,
     },
     dependencies: {
       '@nashta/ui-kit': 'workspace:*',
       '@nashta/shared-types': 'workspace:*',
-      'react': '^19.0.0',
+      react: '^19.0.0',
       'react-dom': '^19.0.0',
-      'react-router': '^7.0.0'
+      'react-router': '^7.0.0',
     },
     devDependencies: {
       '@types/node': '^22.0.0',
       '@module-federation/vite': '^1.11.0',
       '@tailwindcss/vite': '^4.0.0',
-      'tailwindcss': '^4.0.0',
-      '@vitejs/plugin-react': '^4.5.0'
-    }
+      tailwindcss: '^4.0.0',
+      '@vitejs/plugin-react': '^4.5.0',
+    },
   };
   writeJson(tree, packageJsonPath, pkg);
 
-  // 9. Cleanup the scaffolded template files we didn't use from the bare generator scaffold
-  if (tree.children(joinPathFragments(__dirname, 'files')).length > 0) {
-    // The Nx generator command created standard template files in tools/src/generators/mfe/files
-    // We don't actually need them since we dynamically overwrite content above.
-    // We'll just leave them or ignore them since `generateFiles` is not called.
+  // 8.5 Inject targets directly into project.json so Nx Daemon doesn't miss them
+  const projectJsonPath = joinPathFragments(projectRoot, 'project.json');
+  if (tree.exists(projectJsonPath)) {
+    const projectConfig = readJson(tree, projectJsonPath);
+    projectConfig.targets = projectConfig.targets || {};
+    projectConfig.targets.serve = {
+      executor: 'nx:run-commands',
+      options: { command: `pnpm run serve`, cwd: projectRoot },
+    };
+    projectConfig.targets.build = {
+      executor: 'nx:run-commands',
+      options: { command: `pnpm run build`, cwd: projectRoot },
+    };
+    projectConfig.targets.preview = {
+      executor: 'nx:run-commands',
+      options: { command: `pnpm run preview`, cwd: projectRoot },
+    };
+    writeJson(tree, projectJsonPath, projectConfig);
   }
 
   // 10. Update shell's vite-env.d.ts to declare the new module for TypeScript
@@ -224,7 +312,67 @@ createRoot(rootElement).render(
     }
   }
 
+  // 11. Update shell's router.tsx to inject the lazy route
+  const routerPath = 'apps/shell/src/router.tsx';
+  if (tree.exists(routerPath)) {
+    let routerContent = tree.read(routerPath, 'utf-8');
+    if (routerContent) {
+      const safeName = mfeName.replace(/-/g, '');
+      const importName = `Remote${safeName.charAt(0).toUpperCase() + safeName.slice(1)}`;
+      const lazyImport = `const ${importName} = lazy(() => import('${safeName}/App'));`;
+
+      const routeBlock = `        <Route
+          path="${mfeName}/*"
+          element={
+            <RemoteLoader>
+              <${importName} />
+            </RemoteLoader>
+          }
+        />`;
+
+      // 1. Inject the lazy import right before the first ProtectedRoute or after existing lazy imports
+      if (!routerContent.includes(lazyImport)) {
+        if (routerContent.includes('const RemoteDocs')) {
+          routerContent = routerContent.replace(
+            /const RemoteDocs = lazy.*\n/,
+            (matchStr) => matchStr + `${lazyImport}\n`
+          );
+        } else {
+          // Fallback if docs isn't there
+          routerContent = routerContent.replace(
+            /function ProtectedRoute/,
+            `${lazyImport}\n\nfunction ProtectedRoute`
+          );
+        }
+      }
+
+      // 2. Inject the Route block inside the <Route path="/"> layout wrapper
+      if (!routerContent.includes(`path="${mfeName}/*"`)) {
+        // Look for the end of the Layout Route before the Catch-all
+        // This regex looks for </Route>\n\n      {/* Catch-all */}
+        routerContent = routerContent.replace(
+          /( {6}<\/Route>\s*(?:\{\/\*.*\*\/\})?\s*<Route path="\*" )/,
+          () => `${routeBlock}\n      </Route>\n\n      {/* Catch-all */}\n      <Route path="*" `
+        );
+      }
+
+      tree.write(routerPath, routerContent);
+    }
+  }
+
   await formatFiles(tree);
+
+  return () => {
+    // Nx installPackagesTask sometimes skips if it doesn't detect root package.json changes.
+    // We enforce it here so the MFE is ready out-of-the-box:
+    try {
+      logger.info('\\n📦 Running pnpm install to fetch new MFE dependencies...\\n');
+      execSync('pnpm install', { stdio: 'inherit' });
+      logger.info('\\n✅ Success! You can now run the MFE.\\n');
+    } catch (e) {
+      logger.error('Failed to run pnpm install automatically. Please run it manually.');
+    }
+  };
 }
 
 export default generatorGenerator;
