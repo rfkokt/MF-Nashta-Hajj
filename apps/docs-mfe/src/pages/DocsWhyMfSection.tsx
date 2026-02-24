@@ -150,6 +150,48 @@ const implRows: ComparisonRow[] = [
   },
 ];
 
+// ── Data: Monorepo vs Polyrepo comparison ──
+const monorepoColumns: ComparisonColumn[] = [
+  { header: 'Kriteria' },
+  { header: 'Hybrid Monorepo (Nx)', highlight: true },
+  { header: 'Polyrepo Tradisional' },
+];
+
+const monorepoRows: ComparisonRow[] = [
+  {
+    criteria: 'Shared Libraries (@nashta/ui-kit)',
+    values: [
+      '',
+      '✅ Single Source of Truth, instan',
+      '❌ Membutuhkan publish & update manual berkala',
+    ],
+  },
+  {
+    criteria: 'Standarisasi Tooling',
+    values: [
+      '',
+      '✅ Terpusat via Nx Generators, 100% kongruen',
+      '❌ Rentan deviasi (Webpack vs Vite, versi linting berbeda)',
+    ],
+  },
+  {
+    criteria: 'Kecepatan CI/CD Build',
+    values: [
+      '',
+      '✅ Diferensial parsial via Affected Graph & Caching',
+      '✅ Terisolasi sepenuhnya antar repositori',
+    ],
+  },
+  {
+    criteria: 'Visibilitas Lintas Tim',
+    values: [
+      '',
+      '✅ Transparan, refaktor lintas-MFE dapat dieksekusi secara atomik',
+      '❌ Silo, membutuhkan PR lintas repositori yang kompleks',
+    ],
+  },
+];
+
 export function DocsWhyMfSection() {
   return (
     <Card>
@@ -360,6 +402,44 @@ function Header() {
               />
             </InfoBox>
           </div>
+        </section>
+
+        {/* ── Monorepo vs Polyrepo ── */}
+        <section>
+          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+            Arsitektur Hybrid Monorepo (Nx)
+          </h3>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+            Proyek ini menggunakan pendekatan <strong>Hybrid Monorepo</strong> yang diorkestrasi
+            oleh <strong>Nx</strong>. Seluruh kode sumber dikelola dalam satu repositori terpusat,
+            namun setiap modul di-<em>deploy</em> secara independen. Keputusan arsitektur ini
+            diambil untuk mendobrak batasan manajerial pada ekosistem Multi-MFE:
+          </p>
+          <ComparisonTable columns={monorepoColumns} rows={monorepoRows} />
+
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-6">
+            Pola rancangan ini sejalan dengan fondasi teknis skala <em>enterprise</em> yang
+            dipelopori oleh organisasi seperti Google dan Meta. Referensi literatur arsitektur
+            komprehensif dapat diakses melalui{' '}
+            <a
+              href="https://nx.dev/concepts/more-concepts/monorepo-vs-polyrepo"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold underline hover:text-blue-800"
+            >
+              dokumentasi resmi Nx
+            </a>{' '}
+            serta pedoman fundamental dari{' '}
+            <a
+              href="https://martinfowler.com/articles/micro-frontends.html"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold underline hover:text-blue-800"
+            >
+              Martin Fowler
+            </a>
+            .
+          </p>
         </section>
 
         {/* ── ADR ── */}
