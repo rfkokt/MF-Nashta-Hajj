@@ -4,9 +4,47 @@ import tailwindcss from '@tailwindcss/vite';
 import { federation } from '@module-federation/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
+import type { RemoteRegistry } from './src/types/remote-registry';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+type FederationRemoteConfig = {
+  type: 'module';
+  name: string;
+  entry: string;
+};
+
+function loadFederationRemotes(): Record<string, FederationRemoteConfig> {
+  const registryPath = path.resolve(__dirname, './public/remotes.json');
+
+  try {
+    const raw = fs.readFileSync(registryPath, 'utf-8');
+    const registry = JSON.parse(raw) as RemoteRegistry;
+
+    return Object.values(registry.remotes).reduce(
+      (acc, remote) => {
+        if (!remote.name || !remote.entry) {
+          return acc;
+        }
+
+        acc[remote.name] = {
+          type: 'module',
+          name: remote.name,
+          entry: remote.entry,
+        };
+        return acc;
+      },
+      {} as Record<string, FederationRemoteConfig>
+    );
+  } catch (error) {
+    console.warn('[shell/vite.config] Failed to read remotes.json, using empty remotes map.', error);
+    return {};
+  }
+}
+
+const federationRemotes = loadFederationRemotes();
 
 export default defineConfig({
   server: {
@@ -33,26 +71,13 @@ export default defineConfig({
     federation({
       name: 'shell',
       dts: false,
-      remotes: {
-        docsmfe: {
-          type: 'module',
-          name: 'docsmfe',
-          entry: 'http://localhost:4003/mf-manifest.json',
-        },
-
-        authMfe: {
-          type: 'module',
-          name: 'authMfe',
-          entry: 'http://localhost:4001/mf-manifest.json',
-        },
-      },
+      remotes: federationRemotes,
       shared: {
         react: { singleton: true, requiredVersion: '^19.0.0' },
         'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
         'react/': { singleton: true },
         'react-dom/': { singleton: true },
         'react-router': { singleton: true, requiredVersion: '^7.0.0' },
-        'react-router-dom': { singleton: true, requiredVersion: '^7.0.0' },
       },
     }),
     visualizer({
@@ -66,5 +91,6 @@ export default defineConfig({
     target: 'chrome89',
     modulePreload: false,
     minify: true,
+    manifest: true,
   },
 });

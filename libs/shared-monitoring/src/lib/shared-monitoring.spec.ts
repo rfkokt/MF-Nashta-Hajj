@@ -1,7 +1,23 @@
-import { sharedMonitoring } from './shared-monitoring';
+import { describe, it, expect, vi } from 'vitest';
 
-describe('sharedMonitoring', () => {
-  it('should work', () => {
-    expect(sharedMonitoring()).toEqual('shared-monitoring');
+vi.mock('@sentry/react', () => ({
+  init: vi.fn(),
+  browserTracingIntegration: vi.fn(() => ({})),
+  replayIntegration: vi.fn(() => ({})),
+  ErrorBoundary: vi.fn(),
+  withProfiler: vi.fn((component: unknown) => component),
+}));
+
+import { initMonitoring, ErrorBoundary, withProfiler } from './shared-monitoring';
+
+describe('shared-monitoring', () => {
+  it('exports monitoring primitives', () => {
+    expect(typeof initMonitoring).toBe('function');
+    expect(ErrorBoundary).toBeDefined();
+    expect(withProfiler).toBeDefined();
+  });
+
+  it('initialization does not throw', () => {
+    expect(() => initMonitoring()).not.toThrow();
   });
 });

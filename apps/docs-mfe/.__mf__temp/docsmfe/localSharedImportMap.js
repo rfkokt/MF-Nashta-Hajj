@@ -129,7 +129,7 @@
         ,
           "react-router": {
             name: "react-router",
-            version: "6.30.3",
+            version: "7.13.0",
             scope: ["default"],
             loaded: false,
             from: "docsmfe",

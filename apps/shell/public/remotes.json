@@ -20,7 +20,7 @@
     "docs-mfe": {
       "name": "docsmfe",
       "entry": "http://localhost:4003/mf-manifest.json",
-      "activeWhenPath": "/docs-mfe",
+      "activeWhenPath": "/docs",
       "exposes": {
         "./App": "./App"
       }

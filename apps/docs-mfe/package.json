@@ -6,7 +6,10 @@
   "scripts": {
     "serve": "vite --port 4003",
     "build": "tsc -b && vite build",
-    "preview": "vite preview --port 4103"
+    "preview": "vite preview --port 4103",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "lint": "eslint .",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@nashta/shared-types": "workspace:*",

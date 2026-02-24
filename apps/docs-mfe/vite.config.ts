@@ -29,7 +29,6 @@ export default defineConfig({
         'react/': { singleton: true },
         'react-dom/': { singleton: true },
         'react-router': { singleton: true, requiredVersion: '^7.0.0' },
-        'react-router-dom': { singleton: true, requiredVersion: '^7.0.0' },
       },
     }),
     visualizer({
