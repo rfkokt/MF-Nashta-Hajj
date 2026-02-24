@@ -139,12 +139,6 @@ export const MOCK_MENUS: MenuGroup[] = [
             icon: 'ShieldCheck',
             path: '/docs/security',
           },
-          {
-            id: 'docs-reusable',
-            label: 'Reusable Components',
-            icon: 'Puzzle',
-            path: '/docs/reusable-components',
-          },
         ],
       },
       {
