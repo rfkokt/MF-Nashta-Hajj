@@ -7,7 +7,9 @@ export function DocsGitPerfSection() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-sm font-bold">11a</span>
+            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-sm font-bold">
+              12a
+            </span>
             Git Workflow
           </CardTitle>
           <CardDescription>Commit convention & branch naming</CardDescription>
@@ -24,22 +26,31 @@ chore(ui-kit): update Button component variants
 feat/AUTH-123-forgot-password
 fix/SHELL-456-token-race-condition`}
           />
-          <p>Format: <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">{`{type}/{TICKET-ID}-{short-description}`}</code></p>
+          <p>
+            Format:{' '}
+            <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">{`{type}/{TICKET-ID}-{short-description}`}</code>
+          </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-400 text-sm font-bold">11b</span>
+            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-400 text-sm font-bold">
+              12b
+            </span>
             Performance Budget
           </CardTitle>
           <CardDescription>Batas ukuran JS/CSS per MFE</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
           <ul className="list-disc ml-4 space-y-1">
-            <li><strong>Max JS:</strong> 250 KB (Brotli)</li>
-            <li><strong>Max CSS:</strong> 50 KB (Brotli)</li>
+            <li>
+              <strong>Max JS:</strong> 250 KB (Brotli)
+            </li>
+            <li>
+              <strong>Max CSS:</strong> 50 KB (Brotli)
+            </li>
           </ul>
           <CodeBlock
             language="bash"

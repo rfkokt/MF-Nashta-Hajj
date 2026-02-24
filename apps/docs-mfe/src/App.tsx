@@ -8,6 +8,7 @@ import { DocsOverviewSection } from './pages/DocsOverviewSection';
 import { DocsStrukturSection } from './pages/DocsStrukturSection';
 import { DocsMenjalankanSection } from './pages/DocsMenjalankanSection';
 import { DocsMembuatMfeSection } from './pages/DocsMembuatMfeSection';
+import { DocsMenambahPackageSection } from './pages/DocsMenambahPackageSection';
 import { DocsTokenAuthSection } from './pages/DocsTokenAuthSection';
 import { DocsApiInterceptorsSection } from './pages/DocsApiInterceptorsSection';
 import { DocsDynamicRemotesSection } from './pages/DocsDynamicRemotesSection';
@@ -75,49 +76,54 @@ export const DOCS_SECTION_MAP: Record<string, SectionData> = {
     title: '3. Membuat MFE Baru',
     category: '🚀 Getting Started',
   },
+  'menambah-package': {
+    component: DocsMenambahPackageSection,
+    title: '4. Menambah Package Baru',
+    category: '🚀 Getting Started',
+  },
   'token-auth': {
     component: DocsTokenAuthSection,
-    title: '4. Token & Auth Management',
+    title: '5. Token & Auth Management',
     category: '🏗️ Arsitektur',
   },
   'api-interceptors': {
     component: DocsApiInterceptorsSection,
-    title: '5. API & Interceptors',
+    title: '6. API & Interceptors',
     category: '🏗️ Arsitektur',
   },
   'dynamic-remotes': {
     component: DocsDynamicRemotesSection,
-    title: '6. Dynamic Remotes & Menu',
+    title: '7. Dynamic Remotes & Menu',
     category: '🏗️ Arsitektur',
   },
   'shared-ui-kit': {
     component: DocsSharedUiKitSection,
-    title: '7. Shared UI Kit & Shadcn',
+    title: '8. Shared UI Kit & Shadcn',
     category: '🎨 UI & Styling',
   },
   'tailwind-theme': {
     component: DocsTailwindThemeSection,
-    title: '8. Tailwind v4 & Theming',
+    title: '9. Tailwind v4 & Theming',
     category: '🎨 UI & Styling',
   },
   'events-error': {
     component: DocsEventsErrorSection,
-    title: '9. Custom Events & Error',
+    title: '10. Custom Events & Error',
     category: '📚 Panduan Lanjutan',
   },
   'env-dark-mode': {
     component: DocsEnvDarkModeSection,
-    title: '10. Environment & Dark Mode',
+    title: '11. Environment & Dark Mode',
     category: '📚 Panduan Lanjutan',
   },
   'git-perf': {
     component: DocsGitPerfSection,
-    title: '11. Git Workflow & Perf',
+    title: '12. Git Workflow & Perf',
     category: '📚 Panduan Lanjutan',
   },
   security: {
     component: DocsSecuritySection,
-    title: '12. Security Best Practices',
+    title: '13. Security Best Practices',
     category: '📚 Panduan Lanjutan',
   },
 };
