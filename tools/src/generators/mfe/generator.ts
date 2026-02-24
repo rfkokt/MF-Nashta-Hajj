@@ -159,7 +159,7 @@ body {
 
 export function App() {
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8">
       <Card variant="elevated" className="bg-white">
         <CardContent className="p-8">
           <h1 className="text-3xl font-bold text-primary-900 mb-4">
