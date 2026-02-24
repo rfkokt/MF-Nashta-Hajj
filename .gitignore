@@ -28,4 +28,7 @@ npm-debug.log*
 pnpm-debug.log*
 
 vite.config.*.timestamp*
-vitest.config.*.timestamp*.__mf__temp
+vitest.config.*.timestamp*
+
+# Auto-Generated Cache & Runtime
+.__mf__temp/
