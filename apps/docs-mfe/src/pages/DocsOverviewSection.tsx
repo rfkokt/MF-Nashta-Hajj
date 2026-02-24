@@ -1,12 +1,18 @@
 import { Card, CardContent } from '@nashta/ui-kit';
+import { Link } from 'react-router';
 
-export function DocsOverviewSection({ 
-  sectionMap 
-}: { 
-  sectionMap: Record<string, { component: React.FC, title: string, category: string }> 
+export function DocsOverviewSection({
+  sectionMap,
+}: {
+  sectionMap: Record<string, { component: React.FC; title: string; category: string }>;
 }) {
-  const categories = ['🚀 Getting Started', '🏗️ Arsitektur', '🎨 UI & Styling', '📚 Panduan Lanjutan'];
-  
+  const categories = [
+    '🚀 Getting Started',
+    '🏗️ Arsitektur',
+    '🎨 UI & Styling',
+    '📚 Panduan Lanjutan',
+  ];
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="space-y-2">
@@ -20,7 +26,9 @@ export function DocsOverviewSection({
 
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-4 text-lg border-b border-neutral-100 dark:border-neutral-800 pb-2">📑 Daftar Isi</h3>
+          <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-4 text-lg border-b border-neutral-100 dark:border-neutral-800 pb-2">
+            📑 Daftar Isi
+          </h3>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-6 text-sm">
             {categories.map((category) => (
               <div key={category} className="space-y-2">
@@ -29,13 +37,13 @@ export function DocsOverviewSection({
                   {Object.entries(sectionMap)
                     .filter(([_, data]) => data.category === category)
                     .map(([slug, data]) => (
-                      <a 
-                        key={slug} 
-                        href={`/docs/${slug}`}
+                      <Link
+                        key={slug}
+                        to={`/docs/${slug}`}
                         className="text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                       >
                         {data.title}
-                      </a>
+                      </Link>
                     ))}
                 </div>
               </div>

@@ -422,12 +422,12 @@ function Header() {
             dipelopori oleh organisasi seperti Google dan Meta. Referensi literatur arsitektur
             komprehensif dapat diakses melalui{' '}
             <a
-              href="https://nx.dev/concepts/more-concepts/monorepo-vs-polyrepo"
+              href="https://monorepo.tools/"
               target="_blank"
               rel="noreferrer"
               className="font-semibold underline hover:text-blue-800"
             >
-              dokumentasi resmi Nx
+              dokumentasi resmi Nx (monorepo.tools)
             </a>{' '}
             serta pedoman fundamental dari{' '}
             <a
