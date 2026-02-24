@@ -206,7 +206,7 @@ export function Layout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-neutral-100 dark:bg-neutral-950 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+    <div className="flex min-h-screen bg-white dark:bg-neutral-900 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
       <ToastContainer
         toasts={useNotificationStore((s) => s.toasts)}
         onDismiss={useNotificationStore.getState().removeToast}
@@ -242,7 +242,7 @@ export function Layout() {
          SIDEBAR — unified with brand & greeting
          ══════════════════════════════════════ */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 flex flex-col transition-all duration-300 ease-in-out overflow-hidden ${
+        className={`fixed inset-y-0 left-0 z-40 bg-white dark:bg-neutral-900 flex flex-col transition-all duration-300 ease-in-out overflow-hidden ${
           sidebarCollapsed
             ? 'max-lg:-translate-x-full lg:w-0 lg:border-r-0'
             : sidebarOpen
@@ -334,7 +334,7 @@ export function Layout() {
          MAIN AREA — header + content
          ══════════════════════════════════════ */}
       <div
-        className={`flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out ${
+        className={`flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out rounded-tl-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-950 ${
           sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-72'
         }`}
       >

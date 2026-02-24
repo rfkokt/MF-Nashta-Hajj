@@ -60,5 +60,8 @@ export type { BreadcrumbProps, BreadcrumbItem } from './components/Breadcrumb';
 export { Table } from './components/Table';
 export type { TableProps, Column } from './components/Table';
 
+export { DropdownMenu } from './components/DropdownMenu';
+export type { DropdownMenuProps, DropdownMenuItem } from './components/DropdownMenu';
+
 export { Tabs, TabList, Tab, TabPanel } from './components/Tabs';
 export type { TabsProps, TabListProps, TabProps, TabPanelProps } from './components/Tabs';

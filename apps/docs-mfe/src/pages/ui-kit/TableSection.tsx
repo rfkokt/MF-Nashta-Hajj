@@ -1,7 +1,7 @@
-import { Card, CardContent, Button, Table } from '@nashta/ui-kit';
+import { Card, CardContent, Button, Table, DropdownMenu } from '@nashta/ui-kit';
 import type { Column } from '@nashta/ui-kit';
 import { SectionHeader, PreviewCard, CodeBlock, PropsTable } from './shared';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, Plus, Eye, UserPlus } from 'lucide-react';
 
 interface Paket {
   id: number;
@@ -157,14 +157,14 @@ const columns: Column<Paket>[] = [
     align: 'center',
     width: 'w-24',
     render: () => (
-      <div className="flex items-center justify-center gap-2">
-        <button className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 transition-colors">
-          <Pencil className="h-4 w-4" />
-        </button>
-        <button className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors">
-          <Trash2 className="h-4 w-4" />
-        </button>
-      </div>
+      <DropdownMenu
+        items={[
+          { label: 'Lihat Detail', icon: <Eye className="h-4 w-4" /> },
+          { label: 'Tambah Jamaah', icon: <UserPlus className="h-4 w-4" /> },
+          { label: 'Edit', icon: <Pencil className="h-4 w-4" />, divider: true },
+          { label: 'Hapus', icon: <Trash2 className="h-4 w-4" />, danger: true },
+        ]}
+      />
     ),
   },
 ];
@@ -228,11 +228,11 @@ const columns: Column<Paket>[] = [
   { key: 'status', header: 'Status', render: (row) => (
     <span className="text-emerald-600">{row.status}</span>
   )},
-  { key: 'aksi', header: 'Aksi', render: () => (
-    <div className="flex gap-2">
-      <button><Pencil className="h-4 w-4" /></button>
-      <button><Trash2 className="h-4 w-4" /></button>
-    </div>
+  { key: 'aksi', header: 'Aksi', align: 'center', render: () => (
+    <DropdownMenu items={[
+      { label: 'Edit', icon: <Pencil className="h-4 w-4" /> },
+      { label: 'Hapus', icon: <Trash2 className="h-4 w-4" />, danger: true }
+    ]} />
   )},
 ];
 
@@ -279,6 +279,31 @@ const columns: Column<Paket>[] = [
             ['sortable', 'boolean', 'false'],
             ['width', 'string (Tailwind)', '—'],
             ['align', 'left | center | right', 'left'],
+          ]}
+        />
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-8">
+          DropdownMenu Props (Sering dipakai di kolom Aksi)
+        </h3>
+        <PropsTable
+          rows={[
+            ['items', 'DropdownMenuItem[]', '—'],
+            ['trigger', 'ReactNode', '<MoreHorizontal />'],
+            ['align', '"left" | "right"', '"right"'],
+            ['width', 'string (Tailwind)', '"w-44"'],
+          ]}
+        />
+
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-4">
+          DropdownMenuItem
+        </h3>
+        <PropsTable
+          rows={[
+            ['label', 'string', '—'],
+            ['icon', 'ReactNode', '—'],
+            ['onClick', '() => void', '—'],
+            ['danger', 'boolean', 'false'],
+            ['divider', 'boolean', 'false'],
           ]}
         />
       </CardContent>

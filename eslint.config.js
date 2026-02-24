@@ -43,6 +43,10 @@ export default [
         WindowEventMap: 'readonly',
         React: 'readonly',
         JSX: 'readonly',
+        MouseEvent: 'readonly',
+        Node: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
       },
     },
     plugins: {
@@ -71,6 +75,7 @@ export default [
       '**/dist/**',
       '**/node_modules/**',
       '**/.nx/**',
+      '**/.__mf__temp/**',
       '**/vite.config.*.timestamp*',
       '**/vitest.config.*.timestamp*',
     ],

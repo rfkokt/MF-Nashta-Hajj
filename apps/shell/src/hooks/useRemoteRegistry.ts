@@ -31,8 +31,6 @@ export function useRemoteRegistry() {
 
   useEffect(() => {
     if (cachedRegistry) {
-      setRegistry(cachedRegistry);
-      setIsLoading(false);
       return;
     }
 

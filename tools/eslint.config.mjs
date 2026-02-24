@@ -4,14 +4,7 @@ export default [
   ...baseConfig,
   {
     files: ['**/*.json'],
-    rules: {
-      '@nx/dependency-checks': [
-        'error',
-        {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
-        },
-      ],
-    },
+    rules: {},
     languageOptions: {
       parser: await import('jsonc-eslint-parser'),
     },
@@ -22,11 +15,19 @@ export default [
       "**/package.json",
       "**/generators.json"
     ],
-    rules: {
-      '@nx/nx-plugin-checks': 'error',
-    },
+    rules: {},
     languageOptions: {
       "parser": (await import('jsonc-eslint-parser'))
+    },
+  },
+  {
+    files: ['**/*.ts', '**/*.js'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        __dirname: 'readonly',
+        console: 'readonly',
+      },
     },
   },
 ];

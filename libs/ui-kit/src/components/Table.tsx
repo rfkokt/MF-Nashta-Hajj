@@ -2,7 +2,7 @@ import { useState, useMemo, type ReactNode } from 'react';
 import {
   ChevronUp,
   ChevronDown,
-  ChevronsUpDown,
+  ArrowUpDown,
   ChevronLeft,
   ChevronRight,
   Search,
@@ -150,7 +150,7 @@ export function Table<T>({
 
   // ── Sort Icon ──
   const SortIcon = ({ colKey }: { colKey: string }) => {
-    if (sortKey !== colKey) return <ChevronsUpDown className="h-3.5 w-3.5 text-neutral-400" />;
+    if (sortKey !== colKey) return <ArrowUpDown className="h-3.5 w-3.5 text-neutral-400" />;
     return sortDir === 'asc' ? (
       <ChevronUp className="h-3.5 w-3.5 text-neutral-900 dark:text-white" />
     ) : (
@@ -185,9 +185,7 @@ export function Table<T>({
       {showToolbar && (
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-4">
           {title && (
-            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
-              {title}
-            </h3>
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100">{title}</h3>
           )}
           <div className="flex items-center gap-3 ml-auto">
             {searchable && (
@@ -201,7 +199,7 @@ export function Table<T>({
                     setPage(0);
                   }}
                   placeholder={searchPlaceholder}
-                  className="pl-9 pr-4 py-2 w-[220px] rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-700 dark:text-neutral-300 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  className="pl-9 pr-4 py-2 w-[220px] rounded-lg bg-neutral-100 dark:bg-neutral-800 border-0 text-sm text-neutral-700 dark:text-neutral-300 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
                 />
               </div>
             )}
@@ -214,7 +212,7 @@ export function Table<T>({
         <table className="w-full text-sm">
           {/* ── Header ── */}
           <thead>
-            <tr className="border-y border-neutral-200 dark:border-neutral-800">
+            <tr className="border-b border-neutral-200 dark:border-neutral-800">
               {showRowNumbers && (
                 <th className="px-4 py-3 font-medium text-neutral-500 dark:text-neutral-400 text-left w-12">
                   No.
