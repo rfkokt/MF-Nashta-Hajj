@@ -2,6 +2,7 @@ export { MFE_EVENTS, dispatchMfeEvent, onMfeEvent } from './events';
 export type { AuthEventPayload, User } from './events';
 export { useAuthStore } from './auth-store';
 export type { AuthState } from './auth-store';
+export * from './i18n';
 export { useMenuStore } from './menu-store';
 export type { MenuItem, MenuGroup, MenuState } from './menu-store';
 export { useThemeStore } from './theme-store';

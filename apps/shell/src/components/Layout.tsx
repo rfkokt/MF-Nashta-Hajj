@@ -9,11 +9,12 @@ import {
   dispatchMfeEvent,
 } from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
-import { LogOut, Sun, Moon, ChevronDown, AlertTriangle, PanelLeft } from 'lucide-react';
+import { LogOut, Sun, Moon, ChevronDown, AlertTriangle, PanelLeft, Globe } from 'lucide-react';
 import React, { useState, useEffect, useCallback } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
-import { ToastContainer, Modal, Button } from '@nashta/ui-kit';
+import { ToastContainer, Modal, Button, DropdownMenu } from '@nashta/ui-kit';
+import { useTranslation } from 'react-i18next';
 import { discoveredComponents } from '../utils/component-discovery';
 import { AutoBreadcrumb } from './AutoBreadcrumb';
 
@@ -90,18 +91,19 @@ const subNavClass = ({ isActive }: { isActive: boolean }) =>
    ───────────────────────────────────────────── */
 function SidebarItem({ item }: { item: MenuItem }) {
   const icon = getIcon(item.icon);
+  const { t } = useTranslation('common');
 
   if (item.children && item.children.length > 0) {
     return (
       <CollapsibleSection
-        label={item.label}
+        label={t(`menu.${item.id}`, { defaultValue: item.label })}
         icon={icon}
         defaultOpen={item.defaultOpen}
         childPaths={item.children.map((c) => c.path)}
       >
         {item.children.map((child) => (
           <NavLink key={child.id} to={child.path} className={subNavClass}>
-            {child.label}
+            {t(`menu.${child.id}`, { defaultValue: child.label })}
           </NavLink>
         ))}
       </CollapsibleSection>
@@ -111,7 +113,7 @@ function SidebarItem({ item }: { item: MenuItem }) {
   return (
     <NavLink to={item.path} end={item.path === '/'} className={topNavClass}>
       {React.createElement(icon, { className: 'h-4 w-4' })}
-      {item.label}
+      {t(`menu.${item.id}`, { defaultValue: item.label })}
       {item.badge && (
         <span className="ml-auto text-[10px] font-bold bg-orange-500 text-white px-1.5 py-0.5 rounded-full leading-none">
           {item.badge}
@@ -145,6 +147,7 @@ export function Layout() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { t, i18n } = useTranslation(['common', 'auth']);
 
   // Theme store
   const isDark = useThemeStore((s) => s.isDark);
@@ -269,7 +272,9 @@ export function Layout() {
 
           {/* ── Greeting ── */}
           <div className="px-6 pt-3 pb-4">
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">Selamat Datang,</p>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              {t('menu.greeting', { defaultValue: 'Selamat Datang,' })}
+            </p>
             <p className="text-lg font-bold leading-tight">
               {user?.name || 'Ahmad Fahim Hakim'} 👋
             </p>
@@ -288,7 +293,7 @@ export function Layout() {
                   }
                 >
                   <div className="px-3 mb-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
-                    {group.title}
+                    {t(`menu.title_${group.title.toLowerCase()}`, { defaultValue: group.title })}
                   </div>
                   <div className="space-y-1">
                     {group.items.map((item) => (
@@ -308,7 +313,7 @@ export function Layout() {
               onClick={handleLogout}
             >
               <LogOut className="h-4 w-4" />
-              Keluar
+              {t('menu.logout', { defaultValue: 'Keluar' })}
             </Button>
           </div>
         </div>
@@ -355,6 +360,22 @@ export function Layout() {
 
           {/* Header actions */}
           <div className="flex items-center gap-2">
+            <DropdownMenu
+              align="right"
+              trigger={
+                <div className="flex items-center gap-1.5 font-medium text-sm">
+                  <Globe className="h-5 w-5" />
+                  <span className="uppercase text-xs font-bold hidden sm:inline-block">
+                    {i18n.language}
+                  </span>
+                </div>
+              }
+              items={[
+                { label: 'Indonesia (ID)', onClick: () => i18n.changeLanguage('id') },
+                { label: 'English (EN)', onClick: () => i18n.changeLanguage('en') },
+                { label: 'العربية (AR)', onClick: () => i18n.changeLanguage('ar') },
+              ]}
+            />
             <Button
               variant="ghost"
               size="icon"

@@ -11,6 +11,7 @@ import {
 import { useAuthStore, MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
 import type { AuthEventPayload } from '@nashta/shared-types';
 import { User as UserIcon, Save, Camera, Shield, Mail, BadgeCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Profile() {
   const user = useAuthStore((s) => s.user);
@@ -21,6 +22,7 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const { t } = useTranslation('auth');
 
   // Sync form when user data changes
   useEffect(() => {
@@ -56,10 +58,10 @@ export default function Profile() {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);
       } else {
-        setError('Nama dan email harus diisi.');
+        setError(t('profile.errorEmpty'));
       }
     } catch {
-      setError('Gagal memperbarui profil. Silakan coba lagi.');
+      setError(t('profile.errorUpdate'));
     } finally {
       setIsLoading(false);
     }
@@ -70,13 +72,13 @@ export default function Profile() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-100 px-4">
         <Card variant="elevated" className="max-w-md w-full text-center shadow-xl">
           <CardContent className="py-8">
-            <p className="text-neutral-500">Silakan login terlebih dahulu.</p>
+            <p className="text-neutral-500">{t('profile.notLoggedIn')}</p>
             <Button
               variant="primary"
               className="mt-4"
               onClick={() => (window.location.href = '/auth/login')}
             >
-              Ke Halaman Login
+              {t('profile.toLogin')}
             </Button>
           </CardContent>
         </Card>
@@ -90,9 +92,9 @@ export default function Profile() {
         {/* Page Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-            Profil Saya
+            {t('profile.title')}
           </h1>
-          <p className="text-neutral-500 mt-2">Kelola informasi akun Anda</p>
+          <p className="text-neutral-500 mt-2">{t('profile.subtitle')}</p>
         </div>
 
         {/* Avatar Card */}
@@ -129,9 +131,9 @@ export default function Profile() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <UserIcon className="h-5 w-5 text-primary-600" />
-              Informasi Akun
+              {t('profile.accountInfo')}
             </CardTitle>
-            <CardDescription>Perbarui nama dan email Anda</CardDescription>
+            <CardDescription>{t('profile.accountInfoDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -148,14 +150,14 @@ export default function Profile() {
                   className="p-3 rounded-lg bg-emerald-50 text-emerald-700 text-sm border border-emerald-200"
                   role="status"
                 >
-                  ✅ Profil berhasil diperbarui!
+                  {t('profile.successUpdate')}
                 </div>
               )}
 
               <Input
-                label="Nama Lengkap"
+                label={t('profile.nameLabel')}
                 type="text"
-                placeholder="Masukkan nama lengkap"
+                placeholder={t('profile.namePlaceholder')}
                 value={name}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 required
@@ -163,9 +165,9 @@ export default function Profile() {
               />
 
               <Input
-                label="Email"
+                label={t('profile.emailLabel')}
                 type="email"
-                placeholder="nama@email.com"
+                placeholder={t('login.emailPlaceholder')}
                 value={email}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
@@ -174,7 +176,7 @@ export default function Profile() {
 
               <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
                 <Save className="h-4 w-4" />
-                Simpan Perubahan
+                {t('profile.save')}
               </Button>
             </form>
           </CardContent>
@@ -185,9 +187,9 @@ export default function Profile() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-primary-600" />
-              Keamanan
+              {t('profile.security')}
             </CardTitle>
-            <CardDescription>Informasi keamanan akun Anda</CardDescription>
+            <CardDescription>{t('profile.securityDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -195,24 +197,28 @@ export default function Profile() {
                 <div className="flex items-center gap-3">
                   <Mail className="h-4 w-4 text-neutral-500" />
                   <div>
-                    <p className="text-sm font-medium text-neutral-700">Email</p>
+                    <p className="text-sm font-medium text-neutral-700">
+                      {t('profile.emailLabel')}
+                    </p>
                     <p className="text-sm text-neutral-500">{user.email}</p>
                   </div>
                 </div>
                 <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                  Terverifikasi
+                  {t('profile.verified')}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-50">
                 <div className="flex items-center gap-3">
                   <Shield className="h-4 w-4 text-neutral-500" />
                   <div>
-                    <p className="text-sm font-medium text-neutral-700">Password</p>
+                    <p className="text-sm font-medium text-neutral-700">
+                      {t('profile.passwordLabel')}
+                    </p>
                     <p className="text-sm text-neutral-500">••••••••</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm">
-                  Ubah
+                  {t('profile.change')}
                 </Button>
               </div>
             </div>

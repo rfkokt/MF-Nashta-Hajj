@@ -74,15 +74,20 @@ pnpm run dev:new`}
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 text-sm">
               <p className="font-semibold text-amber-800 dark:text-amber-300">⚠️ Penting</p>
               <p className="text-amber-700 dark:text-amber-400">
-                Gunakan{' '}
+                Di dalam MFE Anda, selalu gunakan komponen{' '}
                 <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">
-                  NavLink
-                </code>{' '}
-                dari react-router, BUKAN{' '}
-                <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">
-                  &lt;a href&gt;
+                  &lt;NavLink&gt;
                 </code>
-                ! Tag &lt;a&gt; akan trigger full page reload dan kehilangan state login.
+                {' atau '}
+                <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">
+                  &lt;Link&gt;
+                </code>{' '}
+                dari <strong>react-router</strong> untuk navigasi internal, <strong>BUKAN</strong>{' '}
+                <code className="text-xs bg-amber-100 dark:bg-amber-900/50 px-1 rounded">
+                  &lt;a href="..."&gt;
+                </code>
+                ! Penggunaan tag lurus &lt;a&gt; akan memicu *full page reload* (Browser Refresh)
+                yang membuat state otentikasi (Zustand) dan MFE remotes hilang!
               </p>
             </div>
           </DocsStep>

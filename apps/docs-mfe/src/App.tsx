@@ -19,6 +19,7 @@ import { DocsEnvDarkModeSection } from './pages/DocsEnvDarkModeSection';
 import { DocsGitPerfSection } from './pages/DocsGitPerfSection';
 import { DocsSecuritySection } from './pages/DocsSecuritySection';
 import { DocsWhyMfSection } from './pages/DocsWhyMfSection';
+import { DocsI18nSection } from './pages/DocsI18nSection';
 
 // ── Reusable Components Section imports ──
 import { InfoBoxSection } from './pages/components/InfoBoxSection';
@@ -125,6 +126,11 @@ export const DOCS_SECTION_MAP: Record<string, SectionData> = {
   security: {
     component: DocsSecuritySection,
     title: '13. Security Best Practices',
+    category: '📚 Panduan Lanjutan',
+  },
+  i18n: {
+    component: DocsI18nSection,
+    title: '14. Internationalization (i18n)',
     category: '📚 Panduan Lanjutan',
   },
 };

@@ -11,6 +11,7 @@ import {
 import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
 import type { AuthEventPayload } from '@nashta/shared-types';
 import { LogIn, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState('');
+  const { t } = useTranslation('auth');
 
   // Extract redirect query param on mount
   useState(() => {
@@ -74,10 +76,10 @@ export default function Login() {
         // Show success state (Shell will auto-redirect via useAuthEvents)
         setSuccess(true);
       } else {
-        setError('Email dan password harus diisi.');
+        setError(t('login.errorEmpty'));
       }
     } catch {
-      setError('Login gagal. Periksa kembali email dan password Anda.');
+      setError(t('login.errorAuth'));
     } finally {
       setIsLoading(false);
     }
@@ -91,19 +93,21 @@ export default function Login() {
             <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="h-8 w-8 text-success" />
             </div>
-            <h2 className="text-xl font-bold text-neutral-900 mb-2">Login Berhasil!</h2>
-            <p className="text-neutral-500 mb-6">Selamat datang, {email.split('@')[0]}!</p>
+            <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('login.success')}</h2>
+            <p className="text-neutral-500 mb-6">
+              {t('login.welcome', { name: email.split('@')[0] })}
+            </p>
             <p className="text-sm text-neutral-400">
               {redirectUrl ? (
                 <>
-                  Mengalihkan kembali ke{' '}
+                  {t('login.redirectingApp').split('...')[0] + ' '}
                   <a href={redirectUrl} className="text-primary-600 hover:underline font-medium">
-                    aplikasi asal...
+                    {t('login.redirectingApp').split('...')[1] || '...'}
                   </a>
                 </>
               ) : (
                 <>
-                  Jika tidak otomatis redirect, buka{' '}
+                  {t('login.redirectingShell')}{' '}
                   <a
                     href="http://localhost:4000"
                     className="text-primary-600 hover:underline font-medium"
@@ -125,15 +129,15 @@ export default function Login() {
         {/* Logo / Brand */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-            Antigravity
+            {t('login.title')}
           </h1>
-          <p className="text-neutral-500 mt-2">Masuk ke akun Anda</p>
+          <p className="text-neutral-500 mt-2">{t('login.subtitle')}</p>
         </div>
 
         <Card variant="elevated" className="shadow-xl">
           <CardHeader>
-            <CardTitle>Login</CardTitle>
-            <CardDescription>Masukkan email dan password untuk melanjutkan</CardDescription>
+            <CardTitle>{t('login.cardTitle')}</CardTitle>
+            <CardDescription>{t('login.cardDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -147,9 +151,9 @@ export default function Login() {
               )}
 
               <Input
-                label="Email"
+                label={t('login.emailLabel')}
                 type="email"
-                placeholder="nama@email.com"
+                placeholder={t('login.emailPlaceholder')}
                 value={email}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
@@ -157,43 +161,41 @@ export default function Login() {
                 autoFocus
               />
 
-              <div>
+              <div className="relative">
                 <Input
-                  label="Password"
+                  label={t('login.passwordLabel')}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Masukkan password"
+                  placeholder={t('login.passwordPlaceholder')}
                   value={password}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
                   className="pr-10"
                 />
-                <div className="relative">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-1 -top-[34px] h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
-                    onClick={() => setShowPassword(!showPassword)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-1 top-[30px] h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
               </div>
 
               <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
                 <LogIn className="h-4 w-4" />
-                Masuk
+                {t('login.submit')}
               </Button>
 
               <p className="text-center text-sm text-neutral-500">
-                Belum punya akun?{' '}
+                {t('login.noAccount')}{' '}
                 <a
                   href="/auth/register"
                   className="text-primary-600 hover:text-primary-700 font-medium"
                 >
-                  Daftar Sekarang
+                  {t('login.register')}
                 </a>
               </p>
             </form>

@@ -145,6 +145,12 @@ export const MOCK_MENUS: MenuGroup[] = [
             icon: 'ShieldCheck',
             path: '/docs/security',
           },
+          {
+            id: 'docs-i18n',
+            label: '14. Internationalization (i18n)',
+            icon: 'Globe2',
+            path: '/docs/i18n',
+          },
         ],
       },
       {
