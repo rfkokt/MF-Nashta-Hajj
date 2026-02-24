@@ -9,7 +9,7 @@ import {
   dispatchMfeEvent,
 } from '@nashta/shared-types';
 import type { MenuItem } from '@nashta/shared-types';
-import { LogOut, Menu, X, Sun, Moon, ChevronDown, AlertTriangle, PanelLeft } from 'lucide-react';
+import { LogOut, Sun, Moon, ChevronDown, AlertTriangle, PanelLeft } from 'lucide-react';
 import React, { useState, useEffect, useCallback } from 'react';
 import { getIcon } from '../utils/icon-map';
 import { MOCK_MENUS } from '../data/mock-menus';
@@ -251,17 +251,6 @@ export function Layout() {
               : 'max-lg:-translate-x-full lg:translate-x-0 w-72'
         }`}
       >
-        {/* Close button (mobile) */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden absolute top-4 right-3 text-neutral-400 hover:text-neutral-900 dark:hover:text-white z-10 h-8 w-8 px-0 bg-transparent hover:bg-neutral-100/50"
-          onClick={() => setSidebarOpen(false)}
-          aria-label="Close sidebar"
-        >
-          <X className="h-5 w-5" />
-        </Button>
-
         <div className="w-72 flex flex-col h-full">
           {/* ── Brand ── */}
           <div className="px-6 pt-5 pb-2 flex items-center gap-2.5">
@@ -344,24 +333,19 @@ export function Layout() {
       >
         {/* ── Top Header Bar (light, content-area only) ── */}
         <header className="h-14 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-4 lg:px-6 gap-3 sticky top-0 z-30 shrink-0">
-          {/* Mobile hamburger */}
+          {/* Unified sidebar toggle */}
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden text-neutral-500 hover:text-neutral-900 dark:hover:text-white h-8 w-8 px-0 bg-transparent hover:bg-neutral-100/50"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open sidebar"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-
-          {/* Desktop sidebar toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hidden lg:flex h-8 w-8 px-0 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className="flex h-8 w-8 px-0 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
+            onClick={() => {
+              if (window.innerWidth >= 1024) {
+                setSidebarCollapsed(!sidebarCollapsed);
+              } else {
+                setSidebarOpen(!sidebarOpen);
+              }
+            }}
+            aria-label="Toggle sidebar"
           >
             <PanelLeft className="h-[18px] w-[18px]" />
           </Button>
