@@ -42,6 +42,7 @@ import { LabelSection } from './pages/ui-kit/LabelSection';
 import { SelectSection } from './pages/ui-kit/SelectSection';
 import { TableSection } from './pages/ui-kit/TableSection';
 import { TabsSection } from './pages/ui-kit/TabsSection';
+import { DropdownMenuSection } from './pages/ui-kit/DropdownMenuSection';
 import { OverviewSection as UIKitOverviewSection } from './pages/ui-kit/OverviewSection';
 import { UndocumentedSection } from './pages/ui-kit/UndocumentedSection';
 
@@ -137,6 +138,7 @@ export const UIKIT_SECTION_MAP: Record<string, React.FC> = {
   select: SelectSection,
   table: TableSection,
   tabs: TabsSection,
+  dropdownmenu: DropdownMenuSection,
 };
 
 /* ─── Reusable Components Section Map ─── */

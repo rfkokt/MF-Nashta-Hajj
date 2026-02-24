@@ -9,7 +9,7 @@ import { Button } from './Button';
 
 export interface DropdownMenuItem {
   /** Menu item label */
-  label: string;
+  label?: string;
   /** Icon element (e.g. lucide-react icon) */
   icon?: ReactNode;
   /** Click handler */
