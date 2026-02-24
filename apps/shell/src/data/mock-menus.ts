@@ -171,6 +171,12 @@ export const MOCK_MENUS: MenuGroup[] = [
             icon: 'Wrench',
             path: '/docs/components/utilities',
           },
+          {
+            id: 'rc-codeblocktable',
+            label: 'CodeBlockTable',
+            icon: 'Table',
+            path: '/docs/components/codeblocktable',
+          },
         ],
       },
       {

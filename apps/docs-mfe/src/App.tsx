@@ -25,8 +25,9 @@ import { ComparisonTableSection } from './pages/components/ComparisonTableSectio
 import { FeatureGridSection } from './pages/components/FeatureGridSection';
 import { UtilitiesSection } from './pages/components/UtilitiesSection';
 import { ComponentsOverviewSection } from './pages/components/ComponentsOverviewSection';
+import CodeBlockTableSection from './pages/components/CodeBlockTableSection';
 
-// ── UI Kit Section imports ──
+// --- UI Kit Section imports ---
 import { ButtonSection } from './pages/ui-kit/ButtonSection';
 import { InputSection } from './pages/ui-kit/InputSection';
 import { CardSection } from './pages/ui-kit/CardSection';
@@ -147,6 +148,7 @@ export const COMPONENTS_SECTION_MAP: Record<string, React.FC> = {
   comparisontable: ComparisonTableSection,
   featuregrid: FeatureGridSection,
   utilities: UtilitiesSection,
+  codeblocktable: CodeBlockTableSection,
 };
 
 /* ═══════════════════════════════════════════════
