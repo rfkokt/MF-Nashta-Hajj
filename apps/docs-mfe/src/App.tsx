@@ -27,6 +27,7 @@ import { FeatureGridSection } from './pages/components/FeatureGridSection';
 import { UtilitiesSection } from './pages/components/UtilitiesSection';
 import { ComponentsOverviewSection } from './pages/components/ComponentsOverviewSection';
 import CodeBlockTableSection from './pages/components/CodeBlockTableSection';
+import { DocsStepSection } from './pages/components/DocsStepSection';
 
 // --- UI Kit Section imports ---
 import { ButtonSection } from './pages/ui-kit/ButtonSection';
@@ -155,6 +156,7 @@ export const COMPONENTS_SECTION_MAP: Record<string, React.FC> = {
   featuregrid: FeatureGridSection,
   utilities: UtilitiesSection,
   codeblocktable: CodeBlockTableSection,
+  docsstep: DocsStepSection,
 };
 
 /* ═══════════════════════════════════════════════

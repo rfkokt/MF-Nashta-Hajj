@@ -28,6 +28,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   handleReset = () => {
+    // Untuk error terkait module federation atau lazy loading (chunk failed, reference error saat HMR),
+    // React lazy caching akan menyimpan state error. Satu-satunya cara recover adalah full reload.
+    const errorMsg = this.state.error?.message?.toLowerCase() || '';
+    if (
+      errorMsg.includes('failed to fetch dynamically imported module') ||
+      errorMsg.includes('is not defined') ||
+      errorMsg.includes('load failed')
+    ) {
+      window.location.reload();
+      return;
+    }
+
     this.setState({ hasError: false, error: null });
     this.props.onReset?.();
   };

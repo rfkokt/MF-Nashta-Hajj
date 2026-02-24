@@ -183,6 +183,12 @@ export const MOCK_MENUS: MenuGroup[] = [
             icon: 'Table',
             path: '/docs/components/codeblocktable',
           },
+          {
+            id: 'rc-docsstep',
+            label: 'DocsStep',
+            icon: 'ListOrdered',
+            path: '/docs/components/docsstep',
+          },
         ],
       },
       {

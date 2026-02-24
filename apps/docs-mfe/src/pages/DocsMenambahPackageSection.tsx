@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@nashta/ui-kit';
 import { CodeBlock } from '../components/CodeBlock';
+import { DocsStep } from '../components/DocsStep';
 
 export function DocsMenambahPackageSection() {
   return (
@@ -18,10 +19,7 @@ export function DocsMenambahPackageSection() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="border-l-4 border-indigo-400 dark:border-indigo-600 pl-4 space-y-2">
-            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
-              1. Format Command Instalasi
-            </h3>
+          <DocsStep title="1. Format Command Instalasi" color="indigo">
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               Karena kita menggunakan{' '}
               <strong className="font-semibold text-neutral-900 dark:text-neutral-100">
@@ -50,12 +48,9 @@ pnpm add zod --filter shared-types
 # Tambah sebagai devDependency
 pnpm add -D uuid --filter auth-mfe`}
             />
-          </div>
+          </DocsStep>
 
-          <div className="border-l-4 border-indigo-400 dark:border-indigo-600 pl-4 space-y-2">
-            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
-              2. Pengecekan Module Federation
-            </h3>
+          <DocsStep title="2. Pengecekan Module Federation" color="indigo">
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               Jika library yang Anda instal menggunakan <strong>React Context</strong> atau
               bergantung pada state global singleton (contoh:{' '}
@@ -90,12 +85,9 @@ export default defineConfig({
   ]
 })`}
             />
-          </div>
+          </DocsStep>
 
-          <div className="border-l-4 border-indigo-400 dark:border-indigo-600 pl-4 space-y-2">
-            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
-              3. Batasan Performance & Bundle Size
-            </h3>
+          <DocsStep title="3. Batasan Performance & Bundle Size" color="indigo">
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               Setiap kali Anda menambah package baru, pastikan ukurannya tidak membebani aplikasi.
               Sesuai <strong>PRD Bagian 18</strong>:
@@ -128,7 +120,7 @@ export default defineConfig({
                 ).
               </li>
             </ul>
-          </div>
+          </DocsStep>
 
           <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg p-4">
             <h4 className="font-semibold text-rose-800 dark:text-rose-300 flex items-center gap-2">
