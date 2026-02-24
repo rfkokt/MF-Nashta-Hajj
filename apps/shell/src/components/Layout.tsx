@@ -210,7 +210,7 @@ export function Layout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-neutral-900 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+    <div className="flex h-screen overflow-hidden bg-white dark:bg-neutral-900 font-sans text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
       <ToastContainer
         toasts={useNotificationStore((s) => s.toasts)}
         onDismiss={useNotificationStore.getState().removeToast}
@@ -332,12 +332,12 @@ export function Layout() {
          MAIN AREA — header + content
          ══════════════════════════════════════ */}
       <div
-        className={`flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out rounded-tl-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-950 ${
+        className={`flex flex-col flex-1 h-screen transition-all duration-300 ease-in-out ${
           sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-72'
         }`}
       >
         {/* ── Top Header Bar (light, content-area only) ── */}
-        <header className="h-14 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-4 lg:px-6 gap-3 sticky top-0 z-30 shrink-0">
+        <header className="h-14 bg-white dark:bg-neutral-900 flex items-center px-4 lg:px-6 gap-3 shrink-0 z-30">
           {/* Unified sidebar toggle */}
           <Button
             variant="ghost"
@@ -412,7 +412,10 @@ export function Layout() {
         </header>
 
         {/* ── Main content ── */}
-        <main id="main-content" className="flex-1 p-6 lg:px-8 overflow-y-auto">
+        <main
+          id="main-content"
+          className="flex-1 p-6 lg:px-8 overflow-y-auto bg-neutral-100 dark:bg-neutral-950 rounded-tl-3xl overflow-hidden"
+        >
           <AutoBreadcrumb />
           <Outlet />
         </main>

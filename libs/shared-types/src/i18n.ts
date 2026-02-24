@@ -24,11 +24,14 @@ const resources = {
   },
 };
 
+const savedLanguage =
+  typeof window !== 'undefined' ? window.localStorage.getItem('nashta-lang') || 'id' : 'id';
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: 'id', // Default language is Indonesian
+    lng: savedLanguage, // Read from localStorage
     fallbackLng: 'en', // Fallback to English if key missing
 
     // Have a common namespace used around the full app
@@ -39,5 +42,11 @@ i18n
       escapeValue: false, // react already safes from xss
     },
   });
+
+if (typeof window !== 'undefined') {
+  i18n.on('languageChanged', (lng) => {
+    window.localStorage.setItem('nashta-lang', lng);
+  });
+}
 
 export default i18n;
