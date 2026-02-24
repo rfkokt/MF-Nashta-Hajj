@@ -107,12 +107,13 @@ export default function Profile() {
                   alt={`Avatar ${user.name}`}
                   className="h-24 w-24 rounded-full bg-neutral-200 border-4 border-white shadow-lg"
                 />
-                <button
-                  className="absolute bottom-0 right-0 h-8 w-8 bg-primary-600 text-white rounded-full flex items-center justify-center shadow-md hover:bg-primary-700 transition-colors opacity-0 group-hover:opacity-100"
+                <Button
+                  size="icon"
+                  className="absolute bottom-0 right-0 h-8 w-8 rounded-full shadow-md opacity-0 group-hover:opacity-100"
                   aria-label="Change avatar"
                 >
                   <Camera className="h-4 w-4" />
-                </button>
+                </Button>
               </div>
               <h2 className="text-xl font-bold text-neutral-900 mt-4">{user.name}</h2>
               <div className="flex items-center gap-2 mt-1">

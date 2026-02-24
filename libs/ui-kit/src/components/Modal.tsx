@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { X } from 'lucide-react';
+import { Button } from './Button';
 
 /* ─────────────────────────────────────────────
    Modal / Dialog Component
@@ -74,7 +75,10 @@ export function Modal({
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <div>
             {title && (
-              <h2 id="modal-title" className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+              <h2
+                id="modal-title"
+                className="text-lg font-semibold text-neutral-900 dark:text-neutral-100"
+              >
                 {title}
               </h2>
             )}
@@ -83,21 +87,21 @@ export function Modal({
             )}
           </div>
           {showClose && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={onClose}
-              className="h-8 w-8 flex items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="h-8 w-8 px-0 flex items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
               aria-label="Close dialog"
             >
               <X className="h-4 w-4" />
-            </button>
+            </Button>
           )}
         </div>
       )}
 
       {/* Content */}
-      <div className="px-6 pb-6 pt-2">
-        {children}
-      </div>
+      <div className="px-6 pb-6 pt-2">{children}</div>
     </dialog>
   );
 }

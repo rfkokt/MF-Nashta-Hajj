@@ -47,6 +47,8 @@ export default [
         Node: 'readonly',
         KeyboardEvent: 'readonly',
         Event: 'readonly',
+        HTMLDialogElement: 'readonly',
+        requestAnimationFrame: 'readonly',
       },
     },
     plugins: {

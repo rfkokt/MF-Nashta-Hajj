@@ -8,6 +8,7 @@ import {
   type ReactNode,
   type KeyboardEvent,
 } from 'react';
+import { Button } from './Button';
 
 /* ─────────────────────────────────────────────
    Tabs Component (Compound Pattern)
@@ -162,7 +163,8 @@ export function Tab({ value, children, disabled = false, className = '' }: TabPr
   }, [value, registerTab]);
 
   return (
-    <button
+    <Button
+      variant="ghost"
       ref={tabRef}
       role="tab"
       aria-selected={isActive}
@@ -171,17 +173,17 @@ export function Tab({ value, children, disabled = false, className = '' }: TabPr
       tabIndex={isActive ? 0 : -1}
       disabled={disabled}
       onClick={() => !disabled && setActiveValue(value)}
-      className={`relative px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed ${
+      className={`relative px-4 py-2.5 text-sm font-medium transition-colors h-auto rounded-none ${
         orientation === 'horizontal'
           ? `${
               isActive
-                ? 'text-primary-600 dark:text-primary-400'
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'
+                ? 'text-primary-600 dark:text-primary-400 bg-transparent hover:bg-transparent'
+                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 bg-transparent hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50'
             }`
           : `text-left w-full ${
               isActive
                 ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 bg-transparent'
             } rounded-lg`
       } ${className}`}
     >
@@ -194,7 +196,7 @@ export function Tab({ value, children, disabled = false, className = '' }: TabPr
       {isActive && orientation === 'vertical' && (
         <span className="absolute top-1/2 -translate-y-1/2 right-0 w-0.5 h-4/5 bg-primary-600 dark:bg-primary-400 rounded-full" />
       )}
-    </button>
+    </Button>
   );
 }
 

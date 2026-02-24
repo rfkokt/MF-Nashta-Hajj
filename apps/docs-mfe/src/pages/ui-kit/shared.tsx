@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type React from 'react';
+import { Button } from '@nashta/ui-kit';
 
 /** Simple syntax highlighter — tokenizes TSX/JS code into colored spans */
 export function highlightCode(code: string): React.ReactNode[] {
@@ -79,12 +80,13 @@ export function CodeBlock({ children }: { children: string }) {
           <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <button
+        <Button
+          variant="ghost"
           onClick={handleCopy}
-          className="text-xs text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded hover:bg-neutral-800"
+          className="text-xs text-neutral-500 hover:text-white transition-colors h-7 px-2 py-1 rounded hover:bg-neutral-800 font-normal bg-transparent"
         >
           {copied ? '✓ Copied' : 'Copy'}
-        </button>
+        </Button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">

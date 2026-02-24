@@ -42,12 +42,13 @@ function CollapsibleSection({
 
   return (
     <div>
-      <button
+      <Button
+        variant="ghost"
         onClick={() => setManualOpen(!isOpen)}
-        className={`flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+        className={`flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-colors h-auto ${
           hasActiveChild
-            ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
-            : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+            ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200'
+            : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 bg-transparent'
         }`}
       >
         <span className="flex items-center gap-3">
@@ -57,7 +58,7 @@ function CollapsibleSection({
         <ChevronDown
           className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
-      </button>
+      </Button>
       {isOpen && (
         <div className="ml-7 mt-1 space-y-0.5 border-l border-neutral-200 dark:border-neutral-700 pl-3">
           {children}
@@ -251,13 +252,15 @@ export function Layout() {
         }`}
       >
         {/* Close button (mobile) */}
-        <button
-          className="lg:hidden absolute top-4 right-3 text-neutral-400 hover:text-neutral-900 dark:hover:text-white z-10"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden absolute top-4 right-3 text-neutral-400 hover:text-neutral-900 dark:hover:text-white z-10 h-8 w-8 px-0 bg-transparent hover:bg-neutral-100/50"
           onClick={() => setSidebarOpen(false)}
           aria-label="Close sidebar"
         >
           <X className="h-5 w-5" />
-        </button>
+        </Button>
 
         <div className="w-72 flex flex-col h-full">
           {/* ── Brand ── */}
@@ -310,13 +313,14 @@ export function Layout() {
 
           {/* ── Logout ── */}
           <div className="px-4 pb-4 border-t border-neutral-100 dark:border-neutral-800 pt-3">
-            <button
-              className="flex items-center gap-3 px-3 py-2 w-full rounded-xl text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors text-left"
+            <Button
+              variant="ghost"
+              className="flex items-center justify-start gap-3 px-3 py-2 w-full rounded-xl text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors text-left bg-transparent h-auto"
               onClick={handleLogout}
             >
               <LogOut className="h-4 w-4" />
               Keluar
-            </button>
+            </Button>
           </div>
         </div>
       </aside>
@@ -341,38 +345,48 @@ export function Layout() {
         {/* ── Top Header Bar (light, content-area only) ── */}
         <header className="h-14 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center px-4 lg:px-6 gap-3 sticky top-0 z-30 shrink-0">
           {/* Mobile hamburger */}
-          <button
-            className="lg:hidden text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden text-neutral-500 hover:text-neutral-900 dark:hover:text-white h-8 w-8 px-0 bg-transparent hover:bg-neutral-100/50"
             onClick={() => setSidebarOpen(true)}
             aria-label="Open sidebar"
           >
             <Menu className="h-5 w-5" />
-          </button>
+          </Button>
 
           {/* Desktop sidebar toggle */}
-          <button
-            className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hidden lg:flex h-8 w-8 px-0 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             <PanelLeft className="h-[18px] w-[18px]" />
-          </button>
+          </Button>
 
           {/* Spacer */}
           <div className="flex-1" />
 
           {/* Header actions */}
           <div className="flex items-center gap-2">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleTheme}
-              className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="h-9 w-9 px-0 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
               aria-label="Toggle dark mode"
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </button>
-            <button className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 px-0 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors bg-transparent"
+            >
               🔔
-            </button>
+            </Button>
 
             <div className="flex items-center gap-3 pl-3 ml-1 border-l border-neutral-200 dark:border-neutral-700">
               <img

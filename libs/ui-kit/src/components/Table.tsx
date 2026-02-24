@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Search,
 } from 'lucide-react';
+import { Button } from './Button';
 
 /* ─────────────────────────────────────────────
    Data Table Component
@@ -303,14 +304,16 @@ export function Table<T>({
           </div>
 
           <div className="flex items-center gap-1">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={currentPage === 0}
-              className="h-8 w-8 flex items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="h-8 w-8 px-0 flex items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-transparent"
               aria-label="Previous page"
             >
               <ChevronLeft className="h-4 w-4" />
-            </button>
+            </Button>
 
             {/* Page numbers with ellipsis */}
             {getPageNumbers().map((p, i) =>
@@ -322,28 +325,32 @@ export function Table<T>({
                   ···
                 </span>
               ) : (
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`h-8 w-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors ${
+                  className={`h-8 w-8 px-0 flex items-center justify-center rounded-full text-sm font-medium transition-colors bg-transparent ${
                     p === currentPage
-                      ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+                      ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200'
                       : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700'
                   }`}
                 >
                   {p + 1}
-                </button>
+                </Button>
               )
             )}
 
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={currentPage >= totalPages - 1}
-              className="h-8 w-8 flex items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="h-8 w-8 px-0 flex items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-transparent"
               aria-label="Next page"
             >
               <ChevronRight className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
       )}

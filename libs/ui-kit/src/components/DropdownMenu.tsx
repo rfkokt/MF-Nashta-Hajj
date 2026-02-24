@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { MoreHorizontal } from 'lucide-react';
+import { Button } from './Button';
 
 /* ─────────────────────────────────────────────
    Dropdown Menu Component
@@ -67,14 +68,16 @@ export function DropdownMenu({
   return (
     <div ref={ref} className={`relative inline-flex ${className}`}>
       {/* Trigger */}
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => setOpen(!open)}
-        className="text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
+        className="text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors h-8 w-8 px-0 bg-transparent hover:bg-neutral-100/50"
         aria-haspopup="true"
         aria-expanded={open}
       >
         {trigger || <MoreHorizontal className="h-4 w-4" />}
-      </button>
+      </Button>
 
       {/* Dropdown Panel */}
       {open && (
@@ -88,21 +91,22 @@ export function DropdownMenu({
                 <div className="border-t border-neutral-100 dark:border-neutral-700 my-1" />
               )}
               {item.label && (
-                <button
+                <Button
+                  variant="ghost"
                   onClick={() => {
                     item.onClick?.();
                     setOpen(false);
                   }}
-                  className={`flex items-center gap-2.5 w-full px-3.5 py-2 text-sm transition-colors ${
+                  className={`flex items-center justify-start gap-2.5 w-full px-3.5 py-2 text-sm transition-colors h-auto font-normal rounded-none ${
                     item.danger
-                      ? 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+                      ? 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700'
                       : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-700'
                   }`}
                   role="menuitem"
                 >
                   {item.icon && <span className="shrink-0">{item.icon}</span>}
                   {item.label}
-                </button>
+                </Button>
               )}
             </div>
           ))}

@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { Button } from './Button';
 
 export interface BreadcrumbItem {
   label: string;
@@ -35,7 +36,8 @@ export function Breadcrumb({ items, className, onNavigate }: BreadcrumbProps) {
                 </span>
               ) : (
                 <div className="flex items-center">
-                  <button
+                  <Button
+                    variant="ghost"
                     type="button"
                     onClick={() => {
                       if (item.href && onNavigate) {
@@ -43,14 +45,14 @@ export function Breadcrumb({ items, className, onNavigate }: BreadcrumbProps) {
                       }
                     }}
                     className={cn(
-                      'transition-colors',
+                      'px-0 py-0 h-auto font-normal bg-transparent hover:bg-transparent transition-colors',
                       item.href
                         ? 'hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer'
                         : 'cursor-default'
                     )}
                   >
                     {item.label}
-                  </button>
+                  </Button>
                   <ChevronRight className="w-4 h-4 mx-1.5 flex-shrink-0 text-neutral-400" />
                 </div>
               )}

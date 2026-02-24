@@ -1,5 +1,13 @@
 import { type FormEvent, type ChangeEvent, useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@nashta/ui-kit';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
 
 export default function Register() {
@@ -75,14 +83,15 @@ export default function Register() {
         <Card variant="elevated" className="shadow-xl">
           <CardHeader>
             <CardTitle>Register</CardTitle>
-            <CardDescription>
-              Isi form berikut untuk membuat akun
-            </CardDescription>
+            <CardDescription>Isi form berikut untuk membuat akun</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20" role="alert">
+                <div
+                  className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20"
+                  role="alert"
+                >
                   {error}
                 </div>
               )}
@@ -121,14 +130,16 @@ export default function Register() {
                   className="pr-10"
                 />
                 <div className="relative">
-                  <button
+                  <Button
                     type="button"
-                    className="absolute right-3 -top-7 text-neutral-400 hover:text-neutral-600 transition-colors"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 -top-[34px] h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -147,12 +158,7 @@ export default function Register() {
                 }
               />
 
-              <Button
-                type="submit"
-                className="w-full"
-                size="lg"
-                isLoading={isLoading}
-              >
+              <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
                 <UserPlus className="h-4 w-4" />
                 Daftar
               </Button>

@@ -1,5 +1,13 @@
 import { type FormEvent, type ChangeEvent, useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@nashta/ui-kit';
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@nashta/ui-kit';
 import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
 import type { AuthEventPayload } from '@nashta/shared-types';
 import { LogIn, Eye, EyeOff, CheckCircle } from 'lucide-react';
@@ -65,7 +73,10 @@ export default function Login() {
             <p className="text-neutral-500 mb-6">Selamat datang, {email.split('@')[0]}!</p>
             <p className="text-sm text-neutral-400">
               Jika tidak otomatis redirect, buka{' '}
-              <a href="http://localhost:4000" className="text-primary-600 hover:underline font-medium">
+              <a
+                href="http://localhost:4000"
+                className="text-primary-600 hover:underline font-medium"
+              >
                 Shell (localhost:4000)
               </a>
             </p>
@@ -89,14 +100,15 @@ export default function Login() {
         <Card variant="elevated" className="shadow-xl">
           <CardHeader>
             <CardTitle>Login</CardTitle>
-            <CardDescription>
-              Masukkan email dan password untuk melanjutkan
-            </CardDescription>
+            <CardDescription>Masukkan email dan password untuk melanjutkan</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20" role="alert">
+                <div
+                  className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20"
+                  role="alert"
+                >
                   {error}
                 </div>
               )}
@@ -124,23 +136,20 @@ export default function Login() {
                   className="pr-10"
                 />
                 <div className="relative">
-                  <button
+                  <Button
                     type="button"
-                    className="absolute right-3 -top-7 text-neutral-400 hover:text-neutral-600 transition-colors"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 -top-[34px] h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
+                  </Button>
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full"
-                size="lg"
-                isLoading={isLoading}
-              >
+              <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
                 <LogIn className="h-4 w-4" />
                 Masuk
               </Button>
