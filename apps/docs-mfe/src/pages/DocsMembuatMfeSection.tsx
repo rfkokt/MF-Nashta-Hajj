@@ -38,12 +38,17 @@ pnpm nx g @nashta/tools:mfe reporting-mfe --port=4004`}
               <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">
                 apps/shell/src/router.tsx
               </code>
-              ! Karena ada MFE baru yang disuntikkan, Anda harus membunuh process Node saat ini
-              untuk me-restart Vite Dev Server.
+              ! Karena ada MFE baru yang disuntikkan, Anda wajib mematikan Vite Dev Server yang
+              sedang berjalan saat ini (Tekan{' '}
+              <kbd className="font-sans px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 border rounded-md">
+                Ctrl+C
+              </kbd>{' '}
+              di terminal), lalu bersihkan cache dan *restart* dengan command khusus di bawah.
             </p>
             <CodeBlock
               language="bash"
-              codeString={`# Matikan server lama dan hidupkan ulang dengan MFE baru Anda
+              codeString={`# 1. Matikan server lama (Ctrl+C)
+# 2. Hancurkan cache Nx & MF, lalu hidupkan ulang
 pnpm run dev:new`}
             />
           </DocsStep>

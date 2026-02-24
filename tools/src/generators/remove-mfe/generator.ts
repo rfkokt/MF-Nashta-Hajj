@@ -15,6 +15,13 @@ export async function removeMfeGenerator(tree: Tree, options: RemoveMfeGenerator
     logger.warn(`⚠️ MFE folder not found at ${projectRoot}, skipping folder deletion.`);
   }
 
+  // 1.5 Delete the Module Federation temp cache folder if exists
+  const mfTempFolder = `.__mf__temp/${safeName}`;
+  if (tree.exists(mfTempFolder)) {
+    tree.delete(mfTempFolder);
+    logger.info(`🗑️ Deleted Module Federation cache: ${mfTempFolder}`);
+  }
+
   // 2. Remove from shell's remotes.json registry
   const remotesJsonPath = 'apps/shell/public/remotes.json';
   if (tree.exists(remotesJsonPath)) {
