@@ -19,6 +19,18 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState('');
+
+  // Extract redirect query param on mount
+  useState(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new window.URLSearchParams(window.location.search);
+      const redirectParam = urlParams.get('redirect');
+      if (redirectParam) {
+        setRedirectUrl(redirectParam);
+      }
+    }
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -58,6 +70,10 @@ export default function Login() {
       setError('Login gagal. Periksa kembali email dan password Anda.');
     } finally {
       setIsLoading(false);
+      // Execute standalone redirection if present
+      if (email && password && redirectUrl) {
+        window.location.href = redirectUrl;
+      }
     }
   };
 
@@ -72,13 +88,24 @@ export default function Login() {
             <h2 className="text-xl font-bold text-neutral-900 mb-2">Login Berhasil!</h2>
             <p className="text-neutral-500 mb-6">Selamat datang, {email.split('@')[0]}!</p>
             <p className="text-sm text-neutral-400">
-              Jika tidak otomatis redirect, buka{' '}
-              <a
-                href="http://localhost:4000"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                Shell (localhost:4000)
-              </a>
+              {redirectUrl ? (
+                <>
+                  Mengalihkan kembali ke{' '}
+                  <a href={redirectUrl} className="text-primary-600 hover:underline font-medium">
+                    aplikasi asal...
+                  </a>
+                </>
+              ) : (
+                <>
+                  Jika tidak otomatis redirect, buka{' '}
+                  <a
+                    href="http://localhost:4000"
+                    className="text-primary-600 hover:underline font-medium"
+                  >
+                    Shell (localhost:4000)
+                  </a>
+                </>
+              )}
             </p>
           </CardContent>
         </Card>

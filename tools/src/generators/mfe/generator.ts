@@ -202,7 +202,8 @@ function StandaloneAuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isHydrating && !isAuthenticated) {
-      window.location.href = 'http://localhost:4000/auth/login';
+      const currentUrl = encodeURIComponent(window.location.href);
+      window.location.href = \`http://localhost:4000/auth/login?redirect=\\\${currentUrl}\`;
     }
   }, [isHydrating, isAuthenticated]);
 
