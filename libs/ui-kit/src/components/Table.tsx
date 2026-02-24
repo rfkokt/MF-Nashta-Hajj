@@ -1,12 +1,5 @@
 import { useState, useMemo, type ReactNode } from 'react';
-import {
-  ChevronUp,
-  ChevronDown,
-  ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-} from 'lucide-react';
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Button } from './Button';
 
 /* ─────────────────────────────────────────────
@@ -153,9 +146,9 @@ export function Table<T>({
   const SortIcon = ({ colKey }: { colKey: string }) => {
     if (sortKey !== colKey) return <ArrowUpDown className="h-3.5 w-3.5 text-neutral-400" />;
     return sortDir === 'asc' ? (
-      <ChevronUp className="h-3.5 w-3.5 text-neutral-900 dark:text-white" />
+      <ArrowUp className="h-3.5 w-3.5 text-neutral-900 dark:text-white" />
     ) : (
-      <ChevronDown className="h-3.5 w-3.5 text-neutral-900 dark:text-white" />
+      <ArrowDown className="h-3.5 w-3.5 text-neutral-900 dark:text-white" />
     );
   };
 
