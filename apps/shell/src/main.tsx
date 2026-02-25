@@ -7,6 +7,11 @@ import './index.css';
 import { registerRuntimeRemotesFromRegistry } from './utils/runtime-remotes';
 
 async function bootstrap() {
+  if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MSW === 'true') {
+    const { worker } = await import('@nashta/mock-api');
+    await worker.start({ onUnhandledRequest: 'bypass' });
+  }
+
   try {
     await registerRuntimeRemotesFromRegistry();
   } catch (error) {

@@ -21,6 +21,7 @@ import { DocsGitPerfSection } from './pages/DocsGitPerfSection';
 import { DocsSecuritySection } from './pages/DocsSecuritySection';
 import { DocsWhyMfSection } from './pages/DocsWhyMfSection';
 import { DocsI18nSection } from './pages/DocsI18nSection';
+import { DocsApiMockingSection } from './pages/DocsApiMockingSection';
 
 // ── Reusable Components Section imports ──
 import { InfoBoxSection } from './pages/components/InfoBoxSection';
@@ -129,9 +130,15 @@ export const DOCS_SECTION_MAP: Record<string, SectionData> = {
     title: '13. Security Best Practices',
     category: '📚 Panduan Lanjutan',
   },
+
   i18n: {
     component: DocsI18nSection,
     title: '14. Internationalization (i18n)',
+    category: '📚 Panduan Lanjutan',
+  },
+  'api-mocking': {
+    component: DocsApiMockingSection,
+    title: '15. API Mocking (MSW)',
     category: '📚 Panduan Lanjutan',
   },
 };

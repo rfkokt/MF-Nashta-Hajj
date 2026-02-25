@@ -151,6 +151,12 @@ export const MOCK_MENUS: MenuGroup[] = [
             icon: 'Globe2',
             path: '/docs/i18n',
           },
+          {
+            id: 'docs-api-mocking',
+            label: '15. API Mocking (MSW)',
+            icon: 'Activity',
+            path: '/docs/api-mocking',
+          },
         ],
       },
       {

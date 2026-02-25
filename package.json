@@ -65,6 +65,7 @@
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
     "lint-staged": "^16.2.7",
+    "msw": "^2.12.10",
     "nx": "^22.5.2",
     "prettier": "^3.8.1",
     "rollup-plugin-visualizer": "^7.0.0",
@@ -87,5 +88,12 @@
     "react-dom": "^19.0.0",
     "react-i18next": "^16.5.4",
     "react-router-dom": "6.30.3"
+  },
+  "msw": {
+    "workerDirectory": [
+      "apps/shell/public",
+      "apps/auth-mfe/public",
+      "apps/docs-mfe/public"
+    ]
   }
 }

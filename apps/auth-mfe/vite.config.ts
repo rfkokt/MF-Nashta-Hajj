@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { federation } from '@module-federation/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   server: {
@@ -11,6 +15,14 @@ export default defineConfig({
   },
   preview: {
     port: 4101,
+  },
+  resolve: {
+    alias: {
+      '@nashta/shared-types': path.resolve(__dirname, '../../libs/shared-types/src/index.ts'),
+      '@nashta/shared-api': path.resolve(__dirname, '../../libs/shared-api/src/index.ts'),
+      '@nashta/ui-kit': path.resolve(__dirname, '../../libs/ui-kit/src/index.ts'),
+      '@nashta/mock-api': path.resolve(__dirname, '../../libs/mock-api/src/index.ts'),
+    },
   },
   plugins: [
     react(),
@@ -38,7 +50,7 @@ export default defineConfig({
       gzipSize: true,
       brotliSize: true,
     }),
-  ] as any,
+  ] as Exclude<import('vite').UserConfig['plugins'], undefined>,
   build: {
     target: 'chrome89',
     modulePreload: false,

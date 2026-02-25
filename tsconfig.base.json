@@ -28,7 +28,8 @@
       "@nashta/ui-kit/*": ["libs/ui-kit/src/*"],
       "@/*": ["libs/ui-kit/src/*"],
       "@nashta/tools": ["tools/src/index.ts"],
-      "@nashta/shared-monitoring": ["libs/shared-monitoring/src/index.ts"]
+      "@nashta/shared-monitoring": ["libs/shared-monitoring/src/index.ts"],
+      "@nashta/mock-api": ["libs/mock-api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist"]

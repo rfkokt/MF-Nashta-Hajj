@@ -83,6 +83,7 @@ export default defineConfig(({ mode }) => {
           __dirname,
           '../../libs/shared-monitoring/src/index.ts'
         ),
+        '@nashta/mock-api': path.resolve(__dirname, '../../libs/mock-api/src/index.ts'),
       },
     },
     plugins: [
