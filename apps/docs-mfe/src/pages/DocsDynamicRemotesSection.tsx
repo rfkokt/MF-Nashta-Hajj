@@ -30,7 +30,7 @@ export function DocsDynamicRemotesSection() {
             codeString={`// shell/public/remotes.json
 {
   "authMfe": "http://localhost:4001",
-  "businessMfe": "http://localhost:4002",
+  "pendaftaran": "http://localhost:4002",
   "docsMfe": "http://localhost:4003"
 }`}
           />

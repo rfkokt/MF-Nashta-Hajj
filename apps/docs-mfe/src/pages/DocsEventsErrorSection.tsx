@@ -16,45 +16,34 @@ export function DocsEventsErrorSection() {
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-neutral-600 dark:text-neutral-400">
           <p>
-            Semua event wajib pakai prefix dari{' '}
-            <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">
-              shared-types
-            </code>
-            . Jangan buat event string manual.
+            Secara garis besar, pertukaran <em>State</em> sinkronus (seperti Auth Token dan info
+            User) <strong>wajib</strong> menggunakan Zustand melalui `shared-types`. Hanya gunakan
+            Browser Events (`window.dispatchEvent`) untuk interaksi <em>one-off</em> atau event{' '}
+            <em>UI-agnostic</em>.
           </p>
           <CodeBlock
             language="typescript"
-            codeString={`import { MFE_EVENTS, dispatchMfeEvent } from '@nashta/shared-types';
+            codeString={`// ❌ ANTI-PATTERN untuk Auth (Jangan gunakan Event)
+dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_IN, data);
 
-// Dispatch
-dispatchMfeEvent(MFE_EVENTS.AUTH.USER_LOGGED_IN, {
-  userId: user.id,
-  accessToken: token,
-});
+// ✅ STANDAR BARU (Reaktif lintas-MFE)
+import { useAuthStore } from '@nashta/shared-types';
 
-// Listen
-window.addEventListener(
-  MFE_EVENTS.AUTH.USER_LOGGED_IN,
-  (e: CustomEvent) => { ... }
-);`}
+const setAuth = useAuthStore(s => s.setAuth);
+setAuth({ user, token });`}
           />
           <p>
-            <strong>Events tersedia:</strong>
+            <strong>Legacy Events (Tinggalkan bertahap):</strong>
           </p>
           <ul className="list-disc ml-4 space-y-1">
-            <li>
+            <li className="line-through opacity-50">
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">
                 AUTH.USER_LOGGED_IN
               </code>
             </li>
-            <li>
+            <li className="line-through opacity-50">
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">
                 AUTH.USER_LOGGED_OUT
-              </code>
-            </li>
-            <li>
-              <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 rounded">
-                AUTH.TOKEN_REFRESHED
               </code>
             </li>
           </ul>

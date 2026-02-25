@@ -33,9 +33,9 @@ export function DocsStrukturSection() {
             </li>
             <li>
               <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">
-                business-mfe
+                pendaftaran
               </code>{' '}
-              — Modul contoh bisnis (Port 4002).
+              — Modul pendaftaran dan jamaah (Port 4002).
             </li>
             <li>
               <code className="text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/50 px-1 rounded">
@@ -76,7 +76,7 @@ export function DocsStrukturSection() {
 ├── apps/
 │   ├── shell/          ← Host (Port 4000)
 │   ├── auth-mfe/       ← Login & Auth (Port 4001)
-│   ├── business-mfe/   ← Contoh bisnis (Port 4002)
+│   ├── pendaftaran/    ← Modul Pendaftaran (Port 4002)
 │   └── docs-mfe/       ← Halaman ini (Port 4003)
 ├── libs/
 │   ├── ui-kit/         ← Design System (@nashta/ui-kit)

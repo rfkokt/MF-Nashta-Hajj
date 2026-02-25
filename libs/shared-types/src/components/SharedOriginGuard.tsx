@@ -31,10 +31,12 @@ export function SharedOriginGuard({
   const dynamicOrigins = new Set<string>();
   dynamicOrigins.add('http://localhost:4000'); // Default shell local
 
-  // @ts-expect-error - Ditangani oleh Vite pada build time
-  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SHELL_URL) {
-    // @ts-expect-error - meta types are not fully resolved by standard TS
-    dynamicOrigins.add(import.meta.env.VITE_SHELL_URL);
+  // Gunakan type casting aman untuk mengindari error TS antar-environment
+  if (typeof import.meta !== 'undefined') {
+    const metaEnv = (import.meta as unknown as { env?: Record<string, string> }).env;
+    if (metaEnv && metaEnv.VITE_SHELL_URL) {
+      dynamicOrigins.add(metaEnv.VITE_SHELL_URL);
+    }
   }
 
   Object.values(remotesData.remotes).forEach((remote: unknown) => {

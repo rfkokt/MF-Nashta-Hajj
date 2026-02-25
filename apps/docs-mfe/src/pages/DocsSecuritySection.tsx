@@ -151,17 +151,29 @@ export function App() {
                 />
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mt-4">
                   <p className="text-xs font-semibold text-blue-700 dark:text-blue-400">
-                    💡 Standalone Guard
+                    💡 Standalone Guard & MFE SSO (Single-Sign-On Lintas Port)
                   </p>
-                  <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-                    Saat mode Standalone (Developer membuka port MFE langsung seperti{' '}
+                  <p className="text-xs text-blue-700 dark:text-blue-400 mt-1 mb-2">
+                    Saat mode Standalone (Developer membuka port anak MFE langsung misalnya{' '}
                     <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded">
                       localhost:4003
                     </code>
-                    ), kita punya <code>StandaloneAuthGuard</code> di{' '}
+                    ), <code>StandaloneAuthGuard</code> secara spesifik di{' '}
                     <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded">main.tsx</code>{' '}
-                    yang akan otomatis melempar pengunjung yang tidak terautentikasi kembali ke
-                    alamat Shell utama.
+                    akan mendeteksi ketiadaan *session* lalu melempar *(redirect)* user kembali ke
+                    alamat Shell utama di{' '}
+                    <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded">
+                      localhost:4000/auth/login?redirect=...
+                    </code>
+                    .
+                  </p>
+                  <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                    Apabila user tersebut mengantongi *session* valid dari Shell (sudah *Login*),
+                    maka Shell Router (
+                    <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded">GuestRoute</code>
+                    ) akan langsung me-<em>redirect</em> kembali ke port anak tadi dengan meletakkan
+                    injeksi <em>Token & User info</em> (Zustand Payload) di param url{' '}
+                    <code>?standaloneAuth=...</code>.
                   </p>
                 </div>
               </div>

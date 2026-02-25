@@ -224,7 +224,7 @@ function StandaloneAuthGuard({ children }: { children: React.ReactNode }) {
 
     if (!isHydrating && !isAuthenticated) {
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = \`http://localhost:4000/auth/login?redirect=\\\${currentUrl}\`;
+      window.location.href = \`http://localhost:4000/auth/login?redirect=\${currentUrl}\`;
     }
   }, [isHydrating, isAuthenticated]);
 

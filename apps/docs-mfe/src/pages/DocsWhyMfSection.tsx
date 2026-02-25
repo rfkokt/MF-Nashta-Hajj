@@ -360,7 +360,7 @@ export function DocsWhyMfSection() {
 shared: {
   react:       { singleton: true, requiredVersion: '^19.0.0' },
   'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
-  'react-router': { singleton: true },
+  'react-router-dom': { singleton: true, requiredVersion: '^6.30.0' },
   'lucide-react':  { singleton: false }, // boleh duplikat
 }`}
                 language="typescript"
@@ -370,7 +370,7 @@ shared: {
             <InfoBox variant="purple" title="3. Resilience — Error Boundary per Remote">
               <p className="mb-3">
                 Setiap remote dibungkus <code>React.Suspense</code> + <code>ErrorBoundary</code>.
-                Jika auth-mfe crash, Shell dan business-mfe tetap jalan normal.
+                Jika auth-mfe crash, Shell dan pendaftaran tetap jalan normal.
               </p>
               <CodeBlock
                 codeString={`// Shell router — setiap remote terisolasi
