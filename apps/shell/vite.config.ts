@@ -16,8 +16,13 @@ type FederationRemoteConfig = {
   entry: string;
 };
 
-function loadFederationRemotes(): Record<string, FederationRemoteConfig> {
+import { loadEnv } from 'vite';
+
+function loadFederationRemotes(mode: string): Record<string, FederationRemoteConfig> {
   const registryPath = path.resolve(__dirname, './public/remotes.json');
+  // Load env variables with VITE_ prefix from the current directory
+  // eslint-disable-next-line no-undef
+  const env = loadEnv(mode, process.cwd(), 'VITE_');
 
   try {
     const raw = fs.readFileSync(registryPath, 'utf-8');
@@ -29,68 +34,84 @@ function loadFederationRemotes(): Record<string, FederationRemoteConfig> {
           return acc;
         }
 
+        // e.g. "authMfe" -> "VITE_AUTH_MFE_URL"
+        // Also supports camelCase/kebab-case mappings by replacing dashes and uppercasing.
+        const envKeyName = remote.name
+          .replace(/([a-z])([A-Z])/g, '$1_$2')
+          .replace(/-/g, '_')
+          .toUpperCase();
+        const envKey = `VITE_${envKeyName}_URL`;
+
+        // Use ENV if available, fallback to remotes.json entry
+        const entryUrl = env[envKey] ? `${env[envKey]}/mf-manifest.json` : remote.entry;
+
         acc[remote.name] = {
           type: 'module',
           name: remote.name,
-          entry: remote.entry,
+          entry: entryUrl,
         };
         return acc;
       },
       {} as Record<string, FederationRemoteConfig>
     );
   } catch (error) {
-    console.warn('[shell/vite.config] Failed to read remotes.json, using empty remotes map.', error);
+    console.warn(
+      '[shell/vite.config] Failed to read remotes.json or process env, using empty remotes map.',
+      error
+    );
     return {};
   }
 }
 
-const federationRemotes = loadFederationRemotes();
+export default defineConfig(({ mode }) => {
+  const federationRemotes = loadFederationRemotes(mode);
 
-export default defineConfig({
-  server: {
-    port: 4000,
-    origin: 'http://localhost:4000',
-  },
-  preview: {
-    port: 4100,
-  },
-  resolve: {
-    alias: {
-      '@nashta/shared-types': path.resolve(__dirname, '../../libs/shared-types/src/index.ts'),
-      '@nashta/shared-api': path.resolve(__dirname, '../../libs/shared-api/src/index.ts'),
-      '@nashta/ui-kit': path.resolve(__dirname, '../../libs/ui-kit/src/index.ts'),
-      '@nashta/shared-monitoring': path.resolve(
-        __dirname,
-        '../../libs/shared-monitoring/src/index.ts'
-      ),
+  return {
+    server: {
+      port: 4000,
+      origin: 'http://localhost:4000',
     },
-  },
-  plugins: [
-    react(),
-    tailwindcss(),
-    federation({
-      name: 'shell',
-      dts: false,
-      remotes: federationRemotes,
-      shared: {
-        react: { singleton: true, requiredVersion: '^19.0.0' },
-        'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
-        'react/': { singleton: true },
-        'react-dom/': { singleton: true },
-        'react-router': { singleton: true, requiredVersion: '^7.0.0' },
+    preview: {
+      port: 4100,
+    },
+    resolve: {
+      alias: {
+        '@nashta/shared-types': path.resolve(__dirname, '../../libs/shared-types/src/index.ts'),
+        '@nashta/shared-api': path.resolve(__dirname, '../../libs/shared-api/src/index.ts'),
+        '@nashta/ui-kit': path.resolve(__dirname, '../../libs/ui-kit/src/index.ts'),
+        '@nashta/shared-monitoring': path.resolve(
+          __dirname,
+          '../../libs/shared-monitoring/src/index.ts'
+        ),
       },
-    }),
-    visualizer({
-      open: false,
-      filename: 'dist/apps/shell/stats.html',
-      gzipSize: true,
-      brotliSize: true,
-    }),
-  ] as any,
-  build: {
-    target: 'chrome89',
-    modulePreload: false,
-    minify: true,
-    manifest: true,
-  },
+    },
+    plugins: [
+      react(),
+      tailwindcss(),
+      federation({
+        name: 'shell',
+        dts: false,
+        remotes: federationRemotes,
+        shared: {
+          react: { singleton: true, requiredVersion: '^19.0.0' },
+          'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
+          'react/': { singleton: true },
+          'react-dom/': { singleton: true },
+          'react-router': { singleton: true, requiredVersion: '^7.0.0' },
+        },
+      }),
+      visualizer({
+        open: false,
+        filename: 'dist/apps/shell/stats.html',
+        gzipSize: true,
+        brotliSize: true,
+      }),
+    ] as Exclude<import('vite').UserConfig['plugins'], undefined>,
+    build: {
+      target: 'chrome89',
+      modulePreload: false,
+      minify: true,
+      manifest: true,
+    },
+  };
 });

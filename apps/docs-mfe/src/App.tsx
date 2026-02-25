@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 import { useLocation, Link } from 'react-router';
 import { discoveredComponents } from './utils/component-discovery';
+import { SharedOriginGuard } from '@nashta/shared-types';
 
 // ── Documentation Section imports ──
 import { DocsOverviewSection } from './pages/DocsOverviewSection';
@@ -286,13 +287,15 @@ export function App() {
 
   // 3. Not Found Fallback
   return (
-    <div className="p-8 mx-auto w-full max-w-4xl text-center py-20">
-      <h2 className="text-2xl font-bold mb-4">Halaman Tidak Ditemukan</h2>
-      <p className="text-neutral-500 mb-6">Bagian dokumentasi yang Anda cari tidak ada.</p>
-      <Link to="/docs" className="text-primary-600 hover:underline">
-        Kembali ke Panduan Utama
-      </Link>
-    </div>
+    <SharedOriginGuard>
+      <div className="p-8 mx-auto w-full max-w-4xl text-center py-20">
+        <h2 className="text-2xl font-bold mb-4">Halaman Tidak Ditemukan</h2>
+        <p className="text-neutral-500 mb-6">Bagian dokumentasi yang Anda cari tidak ada.</p>
+        <Link to="/docs" className="text-primary-600 hover:underline">
+          Kembali ke Panduan Utama
+        </Link>
+      </div>
+    </SharedOriginGuard>
   );
 }
 

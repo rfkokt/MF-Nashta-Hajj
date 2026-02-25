@@ -156,10 +156,12 @@ body {
 
   // 4. Overwrite App.tsx
   const appTsxContent = `import { Card, CardContent } from '@nashta/ui-kit';
+import { SharedOriginGuard } from '@nashta/shared-types';
 
 export function App() {
   return (
-    <div className="p-8">
+    <SharedOriginGuard>
+      <div className="p-8">
       <Card variant="elevated" className="bg-white">
         <CardContent className="p-8">
           <h1 className="text-3xl font-bold text-primary-900 mb-4">
@@ -176,7 +178,8 @@ export function App() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </SharedOriginGuard>
   );
 }
 
@@ -412,7 +415,7 @@ createRoot(rootElement).render(
       logger.info('\\n📦 Running pnpm install to fetch new MFE dependencies...\\n');
       execSync('pnpm install', { stdio: 'inherit' });
       logger.info('\\n✅ Success! You can now run the MFE.\\n');
-    } catch (e) {
+    } catch {
       logger.error('Failed to run pnpm install automatically. Please run it manually.');
     }
   };

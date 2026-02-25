@@ -10,6 +10,7 @@ import {
 } from '@nashta/ui-kit';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SharedOriginGuard } from '@nashta/shared-types';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -74,110 +75,114 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-100 px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Logo / Brand */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-            {t('register.title')}
-          </h1>
-          <p className="text-neutral-500 mt-2">{t('register.subtitle')}</p>
-        </div>
+    <SharedOriginGuard>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-100 px-4 py-8">
+        <div className="w-full max-w-md">
+          {/* Logo / Brand */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+              {t('register.title')}
+            </h1>
+            <p className="text-neutral-500 mt-2">{t('register.subtitle')}</p>
+          </div>
 
-        <Card variant="elevated" className="shadow-xl">
-          <CardHeader>
-            <CardTitle>{t('register.cardTitle')}</CardTitle>
-            <CardDescription>{t('register.cardDescription')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <div
-                  className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20"
-                  role="alert"
-                >
-                  {error}
-                </div>
-              )}
+          <Card variant="elevated" className="shadow-xl">
+            <CardHeader>
+              <CardTitle>{t('register.cardTitle')}</CardTitle>
+              <CardDescription>{t('register.cardDescription')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <div
+                    className="p-3 rounded-lg bg-error/10 text-error text-sm border border-error/20"
+                    role="alert"
+                  >
+                    {error}
+                  </div>
+                )}
 
-              <Input
-                label={t('register.nameLabel')}
-                type="text"
-                placeholder={t('register.namePlaceholder')}
-                value={name}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                required
-                autoComplete="name"
-                autoFocus
-              />
-
-              <Input
-                label={t('login.emailLabel')}
-                type="email"
-                placeholder={t('login.emailPlaceholder')}
-                value={email}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-
-              <div className="relative">
                 <Input
-                  label={t('login.passwordLabel')}
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder={t('register.passwordHint')}
-                  value={password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                  label={t('register.nameLabel')}
+                  type="text"
+                  placeholder={t('register.namePlaceholder')}
+                  value={name}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                  required
+                  autoComplete="name"
+                  autoFocus
+                />
+
+                <Input
+                  label={t('login.emailLabel')}
+                  type="email"
+                  placeholder={t('login.emailPlaceholder')}
+                  value={email}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+
+                <div className="relative">
+                  <Input
+                    label={t('login.passwordLabel')}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={t('register.passwordHint')}
+                    value={password}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                    hint={t('register.passwordHint')}
+                    className="pr-10"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 top-8 h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+
+                <Input
+                  label={t('register.confirmPasswordLabel')}
+                  type="password"
+                  placeholder={t('register.confirmPasswordPlaceholder')}
+                  value={confirmPassword}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setConfirmPassword(e.target.value)
+                  }
                   required
                   autoComplete="new-password"
-                  hint={t('register.passwordHint')}
-                  className="pr-10"
+                  error={
+                    confirmPassword && password !== confirmPassword
+                      ? t('register.errorMismatch')
+                      : undefined
+                  }
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-1 top-8 h-8 w-8 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100/50 transition-colors"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+
+                <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
+                  <UserPlus className="h-4 w-4" />
+                  {t('register.submit')}
                 </Button>
-              </div>
 
-              <Input
-                label={t('register.confirmPasswordLabel')}
-                type="password"
-                placeholder={t('register.confirmPasswordPlaceholder')}
-                value={confirmPassword}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
-                required
-                autoComplete="new-password"
-                error={
-                  confirmPassword && password !== confirmPassword
-                    ? t('register.errorMismatch')
-                    : undefined
-                }
-              />
-
-              <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-                <UserPlus className="h-4 w-4" />
-                {t('register.submit')}
-              </Button>
-
-              <p className="text-center text-sm text-neutral-500">
-                {t('register.hasAccount')}{' '}
-                <a
-                  href="/auth/login"
-                  className="text-primary-600 hover:text-primary-700 font-medium"
-                >
-                  {t('register.login')}
-                </a>
-              </p>
-            </form>
-          </CardContent>
-        </Card>
+                <p className="text-center text-sm text-neutral-500">
+                  {t('register.hasAccount')}{' '}
+                  <a
+                    href="/auth/login"
+                    className="text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    {t('register.login')}
+                  </a>
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </SharedOriginGuard>
   );
 }

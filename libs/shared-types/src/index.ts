@@ -13,3 +13,4 @@ export { isAppError } from './api-error';
 export type { AppError } from './api-error';
 export { useIdleTimeout } from './useIdleTimeout';
 export type { UseIdleTimeoutOptions } from './useIdleTimeout';
+export { SharedOriginGuard } from './components/SharedOriginGuard';
